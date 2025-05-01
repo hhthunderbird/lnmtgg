@@ -6,6 +6,7 @@ import path from 'path' // Add this import
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 export default defineConfig({
+    base: './', // Relative paths for local and production
     plugins: [react()],
     build: {
         // Add these options for better Vercel compatibility
