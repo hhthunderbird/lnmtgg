@@ -19,6 +19,11 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
+console.log('Mounting app...') // Debug line
+
+const rootElement = document.getElementById('root')
+if (!rootElement) throw new Error('Root element not found')
+
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <GlobalStyle />

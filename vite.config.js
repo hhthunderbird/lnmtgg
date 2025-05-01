@@ -10,6 +10,7 @@ export default defineConfig({
     plugins: [react()],
     build: {
         // Add these options for better Vercel compatibility
+        assetsDir: 'assets',
         outDir: 'dist',
         emptyOutDir: true,
         rollupOptions: {
