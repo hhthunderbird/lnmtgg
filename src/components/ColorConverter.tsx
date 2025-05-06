@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import SEO from './SEO';
 import StructuredData from './StructuredData';
@@ -53,6 +53,31 @@ const Input = styled.input`
     outline: none;
     border-color: #1a73e8;
   }
+`;
+
+const Button = styled.button`
+  padding: 0.75rem 1.5rem;
+  background: #1a73e8;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  font-size: 1rem;
+
+  &:hover {
+    background: #1557b0;
+  }
+
+  &:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+  }
+`;
+
+const InputContainer = styled.div`
+  display: flex;
+  gap: 0.5rem;
 `;
 
 const ColorConverter: React.FC = () => {
@@ -196,30 +221,39 @@ const ColorConverter: React.FC = () => {
       <ColorPreview color={hex} />
       <InputGroup>
         <Label>HEX Color</Label>
-        <Input
-          type="text"
-          value={hex}
-          onChange={(e) => updateFromHex(e.target.value)}
-          placeholder="#000000"
-        />
+        <InputContainer>
+          <Input
+            type="text"
+            value={hex}
+            onChange={(e) => updateFromHex(e.target.value)}
+            placeholder="#000000"
+          />
+          <Button onClick={() => handleCopy(hex)}>Copy</Button>
+        </InputContainer>
       </InputGroup>
       <InputGroup>
         <Label>RGB Color</Label>
-        <Input
-          type="text"
-          value={rgb}
-          onChange={(e) => updateFromRgb(e.target.value)}
-          placeholder="rgb(0, 0, 0)"
-        />
+        <InputContainer>
+          <Input
+            type="text"
+            value={rgb}
+            onChange={(e) => updateFromRgb(e.target.value)}
+            placeholder="rgb(0, 0, 0)"
+          />
+          <Button onClick={() => handleCopy(rgb)}>Copy</Button>
+        </InputContainer>
       </InputGroup>
       <InputGroup>
         <Label>HSL Color</Label>
-        <Input
-          type="text"
-          value={hsl}
-          onChange={(e) => updateFromHsl(e.target.value)}
-          placeholder="hsl(0, 0%, 0%)"
-        />
+        <InputContainer>
+          <Input
+            type="text"
+            value={hsl}
+            onChange={(e) => updateFromHsl(e.target.value)}
+            placeholder="hsl(0, 0%, 0%)"
+          />
+          <Button onClick={() => handleCopy(hsl)}>Copy</Button>
+        </InputContainer>
       </InputGroup>
     </Container>
   );

@@ -8,14 +8,15 @@ import LoanCalculator from './components/LoanCalculator';
 import UrlEncoder from './components/UrlEncoder';
 import ColorConverter from './components/ColorConverter';
 import HashGenerator from './components/HashGenerator';
-import Header from './components/Header';
+import AdSenseAd from './components/AdSenseAd';
 import SEO from './components/SEO';
 import StructuredData from './components/StructuredData';
-import AdSenseAd from './components/AdSenseAd';
+import Header from './components/Header';
 
 const AppContainer = styled.div`
   min-height: 100vh;
-  background-color: #f8f9fa;
+  display: flex;
+  flex-direction: column;
 `;
 
 const App: React.FC = () => {
@@ -23,19 +24,15 @@ const App: React.FC = () => {
     <Router>
       <AppContainer>
         <SEO
-          title="Toolzilla - Every tool you need, in one place"
-          description="Free online tools for developers and everyday users. JSON Formatter, Base64 Converter, Loan Calculator, URL Encoder, Color Converter, and more."
-          keywords="online tools, developer tools, json formatter, base64 converter, loan calculator, url encoder, color converter, hash generator"
+          title="Toolzilla - Free Online Developer Tools"
+          description="Free online developer tools including JSON Formatter, Base64 Converter, Loan Calculator, URL Encoder, Color Converter, and Hash Generator."
+          keywords="developer tools, json formatter, base64 converter, loan calculator, url encoder, color converter, hash generator"
         />
         <StructuredData
           type="WebSite"
-          name="Toolzilla - Online Developer Tools"
-          description="Free online tools for developers and everyday users. JSON Formatter, Base64 Converter, Loan Calculator, URL Encoder, Color Converter, and more."
+          name="Toolzilla"
+          description="Free online developer tools including JSON Formatter, Base64 Converter, Loan Calculator, URL Encoder, Color Converter, and Hash Generator."
           url="https://toolzilla.app"
-          potentialAction={{
-            '@type': 'SearchAction',
-            target: 'https://toolzilla.app/search?q={search_term_string}'
-          }}
         />
         <Header />
         <Routes>
@@ -48,11 +45,10 @@ const App: React.FC = () => {
           <Route path="/hash-generator" element={<HashGenerator />} />
         </Routes>
         <AdSenseAd
-          client="ca-pub-XXXXXXXXXXXXXXXX"
-          slot="XXXXXXXXXXXXXXXX"
+          client="ca-pub-4120129651355049"
+          slot="3538486082"
           format="auto"
           responsive={true}
-          debug={true}
         />
       </AppContainer>
     </Router>
