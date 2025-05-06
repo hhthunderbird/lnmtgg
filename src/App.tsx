@@ -7,6 +7,8 @@ import Base64Converter from './components/Base64Converter';
 import LoanCalculator from './components/LoanCalculator';
 import SEO from './components/SEO';
 import StructuredData from './components/StructuredData';
+import AdSenseAd from './components/AdSenseAd';
+import Header from './components/Header';
 
 const App: React.FC = () => {
   return (
@@ -27,12 +29,18 @@ const App: React.FC = () => {
             target: 'https://toolzilla.app/search?q={search_term_string}',
           }}
         />
+        <Header />
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/json-formatter" element={<JsonFormatter />} />
           <Route path="/base64-converter" element={<Base64Converter />} />
           <Route path="/loan-calculator" element={<LoanCalculator />} />
         </Routes>
+        <AdSenseAd
+          client="ca-pub-4120129651355049"
+          slot="f08c47fec0942fa0"
+          debug={true}
+        />
       </Router>
     </HelmetProvider>
   );
