@@ -132,7 +132,7 @@ const JsonFormatter: React.FC = () => {
         type="SoftwareApplication"
         name="JSON Formatter & Validator"
         description="Free online JSON formatter, validator and beautifier. Format, validate and beautify your JSON data with this easy-to-use tool. Supports syntax highlighting and error detection."
-        url="https://lnmtgg.vercel.app/json-formatter"
+        url="https://toolzilla.app/json-formatter"
       />
       <Container>
         <Title>JSON Formatter & Validator</Title>

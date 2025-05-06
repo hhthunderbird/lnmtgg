@@ -18,12 +18,12 @@ const App: React.FC = () => {
         />
         <StructuredData
           type="WebSite"
-          name="LNMTGG - Online Developer Tools"
+          name="Toolzilla - Online Developer Tools"
           description="Free online developer tools including JSON Formatter, Base64 Encoder/Decoder, URL Encoder, Color Converter, and more. Fast, secure, and easy to use."
-          url="https://lnmtgg.vercel.app"
+          url="https://toolzilla.app"
           potentialAction={{
             '@type': 'SearchAction',
-            target: 'https://lnmtgg.vercel.app/search?q={search_term_string}',
+            target: 'https://toolzilla.app/search?q={search_term_string}',
           }}
         />
         <Routes>

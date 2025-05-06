@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://lnmtgg.vercel.app/</loc>
+    <loc>https://toolzilla.app/</loc>
     <lastmod>2024-03-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://lnmtgg.vercel.app/json-formatter</loc>
+    <loc>https://toolzilla.app/json-formatter</loc>
     <lastmod>2024-03-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://lnmtgg.vercel.app/base64-converter</loc>
+    <loc>https://toolzilla.app/base64-converter</loc>
     <lastmod>2024-03-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://lnmtgg.vercel.app/loan-calculator</loc>
+    <loc>https://toolzilla.app/loan-calculator</loc>
     <lastmod>2024-03-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>

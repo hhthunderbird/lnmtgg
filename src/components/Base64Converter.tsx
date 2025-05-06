@@ -149,7 +149,7 @@ const Base64Converter: React.FC = () => {
         type="SoftwareApplication"
         name="Base64 Encoder/Decoder"
         description="Free online Base64 encoder and decoder. Convert text to Base64 and decode Base64 to text. Fast, secure, and easy to use."
-        url="https://lnmtgg.vercel.app/base64-converter"
+        url="https://toolzilla.app/base64-converter"
       />
       <Container>
         <Title>Base64 Encoder/Decoder</Title>
