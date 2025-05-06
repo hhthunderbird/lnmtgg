@@ -52,30 +52,6 @@ const ErrorMessage = styled.div`
   margin-top: 1rem;
 `;
 
-const ButtonGroup = styled.div`
-  display: flex;
-  gap: 1rem;
-`;
-
-const FileInput = styled.input`
-  display: none;
-`;
-
-const FileLabel = styled.label`
-  padding: 0.75rem 1.5rem;
-  background: #6c757d;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background 0.3s ease;
-  text-align: center;
-
-  &:hover {
-    background: #5a6268;
-  }
-`;
-
 const Title = styled.h2`
   font-size: 2rem;
   margin-bottom: 0.5rem;
@@ -160,31 +136,6 @@ const Base64Converter: React.FC = () => {
       setError('Invalid input for ' + mode + 'ing');
       setOutput('');
     }
-  };
-
-  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const content = e.target?.result as string;
-      if (mode === 'encode') {
-        setInput(content);
-      } else {
-        setInput(content);
-      }
-    };
-    reader.onerror = () => {
-      setError('Error reading file');
-    };
-    reader.readAsText(file);
-  };
-
-  const clearAll = () => {
-    setInput('');
-    setOutput('');
-    setError(null);
   };
 
   return (
