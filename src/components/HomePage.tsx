@@ -117,89 +117,88 @@ const PlaceholderTool = () => (
 
 const tools = [
   {
-    id: 'loan-calculator',
-    title: 'Loan & Mortgage Calculator',
-    description: 'Calculate your loan payments, interest rates, and amortization schedule.',
-    component: LoanCalculator
-  },
-  {
-    id: 'json-formatter',
     title: 'JSON Formatter & Validator',
-    description: 'Format, validate, and beautify your JSON data with syntax highlighting.',
-    component: JsonFormatter
+    description: 'Format, validate and beautify your JSON data with this easy-to-use tool.',
+    component: JsonFormatter,
+    path: '/json-formatter',
   },
   {
-    id: 'base64',
     title: 'Base64 Encoder/Decoder',
-    description: 'Encode or decode Base64 strings, images, and files.',
-    component: Base64Converter
+    description: 'Convert text to Base64 and decode Base64 to text with this easy-to-use tool.',
+    component: Base64Converter,
+    path: '/base64-converter',
   },
   {
-    id: 'url-encoder',
+    title: 'Loan Calculator',
+    description: 'Calculate monthly payments, total interest, and total payment amount for mortgages and personal loans.',
+    component: LoanCalculator,
+    path: '/loan-calculator',
+  },
+  {
     title: 'URL Encoder/Decoder',
-    description: 'Encode or decode URLs with support for special characters.',
-    component: PlaceholderTool
+    description: 'Encode or decode URLs with this simple and fast tool.',
+    component: PlaceholderTool,
+    path: '/url-encoder',
   },
   {
-    id: 'color-converter',
     title: 'Color Converter',
-    description: 'Convert colors between HEX, RGB, HSL, and other formats.',
-    component: PlaceholderTool
+    description: 'Convert colors between different formats (HEX, RGB, HSL, CMYK).',
+    component: PlaceholderTool,
+    path: '/color-converter',
   },
   {
-    id: 'unit-converter',
     title: 'Unit Converter',
-    description: 'Convert between different units of measurement (length, weight, temperature).',
-    component: PlaceholderTool
+    description: 'Convert between different units of measurement.',
+    component: PlaceholderTool,
+    path: '/unit-converter',
   },
   {
-    id: 'regex-tester',
     title: 'Regular Expression Tester',
-    description: 'Test and debug regular expressions with real-time matching.',
-    component: PlaceholderTool
+    description: 'Test and debug your regular expressions with this powerful tool.',
+    component: PlaceholderTool,
+    path: '/regex-tester',
   },
   {
-    id: 'hash-generator',
     title: 'Hash Generator',
     description: 'Generate MD5, SHA-1, SHA-256, and other hash values.',
-    component: PlaceholderTool
+    component: PlaceholderTool,
+    path: '/hash-generator',
   },
   {
-    id: 'uuid-generator',
     title: 'UUID Generator',
-    description: 'Generate random UUIDs (v1, v4) for your applications.',
-    component: PlaceholderTool
+    description: 'Generate random UUIDs (Universally Unique Identifiers).',
+    component: PlaceholderTool,
+    path: '/uuid-generator',
   },
   {
-    id: 'ip-lookup',
     title: 'IP Address Lookup',
     description: 'Get detailed information about any IP address.',
-    component: PlaceholderTool
+    component: PlaceholderTool,
+    path: '/ip-lookup',
   },
   {
-    id: 'markdown-editor',
     title: 'Markdown Editor',
-    description: 'Write and preview Markdown with live rendering.',
-    component: PlaceholderTool
+    description: 'Edit and preview Markdown in real-time.',
+    component: PlaceholderTool,
+    path: '/markdown-editor',
   },
   {
-    id: 'code-minifier',
     title: 'Code Minifier',
-    description: 'Minify JavaScript, CSS, and HTML code.',
-    component: PlaceholderTool
-  }
+    description: 'Minify your JavaScript, CSS, and HTML code.',
+    component: PlaceholderTool,
+    path: '/code-minifier',
+  },
 ];
 
-function HomePage() {
-  const [expandedTool, setExpandedTool] = useState<string | null>(null);
+const HomePage: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<typeof tools>([]);
   const [showResults, setShowResults] = useState(false);
+  const [expandedTool, setExpandedTool] = useState<string | null>(null);
 
   const fuse = new Fuse(tools, {
     keys: ['title', 'description'],
     threshold: 0.3,
-    includeScore: true
   });
 
   useEffect(() => {
@@ -213,14 +212,14 @@ function HomePage() {
     }
   }, [searchQuery]);
 
-  const handleSearchSelect = (toolId: string) => {
-    setExpandedTool(toolId);
+  const handleToolSelect = (tool: typeof tools[0]) => {
     setSearchQuery('');
     setShowResults(false);
+    setExpandedTool(tool.path);
   };
 
-  const toggleTool = (toolId: string) => {
-    setExpandedTool(expandedTool === toolId ? null : toolId);
+  const handleToolToggle = (tool: typeof tools[0]) => {
+    setExpandedTool(expandedTool === tool.path ? null : tool.path);
   };
 
   return (
@@ -229,17 +228,17 @@ function HomePage() {
       <SearchContainer>
         <SearchInput
           type="text"
-          placeholder="Search for a tool..."
+          placeholder="Search tools..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          onFocus={() => searchQuery.trim() && setShowResults(true)}
+          onFocus={() => setShowResults(true)}
         />
         {showResults && searchResults.length > 0 && (
           <SearchResults>
             {searchResults.map((tool) => (
               <SearchResultItem
-                key={tool.id}
-                onClick={() => handleSearchSelect(tool.id)}
+                key={tool.path}
+                onClick={() => handleToolSelect(tool)}
               >
                 <ToolTitle>{tool.title}</ToolTitle>
                 <ToolDescription>{tool.description}</ToolDescription>
@@ -250,14 +249,14 @@ function HomePage() {
       </SearchContainer>
       <ToolsList>
         {tools.map((tool) => (
-          <ToolCard key={tool.id} isExpanded={expandedTool === tool.id}>
+          <ToolCard key={tool.path} isExpanded={expandedTool === tool.path}>
             <ToolHeader 
-              isExpanded={expandedTool === tool.id}
-              onClick={() => toggleTool(tool.id)}
+              isExpanded={expandedTool === tool.path}
+              onClick={() => handleToolToggle(tool)}
             >
               <ToolTitle>{tool.title}</ToolTitle>
             </ToolHeader>
-            <ToolContent isExpanded={expandedTool === tool.id}>
+            <ToolContent isExpanded={expandedTool === tool.path}>
               <ToolDescription>{tool.description}</ToolDescription>
               <div style={{ marginTop: '1rem' }}>
                 <tool.component />
@@ -269,6 +268,6 @@ function HomePage() {
       <AdSpace />
     </HomeContainer>
   );
-}
+};
 
 export default HomePage; 
