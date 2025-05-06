@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
+import SEO from './SEO';
 
 const Container = styled.div`
   display: flex;
@@ -74,29 +75,89 @@ const FileLabel = styled.label`
   }
 `;
 
-function Base64Converter() {
+const Title = styled.h2`
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+`;
+
+const Description = styled.p`
+  font-size: 1.2rem;
+  color: #6c757d;
+`;
+
+const ModeSelector = styled.div`
+  display: flex;
+  gap: 1rem;
+`;
+
+const ModeButton = styled.button<{ active: boolean }>`
+  padding: 0.75rem 1.5rem;
+  background: ${({ active }) => (active ? '#0056b3' : '#6c757d')};
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+
+  &:hover {
+    background: ${({ active }) => (active ? '#0056b3' : '#5a6268')};
+  }
+
+  &:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+  }
+`;
+
+const InputArea = styled(TextArea)`
+  width: 100%;
+  min-height: 150px;
+  padding: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-family: monospace;
+  font-size: 14px;
+  resize: vertical;
+
+  &:focus {
+    outline: none;
+    border-color: #007bff;
+  }
+`;
+
+const OutputArea = styled(TextArea)`
+  width: 100%;
+  min-height: 150px;
+  padding: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-family: monospace;
+  font-size: 14px;
+  resize: vertical;
+
+  &:focus {
+    outline: none;
+    border-color: #007bff;
+  }
+`;
+
+const Base64Converter: React.FC = () => {
   const [input, setInput] = useState('');
   const [output, setOutput] = useState('');
-  const [error, setError] = useState<string | null>(null);
   const [mode, setMode] = useState<'encode' | 'decode'>('encode');
+  const [error, setError] = useState<string | null>(null);
 
-  const handleEncode = () => {
+  const convert = () => {
     try {
-      const encoded = btoa(input);
-      setOutput(encoded);
+      if (mode === 'encode') {
+        setOutput(btoa(input));
+      } else {
+        setOutput(atob(input));
+      }
       setError(null);
     } catch (err) {
-      setError('Error encoding: ' + (err as Error).message);
-    }
-  };
-
-  const handleDecode = () => {
-    try {
-      const decoded = atob(input);
-      setOutput(decoded);
-      setError(null);
-    } catch (err) {
-      setError('Error decoding: ' + (err as Error).message);
+      setError('Invalid input for ' + mode + 'ing');
+      setOutput('');
     }
   };
 
@@ -126,56 +187,48 @@ function Base64Converter() {
   };
 
   return (
-    <Container>
-      <h2>Base64 Encoder/Decoder</h2>
-      <ButtonGroup>
-        <Button
-          onClick={() => setMode('encode')}
-          style={{ background: mode === 'encode' ? '#0056b3' : '#007bff' }}
-        >
-          Encode
-        </Button>
-        <Button
-          onClick={() => setMode('decode')}
-          style={{ background: mode === 'decode' ? '#0056b3' : '#007bff' }}
-        >
-          Decode
-        </Button>
-      </ButtonGroup>
-      <TextArea
-        value={input}
-        onChange={(e) => setInput(e.target.value)}
-        placeholder={`Enter text to ${mode}...`}
+    <>
+      <SEO
+        title="Base64 Encoder/Decoder"
+        description="Free online Base64 encoder and decoder. Convert text to Base64 and decode Base64 to text. Fast, secure, and easy to use."
+        keywords="base64 encoder, base64 decoder, base64 converter, encode base64, decode base64, base64 tool"
       />
-      <ButtonGroup>
-        <Button onClick={mode === 'encode' ? handleEncode : handleDecode} disabled={!input}>
-          {mode === 'encode' ? 'Encode' : 'Decode'}
-        </Button>
-        <FileLabel>
-          Upload File
-          <FileInput
-            type="file"
-            onChange={handleFileUpload}
-            accept=".txt,.json,.xml,.html,.css,.js"
-          />
-        </FileLabel>
-        <Button onClick={clearAll} disabled={!input && !output}>
-          Clear All
-        </Button>
-      </ButtonGroup>
-      {error && <ErrorMessage>{error}</ErrorMessage>}
-      {output && (
-        <>
-          <h3>Result:</h3>
-          <TextArea
+      <Container>
+        <Title>Base64 Encoder/Decoder</Title>
+        <Description>
+          Convert text to Base64 and decode Base64 to text with this easy-to-use tool.
+        </Description>
+        <ModeSelector>
+          <ModeButton
+            active={mode === 'encode'}
+            onClick={() => setMode('encode')}
+          >
+            Encode
+          </ModeButton>
+          <ModeButton
+            active={mode === 'decode'}
+            onClick={() => setMode('decode')}
+          >
+            Decode
+          </ModeButton>
+        </ModeSelector>
+        <InputArea
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          placeholder={`Enter text to ${mode}...`}
+        />
+        <Button onClick={convert}>{mode === 'encode' ? 'Encode' : 'Decode'}</Button>
+        {error && <ErrorMessage>{error}</ErrorMessage>}
+        {output && (
+          <OutputArea
             value={output}
             readOnly
-            style={{ backgroundColor: '#f8f9fa' }}
+            placeholder={`${mode === 'encode' ? 'Encoded' : 'Decoded'} text will appear here...`}
           />
-        </>
-      )}
-    </Container>
+        )}
+      </Container>
+    </>
   );
-}
+};
 
 export default Base64Converter; 

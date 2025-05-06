@@ -1,24 +1,27 @@
+import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import styled from 'styled-components';
+import { HelmetProvider } from 'react-helmet-async';
 import HomePage from './components/HomePage';
+import JsonFormatter from './components/JsonFormatter';
+import Base64Converter from './components/Base64Converter';
+import SEO from './components/SEO';
 
-const AppContainer = styled.div`
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 2rem;
-  min-height: 100vh;
-`;
-
-function App() {
+const App: React.FC = () => {
   return (
-    <Router>
-      <AppContainer>
+    <HelmetProvider>
+      <Router>
+        <SEO
+          title="Online Developer Tools"
+          description="Free online developer tools including JSON Formatter, Base64 Encoder/Decoder, URL Encoder, Color Converter, and more. Fast, secure, and easy to use."
+        />
         <Routes>
           <Route path="/" element={<HomePage />} />
+          <Route path="/json-formatter" element={<JsonFormatter />} />
+          <Route path="/base64-converter" element={<Base64Converter />} />
         </Routes>
-      </AppContainer>
-    </Router>
+      </Router>
+    </HelmetProvider>
   );
-}
+};
 
 export default App; 

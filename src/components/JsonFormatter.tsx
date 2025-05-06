@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
+import SEO from './SEO';
 
 const Container = styled.div`
   display: flex;
@@ -63,7 +64,25 @@ const ButtonGroup = styled.div`
   gap: 1rem;
 `;
 
-function JsonFormatter() {
+const Title = styled.h2`
+  font-size: 2rem;
+  margin-bottom: 1rem;
+`;
+
+const Description = styled.p`
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+`;
+
+const InputArea = styled(TextArea)`
+  margin-bottom: 1rem;
+`;
+
+const OutputArea = styled(TextArea)`
+  margin-top: 1rem;
+`;
+
+const JsonFormatter: React.FC = () => {
   const [input, setInput] = useState('');
   const [output, setOutput] = useState('');
   const [error, setError] = useState<string | null>(null);
@@ -79,6 +98,7 @@ function JsonFormatter() {
     } catch (err) {
       setError('Invalid JSON: ' + (err as Error).message);
       setSuccess(null);
+      setOutput('');
     }
   };
 
@@ -101,38 +121,48 @@ function JsonFormatter() {
   };
 
   return (
-    <Container>
-      <h2>JSON Formatter & Validator</h2>
-      <TextArea
-        value={input}
-        onChange={(e) => setInput(e.target.value)}
-        placeholder="Paste your JSON here..."
+    <>
+      <SEO
+        title="JSON Formatter & Validator"
+        description="Free online JSON formatter, validator and beautifier. Format, validate and beautify your JSON data with this easy-to-use tool. Supports syntax highlighting and error detection."
+        keywords="json formatter, json validator, json beautifier, json prettifier, format json, validate json, json tool"
       />
-      <ButtonGroup>
-        <Button onClick={formatJson} disabled={!input}>
-          Format JSON
-        </Button>
-        <Button onClick={validateJson} disabled={!input}>
-          Validate JSON
-        </Button>
-        <Button onClick={clearAll} disabled={!input && !output}>
-          Clear All
-        </Button>
-      </ButtonGroup>
-      {error && <ErrorMessage>{error}</ErrorMessage>}
-      {success && <SuccessMessage>{success}</SuccessMessage>}
-      {output && (
-        <>
-          <h3>Formatted Output:</h3>
-          <TextArea
-            value={output}
-            readOnly
-            style={{ backgroundColor: '#f8f9fa' }}
-          />
-        </>
-      )}
-    </Container>
+      <Container>
+        <Title>JSON Formatter & Validator</Title>
+        <Description>
+          Format, validate and beautify your JSON data with this easy-to-use tool.
+        </Description>
+        <InputArea
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          placeholder="Paste your JSON here..."
+        />
+        <ButtonGroup>
+          <Button onClick={formatJson} disabled={!input}>
+            Format JSON
+          </Button>
+          <Button onClick={validateJson} disabled={!input}>
+            Validate JSON
+          </Button>
+          <Button onClick={clearAll} disabled={!input && !output}>
+            Clear All
+          </Button>
+        </ButtonGroup>
+        {error && <ErrorMessage>{error}</ErrorMessage>}
+        {success && <SuccessMessage>{success}</SuccessMessage>}
+        {output && (
+          <>
+            <h3>Formatted Output:</h3>
+            <OutputArea
+              value={output}
+              readOnly
+              style={{ backgroundColor: '#f8f9fa' }}
+            />
+          </>
+        )}
+      </Container>
+    </>
   );
-}
+};
 
 export default JsonFormatter; 
