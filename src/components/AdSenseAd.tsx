@@ -1,5 +1,12 @@
 import React, { useEffect } from 'react';
 
+// Add type declarations for window.adsbygoogle
+declare global {
+  interface Window {
+    adsbygoogle: unknown[];
+  }
+}
+
 interface AdSenseAdProps {
   adClient: string;
   adSlot: string;
@@ -19,7 +26,11 @@ const AdSenseAd: React.FC<AdSenseAdProps> = ({
 }) => {
   useEffect(() => {
     try {
-      (window.adsbygoogle = window.adsbygoogle || []).push({});
+      // Initialize the array if it doesn't exist
+      if (!window.adsbygoogle) {
+        window.adsbygoogle = [];
+      }
+      window.adsbygoogle.push({});
     } catch (err) {
       console.error(err);
     }
