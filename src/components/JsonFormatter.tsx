@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import SEO from './SEO';
+import StructuredData from './StructuredData';
 
 const Container = styled.div`
   display: flex;
@@ -126,6 +127,12 @@ const JsonFormatter: React.FC = () => {
         title="JSON Formatter & Validator"
         description="Free online JSON formatter, validator and beautifier. Format, validate and beautify your JSON data with this easy-to-use tool. Supports syntax highlighting and error detection."
         keywords="json formatter, json validator, json beautifier, json prettifier, format json, validate json, json tool"
+      />
+      <StructuredData
+        type="SoftwareApplication"
+        name="JSON Formatter & Validator"
+        description="Free online JSON formatter, validator and beautifier. Format, validate and beautify your JSON data with this easy-to-use tool. Supports syntax highlighting and error detection."
+        url="https://lnmtgg.vercel.app/json-formatter"
       />
       <Container>
         <Title>JSON Formatter & Validator</Title>

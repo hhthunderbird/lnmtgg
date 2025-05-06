@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import SEO from './SEO';
+import StructuredData from './StructuredData';
 
 const Container = styled.div`
   display: flex;
@@ -192,6 +193,12 @@ const Base64Converter: React.FC = () => {
         title="Base64 Encoder/Decoder"
         description="Free online Base64 encoder and decoder. Convert text to Base64 and decode Base64 to text. Fast, secure, and easy to use."
         keywords="base64 encoder, base64 decoder, base64 converter, encode base64, decode base64, base64 tool"
+      />
+      <StructuredData
+        type="SoftwareApplication"
+        name="Base64 Encoder/Decoder"
+        description="Free online Base64 encoder and decoder. Convert text to Base64 and decode Base64 to text. Fast, secure, and easy to use."
+        url="https://lnmtgg.vercel.app/base64-converter"
       />
       <Container>
         <Title>Base64 Encoder/Decoder</Title>
