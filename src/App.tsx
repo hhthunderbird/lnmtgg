@@ -19,9 +19,14 @@ const AppContainer = styled.div`
   flex-direction: column;
 `;
 
+const MainContent = styled.main`
+  flex: 1;
+  width: 100%;
+`;
+
 const App: React.FC = () => {
   return (
-    <Router>
+    <Router basename="/">
       <AppContainer>
         <SEO
           title="Toolzilla - Free Online Developer Tools"
@@ -35,15 +40,17 @@ const App: React.FC = () => {
           url="https://toolzilla.app"
         />
         <Header />
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/json-formatter" element={<JsonFormatter />} />
-          <Route path="/base64-converter" element={<Base64Converter />} />
-          <Route path="/loan-calculator" element={<LoanCalculator />} />
-          <Route path="/url-encoder" element={<UrlEncoder />} />
-          <Route path="/color-converter" element={<ColorConverter />} />
-          <Route path="/hash-generator" element={<HashGenerator />} />
-        </Routes>
+        <MainContent>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/json-formatter" element={<JsonFormatter />} />
+            <Route path="/base64-converter" element={<Base64Converter />} />
+            <Route path="/loan-calculator" element={<LoanCalculator />} />
+            <Route path="/url-encoder" element={<UrlEncoder />} />
+            <Route path="/color-converter" element={<ColorConverter />} />
+            <Route path="/hash-generator" element={<HashGenerator />} />
+          </Routes>
+        </MainContent>
         <AdSenseAd
           client="ca-pub-4120129651355049"
           slot="3538486082"
