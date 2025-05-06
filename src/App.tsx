@@ -13,13 +13,14 @@ const App: React.FC = () => {
     <HelmetProvider>
       <Router>
         <SEO
-          title="Online Developer Tools"
-          description="Free online developer tools including JSON Formatter, Base64 Encoder/Decoder, URL Encoder, Color Converter, and more. Fast, secure, and easy to use."
+          title="Toolzilla - Free Online Developer Tools"
+          description="Free online developer tools collection including JSON Formatter, Base64 Encoder/Decoder, Loan Calculator, and more. Fast, secure, and easy to use tools for developers and professionals."
+          keywords="developer tools, json formatter, base64 converter, loan calculator, online tools, web tools, free tools"
         />
         <StructuredData
           type="WebSite"
-          name="Toolzilla - Online Developer Tools"
-          description="Free online developer tools including JSON Formatter, Base64 Encoder/Decoder, URL Encoder, Color Converter, and more. Fast, secure, and easy to use."
+          name="Toolzilla - Free Online Developer Tools"
+          description="Free online developer tools collection including JSON Formatter, Base64 Encoder/Decoder, Loan Calculator, and more. Fast, secure, and easy to use tools for developers and professionals."
           url="https://toolzilla.app"
           potentialAction={{
             '@type': 'SearchAction',
