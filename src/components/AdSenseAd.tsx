@@ -1,12 +1,5 @@
 import React, { useEffect } from 'react';
 
-// Add type declarations for window.adsbygoogle
-declare global {
-  interface Window {
-    adsbygoogle: any[];
-  }
-}
-
 interface AdSenseAdProps {
   adClient: string;
   adSlot: string;
