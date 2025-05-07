@@ -12,6 +12,7 @@ import AdSenseAd from './components/AdSenseAd';
 import SEO from './components/SEO';
 import StructuredData from './components/StructuredData';
 import Header from './components/Header';
+import config from './config';
 
 const AppContainer = styled.div`
   min-height: 100vh;
@@ -37,7 +38,7 @@ const App: React.FC = () => {
           type="WebSite"
           name="Toolzilla"
           description="Free online developer tools including JSON Formatter, Base64 Converter, Loan Calculator, URL Encoder, Color Converter, and Hash Generator."
-          url="https://toolzilla.app"
+          url={config.app.url}
         />
         <Header />
         <MainContent>
@@ -50,13 +51,15 @@ const App: React.FC = () => {
             <Route path="/color-converter" element={<ColorConverter />} />
             <Route path="/hash-generator" element={<HashGenerator />} />
           </Routes>
+          {config.adsense.enabled && (
+            <AdSenseAd
+              client={config.adsense.client}
+              slot={config.adsense.slot}
+              format="auto"
+              responsive={true}
+            />
+          )}
         </MainContent>
-        <AdSenseAd
-          client="ca-pub-4120129651355049"
-          slot="3538486082"
-          format="auto"
-          responsive={true}
-        />
       </AppContainer>
     </Router>
   );

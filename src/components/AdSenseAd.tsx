@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { useLocation } from 'react-router-dom';
+import config from '../config';
 
 interface AdSenseAdProps {
   client: string;
@@ -26,9 +27,11 @@ const AdSenseAd: React.FC<AdSenseAdProps> = ({ client, slot, format = 'auto', re
   const location = useLocation();
 
   useEffect(() => {
+    if (!config.adsense.enabled) return;
+
     try {
       // @ts-ignore
-      if (window.adsbygoogle && process.env.NODE_ENV === 'production') {
+      if (window.adsbygoogle) {
         // @ts-ignore
         (window.adsbygoogle = window.adsbygoogle || []).push({
           google_ad_client: client,
@@ -41,8 +44,8 @@ const AdSenseAd: React.FC<AdSenseAdProps> = ({ client, slot, format = 'auto', re
     }
   }, [client, location.pathname]);
 
-  // Only render ads when there is content on the page
-  if (!location.pathname) {
+  // Don't render ads in development or on empty pages
+  if (!config.adsense.enabled || !location.pathname) {
     return null;
   }
 
@@ -60,7 +63,7 @@ const AdSenseAd: React.FC<AdSenseAdProps> = ({ client, slot, format = 'auto', re
         data-ad-slot={slot}
         data-ad-format={format}
         data-full-width-responsive={responsive}
-        data-adtest={process.env.NODE_ENV === 'development' ? 'on' : 'off'}
+        data-adtest={config.app.env === 'development' ? 'on' : 'off'}
         data-ad-region="auto"
       />
     </AdContainer>
