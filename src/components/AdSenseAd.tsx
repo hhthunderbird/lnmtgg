@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import styled from 'styled-components';
+import { useLocation } from 'react-router-dom';
 
 interface AdSenseAdProps {
   client: string;
@@ -22,6 +23,7 @@ const AdContainer = styled.div`
 
 const AdSenseAd: React.FC<AdSenseAdProps> = ({ client, slot, format = 'auto', responsive = true }) => {
   const adRef = useRef<HTMLDivElement>(null);
+  const location = useLocation();
 
   useEffect(() => {
     try {
@@ -37,7 +39,12 @@ const AdSenseAd: React.FC<AdSenseAdProps> = ({ client, slot, format = 'auto', re
     } catch (err) {
       console.error('AdSense error:', err);
     }
-  }, [client]);
+  }, [client, location.pathname]);
+
+  // Only render ads when there is content on the page
+  if (!location.pathname) {
+    return null;
+  }
 
   return (
     <AdContainer ref={adRef}>
