@@ -258,6 +258,7 @@ const categories = [
 const HomePage: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [openAccordion, setOpenAccordion] = useState<string | null>(null);
+  const [openAllTools, setOpenAllTools] = useState<string | null>(null);
 
   const filteredTools = tools.filter(tool =>
     tool.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -269,6 +270,10 @@ const HomePage: React.FC = () => {
 
   const toggleAccordion = (id: string) => {
     setOpenAccordion(openAccordion === id ? null : id);
+  };
+
+  const toggleAllTools = (id: string) => {
+    setOpenAllTools(openAllTools === id ? null : id);
   };
 
   return (
@@ -366,6 +371,31 @@ const HomePage: React.FC = () => {
                   </AccordionContent>
                 </AccordionItem>
               ))}
+            </AccordionContainer>
+          </AccordionSection>
+
+          <AccordionSection>
+            <AccordionTitle>All Tools (Flat List)</AccordionTitle>
+            <AccordionContainer>
+              <AccordionItem>
+                <AccordionHeader
+                  isOpen={openAllTools === 'all'}
+                  onClick={() => toggleAllTools('all')}
+                >
+                  <CategoryName>View All Tools</CategoryName>
+                  <AccordionIcon isOpen={openAllTools === 'all'}>▼</AccordionIcon>
+                </AccordionHeader>
+                <AccordionContent isOpen={openAllTools === 'all'}>
+                  <ToolsGrid>
+                    {tools.map(tool => (
+                      <ToolCard key={tool.id} to={tool.path}>
+                        <ToolTitle>{tool.title}</ToolTitle>
+                        <ToolDescription>{tool.description}</ToolDescription>
+                      </ToolCard>
+                    ))}
+                  </ToolsGrid>
+                </AccordionContent>
+              </AccordionItem>
             </AccordionContainer>
           </AccordionSection>
         </>
