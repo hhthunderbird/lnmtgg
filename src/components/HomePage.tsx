@@ -123,6 +123,60 @@ const CategoryDescription = styled.p`
   margin: 0.5rem 0 0;
 `;
 
+const AccordionSection = styled.section`
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid #e0e0e0;
+`;
+
+const AccordionTitle = styled.h2`
+  font-size: 1.8rem;
+  color: #1a73e8;
+  margin-bottom: 1.5rem;
+`;
+
+const AccordionContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+`;
+
+const AccordionItem = styled.div`
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+`;
+
+const AccordionHeader = styled.button<{ isOpen: boolean }>`
+  width: 100%;
+  padding: 1rem 1.5rem;
+  background: ${props => props.isOpen ? '#e8f0fe' : 'white'};
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background: #e8f0fe;
+  }
+`;
+
+const AccordionContent = styled.div<{ isOpen: boolean }>`
+  padding: ${props => props.isOpen ? '1rem 1.5rem' : '0 1.5rem'};
+  max-height: ${props => props.isOpen ? '500px' : '0'};
+  overflow: hidden;
+  transition: all 0.3s ease;
+`;
+
+const AccordionIcon = styled.span<{ isOpen: boolean }>`
+  transform: rotate(${props => props.isOpen ? '180deg' : '0deg'});
+  transition: transform 0.3s ease;
+`;
+
 interface Tool {
   id: string;
   title: string;
@@ -213,6 +267,7 @@ const categories = [
 
 const HomePage: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
+  const [openAccordion, setOpenAccordion] = useState<string | null>(null);
 
   const filteredTools = tools.filter(tool =>
     tool.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -221,6 +276,10 @@ const HomePage: React.FC = () => {
 
   const popularTools = tools.filter(tool => tool.isPopular);
   const newTools = tools.filter(tool => tool.isNew);
+
+  const toggleAccordion = (id: string) => {
+    setOpenAccordion(openAccordion === id ? null : id);
+  };
 
   return (
     <Container>
@@ -292,6 +351,33 @@ const HomePage: React.FC = () => {
               ))}
             </CategoryGrid>
           </Section>
+
+          <AccordionSection>
+            <AccordionTitle>All Tools</AccordionTitle>
+            <AccordionContainer>
+              {categories.map(category => (
+                <AccordionItem key={category.id}>
+                  <AccordionHeader
+                    isOpen={openAccordion === category.id}
+                    onClick={() => toggleAccordion(category.id)}
+                  >
+                    <CategoryName>{category.name}</CategoryName>
+                    <AccordionIcon isOpen={openAccordion === category.id}>▼</AccordionIcon>
+                  </AccordionHeader>
+                  <AccordionContent isOpen={openAccordion === category.id}>
+                    <ToolsGrid>
+                      {category.tools.map(tool => (
+                        <ToolCard key={tool.id} to={tool.path}>
+                          <ToolTitle>{tool.title}</ToolTitle>
+                          <ToolDescription>{tool.description}</ToolDescription>
+                        </ToolCard>
+                      ))}
+                    </ToolsGrid>
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
+            </AccordionContainer>
+          </AccordionSection>
         </>
       )}
     </Container>

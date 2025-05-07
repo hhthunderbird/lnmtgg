@@ -22,6 +22,32 @@ const AdContainer = styled.div`
   position: relative;
 `;
 
+const DevPlaceholder = styled.div`
+  width: 100%;
+  min-height: 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: #f8f9fa;
+  border: 2px dashed #1a73e8;
+  border-radius: 8px;
+  padding: 1rem;
+  color: #1a73e8;
+  font-size: 0.9rem;
+  text-align: center;
+`;
+
+const DevPlaceholderTitle = styled.div`
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+`;
+
+const DevPlaceholderInfo = styled.div`
+  color: #5f6368;
+  font-size: 0.8rem;
+`;
+
 const AdSenseAd: React.FC<AdSenseAdProps> = ({ client, slot, format = 'auto', responsive = true }) => {
   const adRef = useRef<HTMLDivElement>(null);
   const location = useLocation();
@@ -44,9 +70,25 @@ const AdSenseAd: React.FC<AdSenseAdProps> = ({ client, slot, format = 'auto', re
     }
   }, [client, location.pathname]);
 
-  // Don't render ads in development or on empty pages
-  if (!config.adsense.enabled || !location.pathname) {
+  // Don't render ads on empty pages
+  if (!location.pathname) {
     return null;
+  }
+
+  // Show development placeholder
+  if (!config.adsense.enabled) {
+    return (
+      <DevPlaceholder>
+        <DevPlaceholderTitle>AdSense Placeholder</DevPlaceholderTitle>
+        <DevPlaceholderInfo>
+          Development Mode: Ads are disabled
+          <br />
+          Client: {client}
+          <br />
+          Slot: {slot}
+        </DevPlaceholderInfo>
+      </DevPlaceholder>
+    );
   }
 
   return (
