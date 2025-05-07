@@ -82,16 +82,6 @@ const ToolDescription = styled.p`
   margin: 0;
 `;
 
-const CategorySection = styled.div`
-  margin-bottom: 2rem;
-`;
-
-const CategoryTitle = styled.h3`
-  font-size: 1.4rem;
-  color: #5f6368;
-  margin-bottom: 1rem;
-`;
-
 const CategoryGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
