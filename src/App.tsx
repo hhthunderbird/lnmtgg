@@ -36,6 +36,21 @@ const BottomAdContainer = styled.div`
   padding-bottom: 2rem;
 `;
 
+const ViewportBottomAdContainer = styled.div`
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 100;
+  background: white;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+  padding: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
 const App: React.FC = () => {
   return (
     <Router basename="/">
@@ -73,6 +88,14 @@ const App: React.FC = () => {
         </MainContent>
         <LateralAdSpace position="left" />
         <LateralAdSpace position="right" />
+        <ViewportBottomAdContainer>
+          <AdSenseAd
+            client={config.adsense.client}
+            slot={config.adsense.slot}
+            format="auto"
+            responsive={true}
+          />
+        </ViewportBottomAdContainer>
       </AppContainer>
     </Router>
   );
