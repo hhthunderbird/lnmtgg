@@ -48,9 +48,15 @@ const DevPlaceholderInfo = styled.div`
   font-size: 0.8rem;
 `;
 
+const ErrorPlaceholder = styled(DevPlaceholder)`
+  border-color: #dc3545;
+  color: #dc3545;
+`;
+
 const AdSenseAd: React.FC<AdSenseAdProps> = ({ client, slot, format = 'auto', responsive = true }) => {
   const adRef = useRef<HTMLDivElement>(null);
   const location = useLocation();
+  const [hasError, setHasError] = React.useState(false);
 
   useEffect(() => {
     if (!config.adsense.enabled) return;
@@ -67,6 +73,7 @@ const AdSenseAd: React.FC<AdSenseAdProps> = ({ client, slot, format = 'auto', re
       }
     } catch (err) {
       console.error('AdSense error:', err);
+      setHasError(true);
     }
   }, [client, location.pathname]);
 
@@ -88,6 +95,20 @@ const AdSenseAd: React.FC<AdSenseAdProps> = ({ client, slot, format = 'auto', re
           Slot: {slot}
         </DevPlaceholderInfo>
       </DevPlaceholder>
+    );
+  }
+
+  // Show error placeholder if there was an error
+  if (hasError) {
+    return (
+      <ErrorPlaceholder>
+        <DevPlaceholderTitle>AdSense Error</DevPlaceholderTitle>
+        <DevPlaceholderInfo>
+          There was an error loading the ad.
+          <br />
+          Please try refreshing the page.
+        </DevPlaceholderInfo>
+      </ErrorPlaceholder>
     );
   }
 

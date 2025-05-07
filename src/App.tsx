@@ -9,6 +9,7 @@ import UrlEncoder from './components/UrlEncoder';
 import ColorConverter from './components/ColorConverter';
 import HashGenerator from './components/HashGenerator';
 import AdSenseAd from './components/AdSenseAd';
+import LateralAdSpace from './components/LateralAdSpace';
 import SEO from './components/SEO';
 import StructuredData from './components/StructuredData';
 import Header from './components/Header';
@@ -23,6 +24,16 @@ const AppContainer = styled.div`
 const MainContent = styled.main`
   flex: 1;
   width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  position: relative;
+`;
+
+const BottomAdContainer = styled.div`
+  width: 100%;
+  margin-top: 2rem;
+  padding-bottom: 2rem;
 `;
 
 const App: React.FC = () => {
@@ -51,15 +62,17 @@ const App: React.FC = () => {
             <Route path="/color-converter" element={<ColorConverter />} />
             <Route path="/hash-generator" element={<HashGenerator />} />
           </Routes>
-          {config.adsense.enabled && (
+          <BottomAdContainer>
             <AdSenseAd
               client={config.adsense.client}
               slot={config.adsense.slot}
               format="auto"
               responsive={true}
             />
-          )}
+          </BottomAdContainer>
         </MainContent>
+        <LateralAdSpace position="left" />
+        <LateralAdSpace position="right" />
       </AppContainer>
     </Router>
   );
