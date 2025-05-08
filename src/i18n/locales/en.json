@@ -1,0 +1,61 @@
+{
+  "app": {
+    "title": "Toolzilla - One-Stop Developer Tools Platform",
+    "description": "Free online developer tools including JSON formatter, Base64 converter, loan calculator, URL encoder, color converter, and hash generator."
+  },
+  "tools": {
+    "json": "JSON Formatter",
+    "base64": "Base64 Converter",
+    "loan": "Loan Calculator",
+    "url": "URL Encoder",
+    "color": "Color Converter",
+    "hash": "Hash Generator"
+  },
+  "common": {
+    "copy": "Copy",
+    "clear": "Clear",
+    "format": "Format",
+    "encode": "Encode",
+    "decode": "Decode",
+    "calculate": "Calculate",
+    "generate": "Generate",
+    "input": "Input",
+    "output": "Output",
+    "error": "Error",
+    "success": "Success"
+  },
+  "json": {
+    "invalid": "Invalid JSON",
+    "minify": "Minify",
+    "beautify": "Beautify"
+  },
+  "base64": {
+    "text": "Text",
+    "file": "File",
+    "image": "Image"
+  },
+  "loan": {
+    "amount": "Loan Amount",
+    "interest": "Interest Rate",
+    "term": "Loan Term",
+    "monthly": "Monthly Payment",
+    "total": "Total Payment",
+    "interestPaid": "Total Interest"
+  },
+  "url": {
+    "encode": "Encode URL",
+    "decode": "Decode URL"
+  },
+  "color": {
+    "hex": "HEX",
+    "rgb": "RGB",
+    "hsl": "HSL",
+    "picker": "Color Picker"
+  },
+  "hash": {
+    "md5": "MD5",
+    "sha1": "SHA-1",
+    "sha256": "SHA-256",
+    "sha512": "SHA-512"
+  }
+} 

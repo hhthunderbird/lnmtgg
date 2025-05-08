@@ -1,0 +1,61 @@
+{
+  "app": {
+    "title": "Toolzilla - Piattaforma Completa di Strumenti per Sviluppatori",
+    "description": "Strumenti gratuiti online per sviluppatori, inclusi formattatore JSON, convertitore Base64, calcolatore prestiti, codificatore URL, convertitore colori e generatore hash."
+  },
+  "tools": {
+    "json": "Formattatore JSON",
+    "base64": "Convertitore Base64",
+    "loan": "Calcolatore Prestiti",
+    "url": "Codificatore URL",
+    "color": "Convertitore Colori",
+    "hash": "Generatore Hash"
+  },
+  "common": {
+    "copy": "Copia",
+    "clear": "Cancella",
+    "format": "Formatta",
+    "encode": "Codifica",
+    "decode": "Decodifica",
+    "calculate": "Calcola",
+    "generate": "Genera",
+    "input": "Input",
+    "output": "Output",
+    "error": "Errore",
+    "success": "Successo"
+  },
+  "json": {
+    "invalid": "JSON non valido",
+    "minify": "Minifica",
+    "beautify": "Formatta"
+  },
+  "base64": {
+    "text": "Testo",
+    "file": "File",
+    "image": "Immagine"
+  },
+  "loan": {
+    "amount": "Importo Prestito",
+    "interest": "Tasso di Interesse",
+    "term": "Durata Prestito",
+    "monthly": "Pagamento Mensile",
+    "total": "Pagamento Totale",
+    "interestPaid": "Interesse Totale"
+  },
+  "url": {
+    "encode": "Codifica URL",
+    "decode": "Decodifica URL"
+  },
+  "color": {
+    "hex": "HEX",
+    "rgb": "RGB",
+    "hsl": "HSL",
+    "picker": "Selettore Colori"
+  },
+  "hash": {
+    "md5": "MD5",
+    "sha1": "SHA-1",
+    "sha256": "SHA-256",
+    "sha512": "SHA-512"
+  }
+} 

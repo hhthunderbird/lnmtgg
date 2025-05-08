@@ -1,0 +1,61 @@
+{
+  "app": {
+    "title": "Toolzilla - 一站式开发者工具平台",
+    "description": "免费在线开发者工具，包括JSON格式化工具、Base64转换器、贷款计算器、URL编码器、颜色转换器和哈希生成器。"
+  },
+  "tools": {
+    "json": "JSON格式化工具",
+    "base64": "Base64转换器",
+    "loan": "贷款计算器",
+    "url": "URL编码器",
+    "color": "颜色转换器",
+    "hash": "哈希生成器"
+  },
+  "common": {
+    "copy": "复制",
+    "clear": "清除",
+    "format": "格式化",
+    "encode": "编码",
+    "decode": "解码",
+    "calculate": "计算",
+    "generate": "生成",
+    "input": "输入",
+    "output": "输出",
+    "error": "错误",
+    "success": "成功"
+  },
+  "json": {
+    "invalid": "无效的JSON",
+    "minify": "压缩",
+    "beautify": "美化"
+  },
+  "base64": {
+    "text": "文本",
+    "file": "文件",
+    "image": "图片"
+  },
+  "loan": {
+    "amount": "贷款金额",
+    "interest": "利率",
+    "term": "贷款期限",
+    "monthly": "月付款",
+    "total": "总付款",
+    "interestPaid": "总利息"
+  },
+  "url": {
+    "encode": "编码URL",
+    "decode": "解码URL"
+  },
+  "color": {
+    "hex": "HEX",
+    "rgb": "RGB",
+    "hsl": "HSL",
+    "picker": "颜色选择器"
+  },
+  "hash": {
+    "md5": "MD5",
+    "sha1": "SHA-1",
+    "sha256": "SHA-256",
+    "sha512": "SHA-512"
+  }
+} 

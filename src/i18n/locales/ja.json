@@ -1,0 +1,61 @@
+{
+  "app": {
+    "title": "Toolzilla - オールインワン開発者ツールプラットフォーム",
+    "description": "JSONフォーマッター、Base64コンバーター、ローン計算機、URLエンコーダー、カラーコンバーター、ハッシュジェネレーターを含む無料のオンライン開発者ツール。"
+  },
+  "tools": {
+    "json": "JSONフォーマッター",
+    "base64": "Base64コンバーター",
+    "loan": "ローン計算機",
+    "url": "URLエンコーダー",
+    "color": "カラーコンバーター",
+    "hash": "ハッシュジェネレーター"
+  },
+  "common": {
+    "copy": "コピー",
+    "clear": "クリア",
+    "format": "フォーマット",
+    "encode": "エンコード",
+    "decode": "デコード",
+    "calculate": "計算",
+    "generate": "生成",
+    "input": "入力",
+    "output": "出力",
+    "error": "エラー",
+    "success": "成功"
+  },
+  "json": {
+    "invalid": "無効なJSON",
+    "minify": "最小化",
+    "beautify": "整形"
+  },
+  "base64": {
+    "text": "テキスト",
+    "file": "ファイル",
+    "image": "画像"
+  },
+  "loan": {
+    "amount": "ローン金額",
+    "interest": "金利",
+    "term": "ローン期間",
+    "monthly": "月々の支払い",
+    "total": "総支払額",
+    "interestPaid": "総利息"
+  },
+  "url": {
+    "encode": "URLエンコード",
+    "decode": "URLデコード"
+  },
+  "color": {
+    "hex": "HEX",
+    "rgb": "RGB",
+    "hsl": "HSL",
+    "picker": "カラーピッカー"
+  },
+  "hash": {
+    "md5": "MD5",
+    "sha1": "SHA-1",
+    "sha256": "SHA-256",
+    "sha512": "SHA-512"
+  }
+} 
