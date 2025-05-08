@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import config from '../config';
 
 const AdContainer = styled.div`
   width: 100%;
@@ -61,7 +60,6 @@ const AdSenseAd: React.FC<AdSenseAdProps> = ({
   style
 }) => {
   const [adError, setAdError] = useState(false);
-  const [adLoaded, setAdLoaded] = useState(false);
 
   useEffect(() => {
     try {
@@ -69,7 +67,6 @@ const AdSenseAd: React.FC<AdSenseAdProps> = ({
       if (window.adsbygoogle && process.env.NODE_ENV === 'production') {
         // @ts-ignore
         (window.adsbygoogle = window.adsbygoogle || []).push({});
-        setAdLoaded(true);
       }
     } catch (error) {
       console.error('AdSense error:', error);
