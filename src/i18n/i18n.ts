@@ -22,13 +22,48 @@ const resources = {
   ja: { translation: ja },
 } as const;
 
-i18n.use(initReactI18next).init({
-  resources,
-  lng: 'en',
-  fallbackLng: 'en',
-  interpolation: {
-    escapeValue: false,
-  },
-});
+// Get browser language or default to English
+const getBrowserLanguage = (): SupportedLanguage => {
+  try {
+    const browserLang = navigator.language.split('-')[0] as SupportedLanguage;
+    return Object.keys(resources).includes(browserLang) ? browserLang : 'en';
+  } catch {
+    return 'en';
+  }
+};
+
+// Initialize i18n with error handling
+try {
+  i18n.use(initReactI18next).init({
+    resources,
+    lng: getBrowserLanguage(),
+    fallbackLng: 'en',
+    interpolation: {
+      escapeValue: false,
+    },
+    react: {
+      useSuspense: false, // Disable suspense to prevent rendering issues
+    },
+    // Add error handling for missing translations
+    saveMissing: true,
+    missingKeyHandler: (lng, ns, key) => {
+      console.warn(`Missing translation: ${key} for language: ${lng}`);
+    },
+  });
+} catch (error) {
+  console.error('Failed to initialize i18n:', error);
+  // Fallback to English if initialization fails
+  i18n.use(initReactI18next).init({
+    resources: { en: { translation: en } },
+    lng: 'en',
+    fallbackLng: 'en',
+    interpolation: {
+      escapeValue: false,
+    },
+    react: {
+      useSuspense: false,
+    },
+  });
+}
 
 export default i18n; 

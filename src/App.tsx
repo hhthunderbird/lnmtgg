@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import styled from 'styled-components';
 import HomePage from './components/HomePage';
@@ -17,6 +17,9 @@ import config from './config';
 import { ThemeProvider } from './context/ThemeContext';
 import { GlobalStyles } from './styles/GlobalStyles';
 import ThemeToggle from './components/ThemeToggle';
+import ErrorBoundary from './components/ErrorBoundary';
+import LanguageSwitcher from './components/LanguageSwitcher';
+import './i18n/i18n';
 
 const AppContainer = styled.div`
   min-height: 100vh;
@@ -61,55 +64,63 @@ const ViewportBottomAdContainer = styled.div`
 
 const App: React.FC = () => {
   return (
-    <ThemeProvider>
-      <GlobalStyles />
-      <Router basename="/">
-        <AppContainer>
-          <SEO
-            title="Toolzilla - Free Online Developer Tools"
-            description="Free online developer tools including JSON Formatter, Base64 Converter, Loan Calculator, URL Encoder, Color Converter, and Hash Generator."
-            keywords="developer tools, json formatter, base64 converter, loan calculator, url encoder, color converter, hash generator"
-          />
-          <StructuredData
-            type="WebSite"
-            name="Toolzilla"
-            description="Free online developer tools including JSON Formatter, Base64 Converter, Loan Calculator, URL Encoder, Color Converter, and Hash Generator."
-            url={config.app.url}
-          />
-          <Header />
-          <MainContent>
-            <Routes>
-              <Route path="/" element={<HomePage />} />
-              <Route path="/json-formatter" element={<JsonFormatter />} />
-              <Route path="/base64-converter" element={<Base64Converter />} />
-              <Route path="/loan-calculator" element={<LoanCalculator />} />
-              <Route path="/url-encoder" element={<UrlEncoder />} />
-              <Route path="/color-converter" element={<ColorConverter />} />
-              <Route path="/hash-generator" element={<HashGenerator />} />
-            </Routes>
-            <BottomAdContainer>
-              <AdSenseAd
-                client={config.adsense.client}
-                slot={config.adsense.slot}
-                format="auto"
-                responsive={true}
+    <ErrorBoundary>
+      <Suspense fallback={
+        <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+        </div>
+      }>
+        <ThemeProvider>
+          <GlobalStyles />
+          <Router basename="/">
+            <AppContainer>
+              <SEO
+                title="Toolzilla - Free Online Developer Tools"
+                description="Free online developer tools including JSON Formatter, Base64 Converter, Loan Calculator, URL Encoder, Color Converter, and Hash Generator."
+                keywords="developer tools, json formatter, base64 converter, loan calculator, url encoder, color converter, hash generator"
               />
-            </BottomAdContainer>
-          </MainContent>
-          <LateralAdSpace position="left" />
-          <LateralAdSpace position="right" />
-          <ViewportBottomAdContainer>
-            <AdSenseAd
-              client={config.adsense.client}
-              slot={config.adsense.slot}
-              format="auto"
-              responsive={true}
-            />
-          </ViewportBottomAdContainer>
-          <ThemeToggle />
-        </AppContainer>
-      </Router>
-    </ThemeProvider>
+              <StructuredData
+                type="WebSite"
+                name="Toolzilla"
+                description="Free online developer tools including JSON Formatter, Base64 Converter, Loan Calculator, URL Encoder, Color Converter, and Hash Generator."
+                url={config.app.url}
+              />
+              <Header />
+              <MainContent>
+                <Routes>
+                  <Route path="/" element={<HomePage />} />
+                  <Route path="/json-formatter" element={<JsonFormatter />} />
+                  <Route path="/base64-converter" element={<Base64Converter />} />
+                  <Route path="/loan-calculator" element={<LoanCalculator />} />
+                  <Route path="/url-encoder" element={<UrlEncoder />} />
+                  <Route path="/color-converter" element={<ColorConverter />} />
+                  <Route path="/hash-generator" element={<HashGenerator />} />
+                </Routes>
+                <BottomAdContainer>
+                  <AdSenseAd
+                    client={config.adsense.client}
+                    slot={config.adsense.slot}
+                    format="auto"
+                    responsive={true}
+                  />
+                </BottomAdContainer>
+              </MainContent>
+              <LateralAdSpace position="left" />
+              <LateralAdSpace position="right" />
+              <ViewportBottomAdContainer>
+                <AdSenseAd
+                  client={config.adsense.client}
+                  slot={config.adsense.slot}
+                  format="auto"
+                  responsive={true}
+                />
+              </ViewportBottomAdContainer>
+              <ThemeToggle />
+            </AppContainer>
+          </Router>
+        </ThemeProvider>
+      </Suspense>
+    </ErrorBoundary>
   );
 };
 

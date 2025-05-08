@@ -1,7 +1,8 @@
 import { useTranslation } from 'react-i18next';
+import { SupportedLanguage } from '../i18n/i18n';
 
 interface Language {
-  code: string;
+  code: SupportedLanguage;
   name: string;
 }
 
@@ -20,15 +21,30 @@ export default function LanguageSwitcher() {
   const { i18n } = useTranslation();
 
   const changeLanguage = (lng: string): void => {
-    if (languages.some(lang => lang.code === lng)) {
-      i18n.changeLanguage(lng);
+    try {
+      if (languages.some(lang => lang.code === lng)) {
+        i18n.changeLanguage(lng).catch((error) => {
+          console.error('Failed to change language:', error);
+          // Fallback to English if language change fails
+          i18n.changeLanguage('en');
+        });
+      }
+    } catch (error) {
+      console.error('Error in language switcher:', error);
+      // Fallback to English if any error occurs
+      i18n.changeLanguage('en');
     }
   };
+
+  // Get current language or fallback to English
+  const currentLanguage = languages.some(lang => lang.code === i18n.language)
+    ? i18n.language
+    : 'en';
 
   return (
     <div className="flex items-center space-x-2">
       <select
-        value={i18n.language}
+        value={currentLanguage}
         onChange={(e) => changeLanguage(e.target.value)}
         className="bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-md px-2 py-1 text-sm"
       >
