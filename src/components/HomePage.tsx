@@ -7,17 +7,18 @@ const Container = styled.div`
   max-width: 1200px;
   margin: 0 auto;
   padding: 2rem;
+  background-color: var(--background-primary);
 `;
 
 const Title = styled.h1`
   font-size: 2.5rem;
   margin-bottom: 1rem;
-  color: #1a73e8;
+  color: var(--accent-primary);
 `;
 
 const Description = styled.p`
   font-size: 1.2rem;
-  color: #5f6368;
+  color: var(--text-secondary);
   margin-bottom: 2rem;
   line-height: 1.6;
 `;
@@ -30,13 +31,15 @@ const SearchInput = styled.input`
   width: 100%;
   padding: 1rem;
   font-size: 1.1rem;
-  border: 2px solid #e0e0e0;
+  border: 2px solid var(--border-color);
   border-radius: 8px;
+  background-color: var(--background-primary);
+  color: var(--text-primary);
   transition: border-color 0.3s ease;
 
   &:focus {
     outline: none;
-    border-color: #1a73e8;
+    border-color: var(--accent-primary);
   }
 `;
 
@@ -46,7 +49,7 @@ const Section = styled.section`
 
 const SectionTitle = styled.h2`
   font-size: 1.8rem;
-  color: #1a73e8;
+  color: var(--accent-primary);
   margin-bottom: 1.5rem;
 `;
 
@@ -57,29 +60,32 @@ const ToolsGrid = styled.div`
 `;
 
 const ToolCard = styled(Link)`
-  background: white;
+  background: var(--background-secondary);
   border-radius: 8px;
   padding: 1.5rem;
   text-decoration: none;
   color: inherit;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--card-shadow);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 
   &:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    box-shadow: var(--hover-shadow);
+    background: var(--background-primary);
   }
 `;
 
 const ToolTitle = styled.h2`
   font-size: 1.5rem;
   margin-bottom: 0.5rem;
-  color: #1a73e8;
+  color: var(--accent-primary);
+  font-weight: 600;
 `;
 
 const ToolDescription = styled.p`
-  color: #5f6368;
+  color: var(--text-secondary);
   margin: 0;
+  line-height: 1.5;
 `;
 
 const CategoryGrid = styled.div`
@@ -89,7 +95,7 @@ const CategoryGrid = styled.div`
 `;
 
 const CategoryCard = styled(Link)`
-  background: #f8f9fa;
+  background: var(--background-secondary);
   border-radius: 8px;
   padding: 1rem;
   text-decoration: none;
@@ -97,19 +103,19 @@ const CategoryCard = styled(Link)`
   transition: background-color 0.3s ease;
 
   &:hover {
-    background: #e8f0fe;
+    background: var(--background-primary);
   }
 `;
 
 const CategoryName = styled.h4`
   font-size: 1.1rem;
-  color: #1a73e8;
+  color: var(--accent-primary);
   margin: 0;
 `;
 
 const CategoryDescription = styled.p`
   font-size: 0.9rem;
-  color: #5f6368;
+  color: var(--text-secondary);
   margin: 0.5rem 0 0;
 `;
 
@@ -132,16 +138,16 @@ const AccordionContainer = styled.div`
 `;
 
 const AccordionItem = styled.div`
-  background: white;
+  background: var(--background-primary);
   border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--card-shadow);
 `;
 
 const AccordionHeader = styled.button<{ isOpen: boolean }>`
   width: 100%;
   padding: 1rem 1.5rem;
-  background: ${props => props.isOpen ? '#e8f0fe' : 'white'};
+  background: ${props => props.isOpen ? 'var(--background-secondary)' : 'var(--background-primary)'};
   border: none;
   text-align: left;
   cursor: pointer;
@@ -149,9 +155,10 @@ const AccordionHeader = styled.button<{ isOpen: boolean }>`
   justify-content: space-between;
   align-items: center;
   transition: background-color 0.3s ease;
+  color: var(--text-primary);
 
   &:hover {
-    background: #e8f0fe;
+    background: var(--background-secondary);
   }
 `;
 

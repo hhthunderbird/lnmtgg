@@ -1,14 +1,6 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { useLocation } from 'react-router-dom';
 import config from '../config';
-
-interface AdSenseAdProps {
-  client: string;
-  slot: string;
-  format?: string;
-  responsive?: boolean;
-}
 
 const AdContainer = styled.div`
   width: 100%;
@@ -29,11 +21,11 @@ const DevPlaceholder = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background: #f8f9fa;
-  border: 2px dashed #1a73e8;
+  background: var(--background-secondary);
+  border: 2px dashed var(--accent-primary);
   border-radius: 8px;
   padding: 1rem;
-  color: #1a73e8;
+  color: var(--accent-primary);
   font-size: 0.9rem;
   text-align: center;
 `;
@@ -44,90 +36,90 @@ const DevPlaceholderTitle = styled.div`
 `;
 
 const DevPlaceholderInfo = styled.div`
-  color: #5f6368;
+  color: var(--text-secondary);
   font-size: 0.8rem;
 `;
 
 const ErrorPlaceholder = styled(DevPlaceholder)`
-  border-color: #dc3545;
-  color: #dc3545;
+  border-color: var(--error-color);
+  color: var(--error-color);
 `;
 
-const AdSenseAd: React.FC<AdSenseAdProps> = ({ client, slot, format = 'auto', responsive = true }) => {
-  const adRef = useRef<HTMLDivElement>(null);
-  const location = useLocation();
-  const [hasError, setHasError] = React.useState(false);
+interface AdSenseAdProps {
+  client: string;
+  slot: string;
+  format?: string;
+  responsive?: boolean;
+  style?: React.CSSProperties;
+}
+
+const AdSenseAd: React.FC<AdSenseAdProps> = ({
+  client,
+  slot,
+  format = 'auto',
+  responsive = true,
+  style
+}) => {
+  const [adError, setAdError] = useState(false);
+  const [adLoaded, setAdLoaded] = useState(false);
 
   useEffect(() => {
-    if (!config.adsense.enabled) return;
-
     try {
       // @ts-ignore
-      if (window.adsbygoogle) {
+      if (window.adsbygoogle && process.env.NODE_ENV === 'production') {
         // @ts-ignore
-        (window.adsbygoogle = window.adsbygoogle || []).push({
-          google_ad_client: client,
-          enable_page_level_ads: true,
-          overlays: { bottom: true }
-        });
+        (window.adsbygoogle = window.adsbygoogle || []).push({});
+        setAdLoaded(true);
       }
-    } catch (err) {
-      console.error('AdSense error:', err);
-      setHasError(true);
+    } catch (error) {
+      console.error('AdSense error:', error);
+      setAdError(true);
     }
-  }, [client, location.pathname]);
+  }, []);
 
-  // Don't render ads on empty pages
-  if (!location.pathname) {
-    return null;
-  }
-
-  // Show development placeholder
-  if (!config.adsense.enabled) {
+  if (process.env.NODE_ENV !== 'production') {
     return (
-      <DevPlaceholder>
-        <DevPlaceholderTitle>AdSense Placeholder</DevPlaceholderTitle>
-        <DevPlaceholderInfo>
-          Development Mode: Ads are disabled
-          <br />
-          Client: {client}
-          <br />
-          Slot: {slot}
-        </DevPlaceholderInfo>
-      </DevPlaceholder>
+      <AdContainer style={style}>
+        <DevPlaceholder>
+          <DevPlaceholderTitle>AdSense Ad</DevPlaceholderTitle>
+          <DevPlaceholderInfo>
+            Client: {client}<br />
+            Slot: {slot}<br />
+            Format: {format}<br />
+            Responsive: {responsive ? 'Yes' : 'No'}
+          </DevPlaceholderInfo>
+        </DevPlaceholder>
+      </AdContainer>
     );
   }
 
-  // Show error placeholder if there was an error
-  if (hasError) {
+  if (adError) {
     return (
-      <ErrorPlaceholder>
-        <DevPlaceholderTitle>AdSense Error</DevPlaceholderTitle>
-        <DevPlaceholderInfo>
-          There was an error loading the ad.
-          <br />
-          Please try refreshing the page.
-        </DevPlaceholderInfo>
-      </ErrorPlaceholder>
+      <AdContainer style={style}>
+        <ErrorPlaceholder>
+          <DevPlaceholderTitle>Ad Not Available</DevPlaceholderTitle>
+          <DevPlaceholderInfo>
+            We're having trouble loading the advertisement.
+            Please try refreshing the page.
+          </DevPlaceholderInfo>
+        </ErrorPlaceholder>
+      </AdContainer>
     );
   }
 
   return (
-    <AdContainer ref={adRef}>
+    <AdContainer style={style}>
       <ins
         className="adsbygoogle"
         style={{
           display: 'block',
-          width: '100%',
-          height: '100%',
-          position: 'relative',
+          textAlign: 'center',
+          ...style
         }}
         data-ad-client={client}
         data-ad-slot={slot}
         data-ad-format={format}
         data-full-width-responsive={responsive}
-        data-adtest={config.app.env === 'development' ? 'on' : 'off'}
-        data-ad-region="auto"
       />
     </AdContainer>
   );

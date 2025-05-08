@@ -18,24 +18,26 @@ const TextArea = styled.textarea`
   font-family: monospace;
   font-size: 14px;
   resize: vertical;
+  background: #f8f9fa;
 
   &:focus {
     outline: none;
-    border-color: #007bff;
+    border-color: #1a73e8;
   }
 `;
 
 const Button = styled.button`
   padding: 0.75rem 1.5rem;
-  background: #007bff;
+  background: #1a73e8;
   color: white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
   transition: background 0.3s ease;
+  font-weight: 500;
 
   &:hover {
-    background: #0056b3;
+    background: #1557b0;
   }
 
   &:disabled {
@@ -45,17 +47,17 @@ const Button = styled.button`
 `;
 
 const ErrorMessage = styled.div`
-  color: #dc3545;
+  color: #ea4335;
   padding: 1rem;
-  background: #f8d7da;
+  background: #fce8e6;
   border-radius: 4px;
   margin-top: 1rem;
 `;
 
 const SuccessMessage = styled.div`
-  color: #28a745;
+  color: #34a853;
   padding: 1rem;
-  background: #d4edda;
+  background: #e6f4ea;
   border-radius: 4px;
   margin-top: 1rem;
 `;
@@ -68,11 +70,15 @@ const ButtonGroup = styled.div`
 const Title = styled.h2`
   font-size: 2rem;
   margin-bottom: 1rem;
+  color: #1a73e8;
+  font-weight: 600;
 `;
 
 const Description = styled.p`
   font-size: 1.2rem;
+  color: #5f6368;
   margin-bottom: 2rem;
+  line-height: 1.5;
 `;
 
 const InputArea = styled(TextArea)`

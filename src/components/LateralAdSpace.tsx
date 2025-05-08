@@ -3,25 +3,21 @@ import styled from 'styled-components';
 import AdSenseAd from './AdSenseAd';
 import config from '../config';
 
-const LateralAdContainer = styled.div`
+const LateralContainer = styled.div<{ position: 'left' | 'right' }>`
   position: fixed;
   top: 50%;
   transform: translateY(-50%);
+  ${props => props.position}: 0;
   width: 160px;
   height: 600px;
-  z-index: 100;
-  display: none;
+  z-index: 90;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: transparent;
 
-  @media (min-width: 1400px) {
-    display: block;
-  }
-
-  &.left {
-    left: 20px;
-  }
-
-  &.right {
-    right: 20px;
+  @media (max-width: 1600px) {
+    display: none;
   }
 `;
 
@@ -31,14 +27,18 @@ interface LateralAdSpaceProps {
 
 const LateralAdSpace: React.FC<LateralAdSpaceProps> = ({ position }) => {
   return (
-    <LateralAdContainer className={position}>
+    <LateralContainer position={position}>
       <AdSenseAd
         client={config.adsense.client}
         slot={config.adsense.slot}
         format="vertical"
         responsive={false}
+        style={{
+          width: '160px',
+          height: '600px'
+        }}
       />
-    </LateralAdContainer>
+    </LateralContainer>
   );
 };
 
