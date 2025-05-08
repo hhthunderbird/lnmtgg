@@ -9,17 +9,21 @@ import zh from './locales/zh.json';
 import ko from './locales/ko.json';
 import ja from './locales/ja.json';
 
+export type SupportedLanguage = 'en' | 'pt' | 'es' | 'fr' | 'it' | 'zh' | 'ko' | 'ja';
+
+const resources = {
+  en: { translation: en },
+  pt: { translation: pt },
+  es: { translation: es },
+  fr: { translation: fr },
+  it: { translation: it },
+  zh: { translation: zh },
+  ko: { translation: ko },
+  ja: { translation: ja },
+} as const;
+
 i18n.use(initReactI18next).init({
-  resources: {
-    en: { translation: en },
-    pt: { translation: pt },
-    es: { translation: es },
-    fr: { translation: fr },
-    it: { translation: it },
-    zh: { translation: zh },
-    ko: { translation: ko },
-    ja: { translation: ja },
-  },
+  resources,
   lng: 'en',
   fallbackLng: 'en',
   interpolation: {

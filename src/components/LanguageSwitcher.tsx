@@ -1,6 +1,11 @@
 import { useTranslation } from 'react-i18next';
 
-const languages = [
+interface Language {
+  code: string;
+  name: string;
+}
+
+const languages: Language[] = [
   { code: 'en', name: 'English' },
   { code: 'pt', name: 'Português' },
   { code: 'es', name: 'Español' },
@@ -14,8 +19,10 @@ const languages = [
 export default function LanguageSwitcher() {
   const { i18n } = useTranslation();
 
-  const changeLanguage = (lng: string) => {
-    i18n.changeLanguage(lng);
+  const changeLanguage = (lng: string): void => {
+    if (languages.some(lang => lang.code === lng)) {
+      i18n.changeLanguage(lng);
+    }
   };
 
   return (
