@@ -18,7 +18,6 @@ import { ThemeProvider } from './context/ThemeContext';
 import { GlobalStyles } from './styles/GlobalStyles';
 import ThemeToggle from './components/ThemeToggle';
 import ErrorBoundary from './components/ErrorBoundary';
-import LanguageSwitcher from './components/LanguageSwitcher';
 import './i18n/i18n';
 
 const AppContainer = styled.div`

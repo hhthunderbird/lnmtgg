@@ -23,13 +23,13 @@ export default function LanguageSwitcher() {
   const changeLanguage = (lng: string): void => {
     try {
       if (languages.some(lang => lang.code === lng)) {
-        i18n.changeLanguage(lng).catch((error) => {
+        i18n.changeLanguage(lng).catch((error: Error) => {
           console.error('Failed to change language:', error);
           // Fallback to English if language change fails
           i18n.changeLanguage('en');
         });
       }
-    } catch (error) {
+    } catch (error: unknown) {
       console.error('Error in language switcher:', error);
       // Fallback to English if any error occurs
       i18n.changeLanguage('en');
