@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { useLocation } from 'react-router-dom';
 
 const AdContainer = styled.div`
   width: 100%;
@@ -8,7 +9,7 @@ const AdContainer = styled.div`
   justify-content: center;
   align-items: center;
   background: transparent;
-  margin: 1rem 0;
+  margin: 2rem 0;
   overflow: hidden;
   position: relative;
 `;
@@ -60,6 +61,38 @@ const AdSenseAd: React.FC<AdSenseAdProps> = ({
   style
 }) => {
   const [adError, setAdError] = useState(false);
+  const location = useLocation();
+
+  // List of paths where ads should not be shown
+  const noAdPaths = ['/', '/loading', '/error'];
+
+  // Check if the current page has enough quality content
+  const hasEnoughContent = () => {
+    const mainContent = document.querySelector('main');
+    if (!mainContent) return false;
+    
+    // Get all text content
+    const textContent = mainContent.textContent || '';
+    
+    // Check for minimum content length (at least 1000 characters)
+    if (textContent.length < 1000) return false;
+    
+    // Check for minimum number of paragraphs (at least 3)
+    const paragraphs = mainContent.getElementsByTagName('p');
+    if (paragraphs.length < 3) return false;
+    
+    // Check for minimum number of headings (at least 1)
+    const headings = mainContent.querySelectorAll('h1, h2, h3, h4, h5, h6');
+    if (headings.length < 1) return false;
+    
+    return true;
+  };
+
+  // Check if we've exceeded the maximum number of ads on the page
+  const hasExceededAdLimit = () => {
+    const adElements = document.querySelectorAll('.adsbygoogle');
+    return adElements.length >= 3; // Maximum 3 ads per page
+  };
 
   useEffect(() => {
     try {
@@ -74,20 +107,14 @@ const AdSenseAd: React.FC<AdSenseAdProps> = ({
     }
   }, []);
 
-  if (process.env.NODE_ENV !== 'production') {
-    return (
-      <AdContainer style={style}>
-        <DevPlaceholder>
-          <DevPlaceholderTitle>AdSense Ad</DevPlaceholderTitle>
-          <DevPlaceholderInfo>
-            Client: {client}<br />
-            Slot: {slot}<br />
-            Format: {format}<br />
-            Responsive: {responsive ? 'Yes' : 'No'}
-          </DevPlaceholderInfo>
-        </DevPlaceholder>
-      </AdContainer>
-    );
+  // Don't show ads on development, empty pages, or pages with insufficient content
+  if (
+    process.env.NODE_ENV !== 'production' ||
+    noAdPaths.includes(location.pathname) ||
+    !hasEnoughContent() ||
+    hasExceededAdLimit()
+  ) {
+    return null;
   }
 
   if (adError) {

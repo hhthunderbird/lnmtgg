@@ -4,20 +4,23 @@ import AdSenseAd from './AdSenseAd';
 import config from '../config';
 
 const LateralContainer = styled.div<{ position: 'left' | 'right' }>`
-  position: fixed;
-  top: 50%;
-  transform: translateY(-50%);
-  ${props => props.position}: 0;
+  position: relative;
   width: 160px;
   height: 600px;
-  z-index: 90;
+  margin: 2rem 0;
   display: flex;
   justify-content: center;
   align-items: center;
   background: transparent;
+  padding: 0 1rem;
 
   @media (max-width: 1600px) {
     display: none;
+  }
+
+  @media (min-width: 1601px) and (max-width: 1800px) {
+    width: 120px;
+    height: 400px;
   }
 `;
 
@@ -34,8 +37,10 @@ const LateralAdSpace: React.FC<LateralAdSpaceProps> = ({ position }) => {
         format="vertical"
         responsive={false}
         style={{
-          width: '160px',
-          height: '600px'
+          width: '100%',
+          height: '100%',
+          maxWidth: '160px',
+          maxHeight: '600px'
         }}
       />
     </LateralContainer>

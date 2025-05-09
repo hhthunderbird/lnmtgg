@@ -34,6 +34,15 @@ const MainContent = styled.main`
   margin: 0 auto;
   padding: 0 1rem;
   position: relative;
+  display: flex;
+  justify-content: space-between;
+`;
+
+const ContentWrapper = styled.div`
+  flex: 1;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem 0;
 `;
 
 const BottomAdContainer = styled.div`
@@ -72,7 +81,7 @@ const App: React.FC = () => {
       }>
         <ThemeProvider>
           <GlobalStyles />
-          <Router basename="/">
+          <Router>
             <AppContainer>
               <SEO
                 title="Toolzilla - Free Online Developer Tools"
@@ -83,30 +92,32 @@ const App: React.FC = () => {
                 type="WebSite"
                 name="Toolzilla"
                 description="Free online developer tools including JSON Formatter, Base64 Converter, Loan Calculator, URL Encoder, Color Converter, and Hash Generator."
-                url={config.app.url}
+                url="https://toolzilla.app"
               />
               <Header />
               <MainContent>
-                <Routes>
-                  <Route path="/" element={<HomePage />} />
-                  <Route path="/json-formatter" element={<JsonFormatter />} />
-                  <Route path="/base64-converter" element={<Base64Converter />} />
-                  <Route path="/loan-calculator" element={<LoanCalculator />} />
-                  <Route path="/url-encoder" element={<UrlEncoder />} />
-                  <Route path="/color-converter" element={<ColorConverter />} />
-                  <Route path="/hash-generator" element={<HashGenerator />} />
-                </Routes>
-                <BottomAdContainer>
-                  <AdSenseAd
-                    client={config.adsense.client}
-                    slot={config.adsense.slot}
-                    format="auto"
-                    responsive={true}
-                  />
-                </BottomAdContainer>
+                <LateralAdSpace position="left" />
+                <ContentWrapper>
+                  <Routes>
+                    <Route path="/" element={<HomePage />} />
+                    <Route path="/json-formatter" element={<JsonFormatter />} />
+                    <Route path="/base64-converter" element={<Base64Converter />} />
+                    <Route path="/loan-calculator" element={<LoanCalculator />} />
+                    <Route path="/url-encoder" element={<UrlEncoder />} />
+                    <Route path="/color-converter" element={<ColorConverter />} />
+                    <Route path="/hash-generator" element={<HashGenerator />} />
+                  </Routes>
+                  <BottomAdContainer>
+                    <AdSenseAd
+                      client={config.adsense.client}
+                      slot={config.adsense.slot}
+                      format="auto"
+                      responsive={true}
+                    />
+                  </BottomAdContainer>
+                </ContentWrapper>
+                <LateralAdSpace position="right" />
               </MainContent>
-              <LateralAdSpace position="left" />
-              <LateralAdSpace position="right" />
               <ViewportBottomAdContainer>
                 <AdSenseAd
                   client={config.adsense.client}
