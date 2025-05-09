@@ -46,8 +46,8 @@ try {
     },
     // Add error handling for missing translations
     saveMissing: true,
-    missingKeyHandler: (_lng: string, _ns: string, key: string) => {
-      console.warn(`Missing translation: ${key} for language: ${_lng}`);
+    missingKeyHandler: (lngs: readonly string[], ns: string, key: string, fallbackValue: string) => {
+      console.warn(`Missing translation: ${key} for language: ${lngs.join(', ')}`);
     },
   });
 } catch (error) {
