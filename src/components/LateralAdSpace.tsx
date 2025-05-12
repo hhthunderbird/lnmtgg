@@ -36,6 +36,7 @@ const LateralAdSpace: React.FC<LateralAdSpaceProps> = ({ position }) => {
         slot={config.adsense.slot}
         format="vertical"
         responsive={false}
+        position={position}
         style={{
           width: '100%',
           height: '100%',

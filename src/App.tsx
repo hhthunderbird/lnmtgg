@@ -35,6 +35,7 @@ const MainContent = styled.main`
   position: relative;
   display: flex;
   justify-content: space-between;
+  gap: 2rem;
 `;
 
 const ContentWrapper = styled.div`
@@ -48,89 +49,57 @@ const BottomAdContainer = styled.div`
   width: 100%;
   margin-top: 2rem;
   padding-bottom: 2rem;
-`;
-
-const ViewportBottomAdContainer = styled.div`
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  width: 100%;
-  z-index: 100;
-  background: var(--background-primary);
-  box-shadow: var(--card-shadow);
-  padding: 1rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transition: background-color 0.3s ease;
-
-  @media (max-width: 768px) {
-    display: none;
-  }
+  border-top: 1px solid var(--border-color);
 `;
 
 const App: React.FC = () => {
   return (
-    <ErrorBoundary>
-      <Suspense fallback={
-        <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
-        </div>
-      }>
-        <ThemeProvider>
-          <GlobalStyles />
-          <Router>
-            <AppContainer>
-              <SEO
-                title="Toolzilla - Free Online Developer Tools"
-                description="Free online developer tools including JSON Formatter, Base64 Converter, Loan Calculator, URL Encoder, Color Converter, and Hash Generator."
-                keywords="developer tools, json formatter, base64 converter, loan calculator, url encoder, color converter, hash generator"
-              />
-              <StructuredData
-                type="WebSite"
-                name="Toolzilla"
-                description="Free online developer tools including JSON Formatter, Base64 Converter, Loan Calculator, URL Encoder, Color Converter, and Hash Generator."
-                url="https://toolzilla.app"
-              />
-              <Header />
-              <MainContent>
-                <LateralAdSpace position="left" />
-                <ContentWrapper>
-                  <Routes>
-                    <Route path="/" element={<HomePage />} />
-                    <Route path="/json-formatter" element={<JsonFormatter />} />
-                    <Route path="/base64-converter" element={<Base64Converter />} />
-                    <Route path="/loan-calculator" element={<LoanCalculator />} />
-                    <Route path="/url-encoder" element={<UrlEncoder />} />
-                    <Route path="/color-converter" element={<ColorConverter />} />
-                    <Route path="/hash-generator" element={<HashGenerator />} />
-                  </Routes>
-                  <BottomAdContainer>
-                    <AdSenseAd
-                      client={config.adsense.client}
-                      slot={config.adsense.slot}
-                      format="auto"
-                      responsive={true}
-                    />
-                  </BottomAdContainer>
-                </ContentWrapper>
-                <LateralAdSpace position="right" />
-              </MainContent>
-              <ViewportBottomAdContainer>
-                <AdSenseAd
-                  client={config.adsense.client}
-                  slot={config.adsense.slot}
-                  format="auto"
-                  responsive={true}
-                />
-              </ViewportBottomAdContainer>
-              <ThemeToggle />
-            </AppContainer>
-          </Router>
-        </ThemeProvider>
-      </Suspense>
-    </ErrorBoundary>
+    <ThemeProvider>
+      <ErrorBoundary>
+        <GlobalStyles />
+        <Router>
+          <AppContainer>
+            <SEO
+              title="Toolzilla - Free Online Developer Tools"
+              description="Free online developer tools including JSON Formatter, Base64 Converter, Loan Calculator, URL Encoder, Color Converter, and Hash Generator."
+              keywords="developer tools, json formatter, base64 converter, loan calculator, url encoder, color converter, hash generator"
+            />
+            <StructuredData
+              type="WebSite"
+              name="Toolzilla"
+              description="Free online developer tools including JSON Formatter, Base64 Converter, Loan Calculator, URL Encoder, Color Converter, and Hash Generator."
+              url="https://toolzilla.app"
+            />
+            <Header />
+            <MainContent>
+              <LateralAdSpace position="left" />
+              <ContentWrapper>
+                <Routes>
+                  <Route path="/" element={<HomePage />} />
+                  <Route path="/json-formatter" element={<JsonFormatter />} />
+                  <Route path="/base64-converter" element={<Base64Converter />} />
+                  <Route path="/loan-calculator" element={<LoanCalculator />} />
+                  <Route path="/url-encoder" element={<UrlEncoder />} />
+                  <Route path="/color-converter" element={<ColorConverter />} />
+                  <Route path="/hash-generator" element={<HashGenerator />} />
+                </Routes>
+                <BottomAdContainer>
+                  <AdSenseAd
+                    client={config.adsense.client}
+                    slot={config.adsense.slot}
+                    format="auto"
+                    responsive={true}
+                    position="bottom"
+                  />
+                </BottomAdContainer>
+              </ContentWrapper>
+              <LateralAdSpace position="right" />
+            </MainContent>
+            <ThemeToggle />
+          </AppContainer>
+        </Router>
+      </ErrorBoundary>
+    </ThemeProvider>
   );
 };
 
