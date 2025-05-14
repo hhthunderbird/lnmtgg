@@ -55,11 +55,6 @@ const ErrorMessage = styled.div`
   margin-top: 1rem;
 `;
 
-const ButtonGroup = styled.div`
-  display: flex;
-  gap: 1rem;
-`;
-
 const Title = styled.h2`
   font-size: 2rem;
   margin-bottom: 1rem;
@@ -72,14 +67,6 @@ const Description = styled.p`
   color: #5f6368;
   margin-bottom: 2rem;
   line-height: 1.5;
-`;
-
-const InputArea = styled(TextArea)`
-  margin-bottom: 1rem;
-`;
-
-const OutputArea = styled(TextArea)`
-  margin-top: 1rem;
 `;
 
 const InputContainer = styled.div`
