@@ -29,26 +29,59 @@ const AppContainer = styled.div`
 const MainContent = styled.main`
   flex: 1;
   width: 100%;
-  max-width: 1200px;
+  max-width: 1600px;
   margin: 0 auto;
-  padding: 0 1rem;
+  padding: 0 2rem;
   position: relative;
   display: flex;
   justify-content: space-between;
   gap: 2rem;
 
-  /* Ensure minimum spacing between content and ads */
-  & > * {
-    margin: 0 150px;
+  @media (max-width: 1600px) {
+    max-width: 1400px;
+  }
+
+  @media (max-width: 1400px) {
+    max-width: 1200px;
+  }
+
+  @media (max-width: 1200px) {
+    max-width: 1000px;
+  }
+
+  @media (max-width: 1000px) {
+    max-width: 800px;
+    padding: 0 1rem;
+  }
+
+  @media (max-width: 800px) {
+    max-width: 100%;
+    padding: 0 1rem;
   }
 `;
 
 const ContentWrapper = styled.div`
   flex: 1;
-  max-width: 800px;
+  max-width: 1000px;
   margin: 0 auto;
   padding: 2rem 0;
-  min-height: 500px; /* Ensure minimum content height */
+  min-height: 500px;
+
+  @media (max-width: 1600px) {
+    max-width: 900px;
+  }
+
+  @media (max-width: 1400px) {
+    max-width: 800px;
+  }
+
+  @media (max-width: 1200px) {
+    max-width: 700px;
+  }
+
+  @media (max-width: 1000px) {
+    max-width: 100%;
+  }
 `;
 
 const BottomAdContainer = styled.div`

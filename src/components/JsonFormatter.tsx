@@ -8,6 +8,8 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  width: 100%;
+  max-width: 100%;
 `;
 
 const TextArea = styled.textarea`
@@ -36,6 +38,7 @@ const Button = styled.button`
   cursor: pointer;
   transition: background 0.3s ease;
   font-weight: 500;
+  white-space: nowrap;
 
   &:hover {
     background: #1557b0;
@@ -72,14 +75,22 @@ const Description = styled.p`
 const InputContainer = styled.div`
   display: flex;
   gap: 1rem;
+  flex-wrap: wrap;
+  align-items: flex-start;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
 `;
 
 const Input = styled(TextArea)`
   flex: 1;
+  min-width: 300px;
 `;
 
 const OutputContainer = styled.div`
   margin-top: 1rem;
+  width: 100%;
 `;
 
 const OutputTitle = styled.h3`
@@ -91,6 +102,7 @@ const OutputTitle = styled.h3`
 
 const Output = styled(TextArea)`
   flex: 1;
+  width: 100%;
 `;
 
 const JsonFormatter: React.FC = () => {
