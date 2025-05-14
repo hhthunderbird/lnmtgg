@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import SEO from './SEO';
 import StructuredData from './StructuredData';
 import JsonFormatterDocs from './JsonFormatter/JsonFormatterDocs';
+import { loadMarkdown } from '../utils/markdownLoader';
 
 const Container = styled.div`
   display: flex;
@@ -105,40 +106,124 @@ const Output = styled(TextArea)`
   width: 100%;
 `;
 
+const TabContainer = styled.div`
+  margin-top: 2rem;
+  border-top: 1px solid var(--border-color);
+  padding-top: 2rem;
+`;
+
+const TabButtons = styled.div`
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+`;
+
+const TabButton = styled.button<{ active: boolean }>`
+  padding: 0.75rem 1.5rem;
+  background: ${props => props.active ? '#1a73e8' : 'transparent'};
+  color: ${props => props.active ? 'white' : '#5f6368'};
+  border: 1px solid ${props => props.active ? '#1a73e8' : '#ddd'};
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    background: ${props => props.active ? '#1557b0' : '#f8f9fa'};
+  }
+`;
+
+const TabContent = styled.div<{ active: boolean }>`
+  display: ${props => props.active ? 'block' : 'none'};
+`;
+
+const MarkdownContent = styled.div`
+  line-height: 1.6;
+  color: #202124;
+  
+  h1, h2, h3, h4, h5, h6 {
+    color: #1a73e8;
+    margin: 1.5rem 0 1rem;
+  }
+  
+  p {
+    margin-bottom: 1rem;
+  }
+  
+  ul, ol {
+    margin-bottom: 1rem;
+    padding-left: 2rem;
+  }
+  
+  li {
+    margin-bottom: 0.5rem;
+  }
+  
+  code {
+    background: #f8f9fa;
+    padding: 0.2rem 0.4rem;
+    border-radius: 4px;
+    font-family: monospace;
+  }
+  
+  pre {
+    background: #f8f9fa;
+    padding: 1rem;
+    border-radius: 4px;
+    overflow-x: auto;
+    margin: 1rem 0;
+  }
+`;
+
 const JsonFormatter: React.FC = () => {
+  const [activeTab, setActiveTab] = useState<'tool' | 'guide' | 'faq'>('tool');
   const [jsonInput, setJsonInput] = useState('');
   const [formattedJson, setFormattedJson] = useState('');
   const [error, setError] = useState<string | null>(null);
-  const [showDocs, setShowDocs] = useState(false);
+  const [guideContent, setGuideContent] = useState('');
+  const [faqContent, setFaqContent] = useState('');
+
+  useEffect(() => {
+    if (activeTab === 'guide') {
+      loadMarkdown('/docs/tools/json-formatter/guide.md').then(setGuideContent);
+    } else if (activeTab === 'faq') {
+      loadMarkdown('/docs/tools/json-formatter/faq.md').then(setFaqContent);
+    }
+  }, [activeTab]);
 
   const formatJson = () => {
     try {
       const parsed = JSON.parse(jsonInput);
-      const formatted = JSON.stringify(parsed, null, 2);
-      setFormattedJson(formatted);
+      setFormattedJson(JSON.stringify(parsed, null, 2));
       setError(null);
-    } catch (err) {
-      setError('Invalid JSON: ' + (err as Error).message);
-      setFormattedJson('');
+    } catch (e) {
+      setError('Invalid JSON: ' + (e as Error).message);
     }
   };
 
   const minifyJson = () => {
     try {
       const parsed = JSON.parse(jsonInput);
-      const minified = JSON.stringify(parsed);
-      setFormattedJson(minified);
+      setFormattedJson(JSON.stringify(parsed));
       setError(null);
-    } catch (err) {
-      setError('Invalid JSON: ' + (err as Error).message);
-      setFormattedJson('');
+    } catch (e) {
+      setError('Invalid JSON: ' + (e as Error).message);
     }
   };
 
-  const clearAll = () => {
-    setJsonInput('');
-    setFormattedJson('');
-    setError(null);
+  const handleCopy = () => {
+    navigator.clipboard.writeText(formattedJson);
+  };
+
+  const handleDownload = () => {
+    const blob = new Blob([formattedJson], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'formatted.json';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
   };
 
   return (
@@ -157,35 +242,60 @@ const JsonFormatter: React.FC = () => {
       <Container>
         <Title>JSON Formatter</Title>
         <Description>
-          Format, validate, and beautify your JSON data with proper indentation and syntax highlighting.
+          Format, validate, and beautify your JSON data with our free online JSON formatter.
         </Description>
 
-        <Button onClick={() => setShowDocs(!showDocs)}>
-          {showDocs ? 'Hide Documentation' : 'Show Documentation'}
-        </Button>
+        <TabContainer>
+          <TabButtons>
+            <TabButton 
+              active={activeTab === 'tool'} 
+              onClick={() => setActiveTab('tool')}
+            >
+              Tool
+            </TabButton>
+            <TabButton 
+              active={activeTab === 'guide'} 
+              onClick={() => setActiveTab('guide')}
+            >
+              Guide
+            </TabButton>
+            <TabButton 
+              active={activeTab === 'faq'} 
+              onClick={() => setActiveTab('faq')}
+            >
+              FAQ
+            </TabButton>
+          </TabButtons>
 
-        {showDocs && <JsonFormatterDocs />}
+          <TabContent active={activeTab === 'tool'}>
+            <InputContainer>
+              <Input
+                value={jsonInput}
+                onChange={(e) => setJsonInput(e.target.value)}
+                placeholder="Paste your JSON here..."
+              />
+              <Button onClick={formatJson}>Format</Button>
+              <Button onClick={minifyJson}>Minify</Button>
+              <Button onClick={handleCopy}>Copy</Button>
+              <Button onClick={handleDownload}>Download</Button>
+            </InputContainer>
 
-        <InputContainer>
-          <Input
-            value={jsonInput}
-            onChange={(e) => setJsonInput(e.target.value)}
-            placeholder="Paste your JSON here..."
-            rows={10}
-          />
-          <Button onClick={formatJson}>Format JSON</Button>
-          <Button onClick={minifyJson}>Minify JSON</Button>
-          <Button onClick={clearAll}>Clear</Button>
-        </InputContainer>
+            {error && <ErrorMessage>{error}</ErrorMessage>}
 
-        {error && <ErrorMessage>{error}</ErrorMessage>}
+            <OutputContainer>
+              <OutputTitle>Formatted JSON</OutputTitle>
+              <Output value={formattedJson} readOnly />
+            </OutputContainer>
+          </TabContent>
 
-        {formattedJson && (
-          <OutputContainer>
-            <OutputTitle>Formatted JSON:</OutputTitle>
-            <Output value={formattedJson} readOnly rows={10} />
-          </OutputContainer>
-        )}
+          <TabContent active={activeTab === 'guide'}>
+            <MarkdownContent dangerouslySetInnerHTML={{ __html: guideContent }} />
+          </TabContent>
+
+          <TabContent active={activeTab === 'faq'}>
+            <MarkdownContent dangerouslySetInnerHTML={{ __html: faqContent }} />
+          </TabContent>
+        </TabContainer>
       </Container>
     </>
   );
