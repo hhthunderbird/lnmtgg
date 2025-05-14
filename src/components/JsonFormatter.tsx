@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import SEO from './SEO';
 import StructuredData from './StructuredData';
+import JsonFormatterDocs from './JsonFormatter/JsonFormatterDocs';
 
 const Container = styled.div`
   display: flex;
@@ -89,42 +90,64 @@ const OutputArea = styled(TextArea)`
   margin-top: 1rem;
 `;
 
+const InputContainer = styled.div`
+  display: flex;
+  gap: 1rem;
+`;
+
+const Input = styled(TextArea)`
+  flex: 1;
+`;
+
+const OutputContainer = styled.div`
+  margin-top: 1rem;
+`;
+
+const OutputTitle = styled.h3`
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: #1a73e8;
+  font-weight: 600;
+`;
+
+const Output = styled(TextArea)`
+  flex: 1;
+`;
+
 const JsonFormatter: React.FC = () => {
-  const [input, setInput] = useState('');
-  const [output, setOutput] = useState('');
+  const [jsonInput, setJsonInput] = useState('');
+  const [formattedJson, setFormattedJson] = useState('');
   const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState<string | null>(null);
+  const [showDocs, setShowDocs] = useState(false);
 
   const formatJson = () => {
     try {
-      const parsed = JSON.parse(input);
+      const parsed = JSON.parse(jsonInput);
       const formatted = JSON.stringify(parsed, null, 2);
-      setOutput(formatted);
+      setFormattedJson(formatted);
       setError(null);
-      setSuccess('JSON successfully formatted!');
     } catch (err) {
       setError('Invalid JSON: ' + (err as Error).message);
-      setSuccess(null);
-      setOutput('');
+      setFormattedJson('');
     }
   };
 
-  const validateJson = () => {
+  const minifyJson = () => {
     try {
-      JSON.parse(input);
+      const parsed = JSON.parse(jsonInput);
+      const minified = JSON.stringify(parsed);
+      setFormattedJson(minified);
       setError(null);
-      setSuccess('JSON is valid!');
     } catch (err) {
       setError('Invalid JSON: ' + (err as Error).message);
-      setSuccess(null);
+      setFormattedJson('');
     }
   };
 
   const clearAll = () => {
-    setInput('');
-    setOutput('');
+    setJsonInput('');
+    setFormattedJson('');
     setError(null);
-    setSuccess(null);
   };
 
   return (
@@ -141,37 +164,36 @@ const JsonFormatter: React.FC = () => {
         url="https://toolzilla.app/json-formatter"
       />
       <Container>
-        <Title>JSON Formatter & Validator</Title>
+        <Title>JSON Formatter</Title>
         <Description>
-          Format, validate and beautify your JSON data with this easy-to-use tool.
+          Format, validate, and beautify your JSON data with proper indentation and syntax highlighting.
         </Description>
-        <InputArea
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          placeholder="Paste your JSON here..."
-        />
-        <ButtonGroup>
-          <Button onClick={formatJson} disabled={!input}>
-            Format JSON
-          </Button>
-          <Button onClick={validateJson} disabled={!input}>
-            Validate JSON
-          </Button>
-          <Button onClick={clearAll} disabled={!input && !output}>
-            Clear All
-          </Button>
-        </ButtonGroup>
+
+        <Button onClick={() => setShowDocs(!showDocs)}>
+          {showDocs ? 'Hide Documentation' : 'Show Documentation'}
+        </Button>
+
+        {showDocs && <JsonFormatterDocs />}
+
+        <InputContainer>
+          <Input
+            value={jsonInput}
+            onChange={(e) => setJsonInput(e.target.value)}
+            placeholder="Paste your JSON here..."
+            rows={10}
+          />
+          <Button onClick={formatJson}>Format JSON</Button>
+          <Button onClick={minifyJson}>Minify JSON</Button>
+          <Button onClick={clearAll}>Clear</Button>
+        </InputContainer>
+
         {error && <ErrorMessage>{error}</ErrorMessage>}
-        {success && <SuccessMessage>{success}</SuccessMessage>}
-        {output && (
-          <>
-            <h3>Formatted Output:</h3>
-            <OutputArea
-              value={output}
-              readOnly
-              style={{ backgroundColor: '#f8f9fa' }}
-            />
-          </>
+
+        {formattedJson && (
+          <OutputContainer>
+            <OutputTitle>Formatted JSON:</OutputTitle>
+            <Output value={formattedJson} readOnly rows={10} />
+          </OutputContainer>
         )}
       </Container>
     </>
