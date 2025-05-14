@@ -43,7 +43,6 @@ const Code = styled.code`
 `;
 
 interface DocumentationSectionProps {
-  toolName: string;
   whatIs: {
     title: string;
     description: string;
@@ -78,7 +77,6 @@ interface DocumentationSectionProps {
 }
 
 const DocumentationSection: React.FC<DocumentationSectionProps> = ({
-  toolName,
   whatIs,
   useCases,
   bestPractices,

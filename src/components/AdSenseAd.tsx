@@ -96,7 +96,7 @@ const AdSenseAd: React.FC<AdSenseAdProps> = ({
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [refreshCount, setRefreshCount] = useState(0);
-  const adRef = useRef<HTMLDivElement>(null);
+  const adRef = useRef<HTMLModElement>(null);
   const timeoutRef = useRef<NodeJS.Timeout>();
 
   // Function to handle ad load errors
@@ -104,12 +104,6 @@ const AdSenseAd: React.FC<AdSenseAdProps> = ({
     console.error('AdSense error:', error);
     setError('Failed to load advertisement. Please try refreshing the page.');
     setIsLoading(false);
-  };
-
-  // Function to handle successful ad load
-  const handleAdLoad = () => {
-    setIsLoading(false);
-    setError(null);
   };
 
   // Function to refresh the ad

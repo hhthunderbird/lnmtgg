@@ -55,14 +55,6 @@ const ErrorMessage = styled.div`
   margin-top: 1rem;
 `;
 
-const SuccessMessage = styled.div`
-  color: #34a853;
-  padding: 1rem;
-  background: #e6f4ea;
-  border-radius: 4px;
-  margin-top: 1rem;
-`;
-
 const ButtonGroup = styled.div`
   display: flex;
   gap: 1rem;
