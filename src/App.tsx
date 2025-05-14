@@ -19,6 +19,9 @@ import { GlobalStyles } from './styles/GlobalStyles';
 import ThemeToggle from './components/ThemeToggle';
 import ErrorBoundary from './components/ErrorBoundary';
 import './i18n/i18n';
+import PrivacyPolicy from './pages/Legal/PrivacyPolicy';
+import TermsOfService from './pages/Legal/TermsOfService';
+import Contact from './pages/Contact';
 
 const AppContainer = styled.div`
   min-height: 100vh;
@@ -125,6 +128,9 @@ const App: React.FC = () => {
                   <Route path="/url-encoder" element={<UrlEncoder />} />
                   <Route path="/color-converter" element={<ColorConverter />} />
                   <Route path="/hash-generator" element={<HashGenerator />} />
+                  <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+                  <Route path="/terms-of-service" element={<TermsOfService />} />
+                  <Route path="/contact" element={<Contact />} />
                 </Routes>
                 <BottomAdContainer>
                   <AdSenseAd
