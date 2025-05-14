@@ -204,12 +204,10 @@ const Base64Converter: React.FC = () => {
   const [faqContent, setFaqContent] = useState('');
 
   useEffect(() => {
-    if (activeTab === 'guide') {
-      loadMarkdown('/docs/tools/base64-converter/guide.md').then(setGuideContent);
-    } else if (activeTab === 'faq') {
-      loadMarkdown('/docs/tools/base64-converter/faq.md').then(setFaqContent);
-    }
-  }, [activeTab]);
+    // Load guide and FAQ markdown content on initial mount
+    loadMarkdown('/docs/tools/base64-converter/guide.md').then(setGuideContent);
+    loadMarkdown('/docs/tools/base64-converter/faq.md').then(setFaqContent);
+  }, []);
 
   const convert = () => {
     try {
