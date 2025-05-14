@@ -1,8 +1,8 @@
+﻿
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import SEO from './SEO';
 import StructuredData from './StructuredData';
-import JsonFormatterDocs from './JsonFormatter/JsonFormatterDocs';
 import { loadMarkdown } from '../utils/markdownLoader';
 
 const Container = styled.div`
@@ -230,13 +230,16 @@ const JsonFormatter: React.FC = () => {
     <>
       <SEO
         title="JSON Formatter & Validator"
-        description="Free online JSON formatter, validator and beautifier. Format, validate and beautify your JSON data with this easy-to-use tool. Supports syntax highlighting and error detection."
-        keywords="json formatter, json validator, json beautifier, json prettifier, format json, validate json, json tool"
+        description="Free online JSON formatter, validator and beautifier. Format, validate and beautify 
+your JSON data with this easy-to-use tool. Supports syntax highlighting and error detection."
+        keywords="json formatter, json validator, json beautifier, json prettifier, format json, validate 
+json, json tool"
       />
       <StructuredData
         type="SoftwareApplication"
         name="JSON Formatter & Validator"
-        description="Free online JSON formatter, validator and beautifier. Format, validate and beautify your JSON data with this easy-to-use tool. Supports syntax highlighting and error detection."
+        description="Free online JSON formatter, validator and beautifier. Format, validate and beautify 
+your JSON data with this easy-to-use tool. Supports syntax highlighting and error detection."
         url="https://toolzilla.app/json-formatter"
       />
       <Container>
@@ -302,3 +305,5 @@ const JsonFormatter: React.FC = () => {
 };
 
 export default JsonFormatter; 
+
+
