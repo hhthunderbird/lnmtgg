@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import SEO from './SEO';
 import StructuredData from './StructuredData';
+import { loadMarkdown } from '../utils/markdownLoader';
 
 const Container = styled.div`
   display: flex;
@@ -125,11 +126,90 @@ const OutputArea = styled(TextArea)`
   }
 `;
 
+const TabContainer = styled.div`
+  margin-top: 2rem;
+  border-top: 1px solid var(--border-color);
+  padding-top: 2rem;
+`;
+
+const TabButtons = styled.div`
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+`;
+
+const TabButton = styled.button<{ active: boolean }>`
+  padding: 0.75rem 1.5rem;
+  background: ${props => props.active ? '#1a73e8' : 'transparent'};
+  color: ${props => props.active ? 'white' : '#5f6368'};
+  border: 1px solid ${props => props.active ? '#1a73e8' : '#ddd'};
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    background: ${props => props.active ? '#1557b0' : '#f8f9fa'};
+  }
+`;
+
+const TabContent = styled.div<{ active: boolean }>`
+  display: ${props => props.active ? 'block' : 'none'};
+`;
+
+const MarkdownContent = styled.div`
+  line-height: 1.6;
+  color: #202124;
+  
+  h1, h2, h3, h4, h5, h6 {
+    color: #1a73e8;
+    margin: 1.5rem 0 1rem;
+  }
+  
+  p {
+    margin-bottom: 1rem;
+  }
+  
+  ul, ol {
+    margin-bottom: 1rem;
+    padding-left: 2rem;
+  }
+  
+  li {
+    margin-bottom: 0.5rem;
+  }
+  
+  code {
+    background: #f8f9fa;
+    padding: 0.2rem 0.4rem;
+    border-radius: 4px;
+    font-family: monospace;
+  }
+  
+  pre {
+    background: #f8f9fa;
+    padding: 1rem;
+    border-radius: 4px;
+    overflow-x: auto;
+    margin: 1rem 0;
+  }
+`;
+
 const Base64Converter: React.FC = () => {
+  const [activeTab, setActiveTab] = useState<'tool' | 'guide' | 'faq'>('tool');
   const [input, setInput] = useState('');
   const [output, setOutput] = useState('');
   const [mode, setMode] = useState<'encode' | 'decode'>('encode');
   const [error, setError] = useState<string | null>(null);
+  const [guideContent, setGuideContent] = useState('');
+  const [faqContent, setFaqContent] = useState('');
+
+  useEffect(() => {
+    if (activeTab === 'guide') {
+      loadMarkdown('/docs/tools/base64-converter/guide.md').then(setGuideContent);
+    } else if (activeTab === 'faq') {
+      loadMarkdown('/docs/tools/base64-converter/faq.md').then(setFaqContent);
+    }
+  }, [activeTab]);
 
   const convert = () => {
     try {
@@ -163,34 +243,64 @@ const Base64Converter: React.FC = () => {
         <Description>
           Convert text to Base64 and decode Base64 to text with this easy-to-use tool.
         </Description>
-        <ModeSelector>
-          <ModeButton
-            active={mode === 'encode'}
-            onClick={() => setMode('encode')}
-          >
-            Encode
-          </ModeButton>
-          <ModeButton
-            active={mode === 'decode'}
-            onClick={() => setMode('decode')}
-          >
-            Decode
-          </ModeButton>
-        </ModeSelector>
-        <InputArea
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          placeholder={`Enter text to ${mode}...`}
-        />
-        <Button onClick={convert}>{mode === 'encode' ? 'Encode' : 'Decode'}</Button>
-        {error && <ErrorMessage>{error}</ErrorMessage>}
-        {output && (
-          <OutputArea
-            value={output}
-            readOnly
-            placeholder={`${mode === 'encode' ? 'Encoded' : 'Decoded'} text will appear here...`}
-          />
-        )}
+        <TabContainer>
+          <TabButtons>
+            <TabButton
+              active={activeTab === 'tool'}
+              onClick={() => setActiveTab('tool')}
+            >
+              Tool
+            </TabButton>
+            <TabButton
+              active={activeTab === 'guide'}
+              onClick={() => setActiveTab('guide')}
+            >
+              Guide
+            </TabButton>
+            <TabButton
+              active={activeTab === 'faq'}
+              onClick={() => setActiveTab('faq')}
+            >
+              FAQ
+            </TabButton>
+          </TabButtons>
+          <TabContent active={activeTab === 'tool'}>
+            <ModeSelector>
+              <ModeButton
+                active={mode === 'encode'}
+                onClick={() => setMode('encode')}
+              >
+                Encode
+              </ModeButton>
+              <ModeButton
+                active={mode === 'decode'}
+                onClick={() => setMode('decode')}
+              >
+                Decode
+              </ModeButton>
+            </ModeSelector>
+            <InputArea
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              placeholder={`Enter text to ${mode}...`}
+            />
+            <Button onClick={convert}>{mode === 'encode' ? 'Encode' : 'Decode'}</Button>
+            {error && <ErrorMessage>{error}</ErrorMessage>}
+            {output && (
+              <OutputArea
+                value={output}
+                readOnly
+                placeholder={`${mode === 'encode' ? 'Encoded' : 'Decoded'} text will appear here...`}
+              />
+            )}
+          </TabContent>
+          <TabContent active={activeTab === 'guide'}>
+            <MarkdownContent dangerouslySetInnerHTML={{ __html: guideContent }} />
+          </TabContent>
+          <TabContent active={activeTab === 'faq'}>
+            <MarkdownContent dangerouslySetInnerHTML={{ __html: faqContent }} />
+          </TabContent>
+        </TabContainer>
       </Container>
     </>
   );
