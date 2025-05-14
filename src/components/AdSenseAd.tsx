@@ -1,57 +1,79 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-import { useLocation } from 'react-router-dom';
 
-const AdContainer = styled.div`
-  width: 100%;
-  min-height: 100px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: transparent;
-  margin: 2rem 0;
-  overflow: hidden;
-  position: relative;
-`;
-
-const AdLabel = styled.div`
-  position: absolute;
-  top: -20px;
-  left: 0;
-  font-size: 0.8rem;
-  color: var(--text-secondary);
-  opacity: 0.7;
-`;
-
-const DevPlaceholder = styled.div`
+const AdContainer = styled.div<{ position: 'top' | 'bottom' | 'left' | 'right' }>`
   width: 100%;
   min-height: 100px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  background: var(--background-secondary);
-  border: 2px dashed var(--accent-primary);
-  border-radius: 8px;
+  justify-content: center;
+  margin: ${({ position }) => {
+    switch (position) {
+      case 'top':
+        return '2rem 0 3rem 0';
+      case 'bottom':
+        return '3rem 0 2rem 0';
+      case 'left':
+      case 'right':
+        return '2rem 0';
+      default:
+        return '2rem 0';
+    }
+  }};
   padding: 1rem;
-  color: var(--accent-primary);
-  font-size: 0.9rem;
+  background: transparent;
+  border-radius: 8px;
+  position: relative;
+
+  /* Ensure minimum spacing between ads */
+  & + & {
+    margin-top: 150px;
+  }
+
+  /* Ensure minimum spacing from navigation */
+  ${({ position }) => {
+    switch (position) {
+      case 'left':
+        return 'margin-right: 150px;';
+      case 'right':
+        return 'margin-left: 150px;';
+      default:
+        return '';
+    }
+  }}
+`;
+
+const AdLabel = styled.div`
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.5rem;
   text-align: center;
 `;
 
-const DevPlaceholderTitle = styled.div`
-  font-weight: bold;
-  margin-bottom: 0.5rem;
+const ErrorMessage = styled.div`
+  color: var(--error);
+  font-size: 0.9rem;
+  text-align: center;
+  padding: 1rem;
+  background: var(--error-bg);
+  border-radius: 4px;
+  margin: 0.5rem 0;
 `;
 
-const DevPlaceholderInfo = styled.div`
-  color: var(--text-secondary);
-  font-size: 0.8rem;
-`;
+const LoadingSpinner = styled.div`
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--border-color);
+  border-top: 3px solid var(--primary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 1rem 0;
 
-const ErrorPlaceholder = styled(DevPlaceholder)`
-  border-color: var(--error-color);
-  color: var(--error-color);
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
 `;
 
 interface AdSenseAdProps {
@@ -59,8 +81,8 @@ interface AdSenseAdProps {
   slot: string;
   format?: string;
   responsive?: boolean;
+  position: 'top' | 'bottom' | 'left' | 'right';
   style?: React.CSSProperties;
-  position?: 'top' | 'bottom' | 'left' | 'right';
 }
 
 const AdSenseAd: React.FC<AdSenseAdProps> = ({
@@ -68,117 +90,93 @@ const AdSenseAd: React.FC<AdSenseAdProps> = ({
   slot,
   format = 'auto',
   responsive = true,
-  style,
-  position = 'bottom'
+  position,
+  style
 }) => {
-  const [adError, setAdError] = useState(false);
-  const [isRefreshing, setIsRefreshing] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [refreshCount, setRefreshCount] = useState(0);
   const adRef = useRef<HTMLDivElement>(null);
-  const location = useLocation();
+  const timeoutRef = useRef<NodeJS.Timeout>();
 
-  // List of paths where ads should not be shown
-  const noAdPaths = ['/', '/loading', '/error'];
-
-  // Check if the current page has enough quality content
-  const hasEnoughContent = () => {
-    const mainContent = document.querySelector('main');
-    if (!mainContent) return false;
-    
-    // Get all text content
-    const textContent = mainContent.textContent || '';
-    
-    // Check for minimum content length (at least 1500 characters)
-    if (textContent.length < 1500) return false;
-    
-    // Check for minimum number of paragraphs (at least 5)
-    const paragraphs = mainContent.getElementsByTagName('p');
-    if (paragraphs.length < 5) return false;
-    
-    // Check for minimum number of headings (at least 2)
-    const headings = mainContent.querySelectorAll('h1, h2, h3, h4, h5, h6');
-    if (headings.length < 2) return false;
-    
-    return true;
+  // Function to handle ad load errors
+  const handleAdError = (error: Error) => {
+    console.error('AdSense error:', error);
+    setError('Failed to load advertisement. Please try refreshing the page.');
+    setIsLoading(false);
   };
 
-  // Check if we've exceeded the maximum number of ads on the page
-  const hasExceededAdLimit = () => {
-    const adElements = document.querySelectorAll('.adsbygoogle');
-    return adElements.length >= 3; // Maximum 3 ads per page
+  // Function to handle successful ad load
+  const handleAdLoad = () => {
+    setIsLoading(false);
+    setError(null);
   };
 
   // Function to refresh the ad
   const refreshAd = () => {
     if (adRef.current) {
-      setIsRefreshing(true);
-      try {
-        // @ts-ignore
-        if (window.adsbygoogle) {
-          // @ts-ignore
-          (window.adsbygoogle = window.adsbygoogle || []).push({});
-        }
-      } catch (error) {
-        console.error('AdSense refresh error:', error);
-        setAdError(true);
-      } finally {
-        setIsRefreshing(false);
-      }
+      // Clear existing ad
+      adRef.current.innerHTML = '';
+      setIsLoading(true);
+      setError(null);
+      setRefreshCount(prev => prev + 1);
     }
   };
 
   useEffect(() => {
+    // Load AdSense script if not already loaded
+    if (!window.adsbygoogle) {
+      const script = document.createElement('script');
+      script.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js';
+      script.async = true;
+      script.onerror = () => handleAdError(new Error('Failed to load AdSense script'));
+      document.head.appendChild(script);
+    }
+
+    // Initialize ad
     try {
-      // @ts-ignore
-      if (window.adsbygoogle && process.env.NODE_ENV === 'production') {
-        // @ts-ignore
-        (window.adsbygoogle = window.adsbygoogle || []).push({});
-      }
+      (window.adsbygoogle = window.adsbygoogle || []).push({});
     } catch (error) {
-      console.error('AdSense error:', error);
-      setAdError(true);
+      handleAdError(error as Error);
     }
 
     // Set up refresh interval (every 5 minutes)
-    const refreshInterval = setInterval(refreshAd, 5 * 60 * 1000);
+    timeoutRef.current = setInterval(refreshAd, 5 * 60 * 1000);
 
+    // Cleanup
     return () => {
-      clearInterval(refreshInterval);
+      if (timeoutRef.current) {
+        clearInterval(timeoutRef.current);
+      }
     };
-  }, [location.pathname]); // Refresh ad when path changes
+  }, [refreshCount]);
 
-  // Don't show ads on development, empty pages, or pages with insufficient content
-  if (
-    process.env.NODE_ENV !== 'production' ||
-    noAdPaths.includes(location.pathname) ||
-    !hasEnoughContent() ||
-    hasExceededAdLimit() ||
-    isRefreshing
-  ) {
-    return null;
-  }
+  // Handle visibility change
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible') {
+        refreshAd();
+      }
+    };
 
-  if (adError) {
-    return (
-      <AdContainer style={style}>
-        <ErrorPlaceholder>
-          <DevPlaceholderTitle>Ad Not Available</DevPlaceholderTitle>
-          <DevPlaceholderInfo>
-            We're having trouble loading the advertisement.
-            Please try refreshing the page.
-          </DevPlaceholderInfo>
-        </ErrorPlaceholder>
-      </AdContainer>
-    );
-  }
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, []);
 
   return (
-    <AdContainer style={style} ref={adRef}>
+    <AdContainer position={position} style={style}>
       <AdLabel>Advertisement</AdLabel>
+      {isLoading && <LoadingSpinner />}
+      {error && <ErrorMessage>{error}</ErrorMessage>}
       <ins
+        ref={adRef}
         className="adsbygoogle"
         style={{
           display: 'block',
-          textAlign: 'center',
+          width: '100%',
+          height: '100%',
           ...style
         }}
         data-ad-client={client}

@@ -14,6 +14,17 @@ const LateralContainer = styled.div<{ position: 'left' | 'right' }>`
   background: transparent;
   padding: 0 1rem;
 
+  /* Ensure minimum spacing from content */
+  ${({ position }) => {
+    switch (position) {
+      case 'left':
+        return 'margin-right: 150px;';
+      case 'right':
+        return 'margin-left: 150px;';
+    }
+  }}
+
+  /* Responsive breakpoints */
   @media (max-width: 1600px) {
     display: none;
   }
@@ -21,6 +32,19 @@ const LateralContainer = styled.div<{ position: 'left' | 'right' }>`
   @media (min-width: 1601px) and (max-width: 1800px) {
     width: 120px;
     height: 400px;
+    ${({ position }) => {
+      switch (position) {
+        case 'left':
+          return 'margin-right: 100px;';
+        case 'right':
+          return 'margin-left: 100px;';
+      }
+    }}
+  }
+
+  @media (min-width: 1801px) {
+    width: 160px;
+    height: 600px;
   }
 `;
 

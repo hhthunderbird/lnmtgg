@@ -36,6 +36,11 @@ const MainContent = styled.main`
   display: flex;
   justify-content: space-between;
   gap: 2rem;
+
+  /* Ensure minimum spacing between content and ads */
+  & > * {
+    margin: 0 150px;
+  }
 `;
 
 const ContentWrapper = styled.div`
@@ -43,13 +48,18 @@ const ContentWrapper = styled.div`
   max-width: 800px;
   margin: 0 auto;
   padding: 2rem 0;
+  min-height: 500px; /* Ensure minimum content height */
 `;
 
 const BottomAdContainer = styled.div`
   width: 100%;
-  margin-top: 2rem;
-  padding-bottom: 2rem;
+  margin-top: 3rem;
+  padding: 2rem 0;
   border-top: 1px solid var(--border-color);
+  min-height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const App: React.FC = () => {
