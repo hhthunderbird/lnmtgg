@@ -75,4 +75,86 @@ JSON Formatter works in all modern browsers:
 - All processing is done in your browser
 - Your JSON data is never sent to our servers
 - No data is stored or logged
-- SSL encryption for secure data handling 
+- SSL encryption for secure data handling
+
+## Examples
+
+### Basic JSON Object
+```json
+{
+  "name": "John Doe",
+  "age": 30,
+  "isActive": true,
+  "address": {
+    "street": "123 Main St",
+    "city": "New York",
+    "zipCode": "10001"
+  },
+  "hobbies": ["reading", "coding", "gaming"]
+}
+```
+
+### JSON Array
+```json
+[
+  {
+    "id": 1,
+    "product": "Laptop",
+    "price": 999.99
+  },
+  {
+    "id": 2,
+    "product": "Smartphone",
+    "price": 699.99
+  }
+]
+```
+
+### Nested JSON Structure
+```json
+{
+  "company": {
+    "name": "Tech Corp",
+    "employees": [
+      {
+        "id": "E001",
+        "name": "Alice Smith",
+        "department": "Engineering",
+        "skills": ["JavaScript", "React", "Node.js"]
+      },
+      {
+        "id": "E002",
+        "name": "Bob Johnson",
+        "department": "Design",
+        "skills": ["UI/UX", "Figma", "Photoshop"]
+      }
+    ],
+    "projects": {
+      "active": ["Project A", "Project B"],
+      "completed": ["Project X", "Project Y"]
+    }
+  }
+}
+```
+
+### Common Formatting Scenarios
+
+1. **API Response Formatting**
+   - Format API responses for better readability
+   - Validate response structure
+   - Identify missing or malformed data
+
+2. **Configuration Files**
+   - Format JSON configuration files
+   - Ensure proper nesting and indentation
+   - Validate configuration structure
+
+3. **Data Transformation**
+   - Format data before transformation
+   - Validate data structure
+   - Prepare data for different systems
+
+4. **Debugging**
+   - Format error logs
+   - Validate error response structure
+   - Identify syntax issues 

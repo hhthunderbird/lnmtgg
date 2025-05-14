@@ -101,4 +101,77 @@ Yes! We welcome feature suggestions. Please use the "Contact" form to submit you
 - Check our documentation
 - Visit our GitHub repository
 - Contact our support team
-- Join our community forum 
+- Join our community forum
+
+## Advanced Usage
+
+### How do I handle large JSON files?
+- Break down large files into smaller chunks
+- Use the minify feature to reduce file size
+- Consider using a desktop application for files over 10MB
+
+### What are common JSON validation errors?
+1. **Syntax Errors**
+   - Missing commas between properties
+   - Unquoted property names
+   - Trailing commas in arrays or objects
+   - Mismatched brackets or braces
+
+2. **Data Type Errors**
+   - Using single quotes instead of double quotes
+   - Unescaped special characters
+   - Invalid number formats
+   - Incorrect boolean values
+
+3. **Structural Errors**
+   - Missing closing brackets
+   - Incorrect nesting levels
+   - Invalid array syntax
+   - Malformed object properties
+
+### How do I format JSON with special characters?
+- Use proper escaping for special characters
+- Double quotes within strings should be escaped with backslash
+- Unicode characters are supported
+- Control characters should be properly escaped
+
+### What's the difference between minified and formatted JSON?
+- **Formatted JSON**
+  - Includes proper indentation
+  - Has line breaks for readability
+  - Easier to read and debug
+  - Larger file size
+
+- **Minified JSON**
+  - Removes all whitespace
+  - No indentation or line breaks
+  - Smaller file size
+  - Better for transmission
+
+### How do I validate JSON against a schema?
+1. Format your JSON first
+2. Use a JSON Schema validator
+3. Check for required properties
+4. Verify data types
+5. Ensure proper nesting
+
+### What are best practices for JSON formatting?
+1. **Consistency**
+   - Use consistent indentation
+   - Follow a standard style guide
+   - Maintain proper spacing
+
+2. **Validation**
+   - Always validate before use
+   - Check for common errors
+   - Verify data types
+
+3. **Performance**
+   - Minify for production
+   - Remove unnecessary whitespace
+   - Optimize for transmission
+
+4. **Security**
+   - Sanitize input data
+   - Validate before processing
+   - Handle errors gracefully 
