@@ -22,39 +22,10 @@ const Description = styled.p`
   margin-bottom: 2rem;
 `;
 
-const InputGroup = styled.div`
-  margin-bottom: 1.5rem;
-`;
-
-const Label = styled.label`
-  display: block;
-  margin-bottom: 0.5rem;
-  color: #5f6368;
-  font-weight: 500;
-`;
-
-const Input = styled.input`
-  width: 100%;
-  padding: 0.75rem;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 1rem;
-  font-family: monospace;
-
-  &:focus {
-    outline: none;
-    border-color: #1a73e8;
-  }
-`;
-
-const InputContainer = styled.div`
-  display: flex;
-  gap: 0.5rem;
-`;
-
 const TabContainer = styled.div`
   display: flex;
   gap: 1rem;
+  margin-bottom: 1rem;
 `;
 
 const TabButtons = styled.div`
@@ -64,8 +35,8 @@ const TabButtons = styled.div`
 
 const TabButton = styled.button<{ active: boolean }>`
   padding: 0.75rem 1.5rem;
-  background: ${props => props.active ? '#1a73e8' : '#ccc'};
-  color: ${props => props.active ? 'white' : '#5f6368'};
+  background: ${({ active }) => (active ? '#1a73e8' : '#f0f0f0')};
+  color: ${({ active }) => (active ? 'white' : '#5f6368')};
   border: none;
   border-radius: 4px;
   cursor: pointer;
@@ -73,7 +44,7 @@ const TabButton = styled.button<{ active: boolean }>`
   font-size: 1rem;
 
   &:hover {
-    background: ${props => props.active ? '#1557b0' : '#ddd'};
+    background: ${({ active }) => (active ? '#1557b0' : '#e0e0e0')};
   }
 
   &:disabled {
@@ -83,16 +54,19 @@ const TabButton = styled.button<{ active: boolean }>`
 `;
 
 const TabContent = styled.div<{ active: boolean }>`
-  display: ${props => props.active ? 'block' : 'none'};
+  display: ${({ active }) => (active ? 'block' : 'none')};
 `;
 
 const InputArea = styled.textarea`
   width: 100%;
-  padding: 0.75rem;
+  min-height: 150px;
+  padding: 1rem;
   border: 1px solid #ddd;
   border-radius: 4px;
-  font-size: 1rem;
   font-family: monospace;
+  font-size: 14px;
+  resize: vertical;
+  margin-bottom: 1rem;
 
   &:focus {
     outline: none;
@@ -102,12 +76,14 @@ const InputArea = styled.textarea`
 
 const OutputArea = styled.textarea`
   width: 100%;
-  padding: 0.75rem;
+  min-height: 150px;
+  padding: 1rem;
   border: 1px solid #ddd;
   border-radius: 4px;
-  font-size: 1rem;
   font-family: monospace;
-  background: #f9f9f9;
+  font-size: 14px;
+  resize: vertical;
+  margin-bottom: 1rem;
 
   &:focus {
     outline: none;
@@ -177,7 +153,7 @@ const Button = styled.button`
   }
 `;
 
-const ColorConverter: React.FC = () => {
+const TextCaseConverter: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'tool' | 'guide' | 'faq'>('tool');
   const [input, setInput] = useState('');
   const [output, setOutput] = useState('');
@@ -186,32 +162,31 @@ const ColorConverter: React.FC = () => {
 
   useEffect(() => {
     // Load guide and FAQ markdown content on initial mount
-    loadMarkdown('/docs/tools/color-converter/guide.md').then(setGuideContent);
-    loadMarkdown('/docs/tools/color-converter/faq.md').then(setFaqContent);
+    loadMarkdown('/docs/tools/text-case-converter/guide.md').then(setGuideContent);
+    loadMarkdown('/docs/tools/text-case-converter/faq.md').then(setFaqContent);
   }, []);
 
-  const convertColor = () => {
-    // Color conversion logic here
-    setOutput('Converted color will appear here...');
+  const convertCase = () => {
+    setOutput(input.toUpperCase());
   };
 
   return (
     <>
       <SEO
-        title="Color Converter"
-        description="Convert colors between HEX, RGB, and HSL formats. Fast, secure, and easy to use."
-        keywords="color converter, hex, rgb, hsl, color tool"
+        title="Text Case Converter"
+        description="Convert text to different case formats. Fast, secure, and easy to use."
+        keywords="text case converter, uppercase, lowercase, title case, text tool"
       />
       <StructuredData
         type="SoftwareApplication"
-        name="Color Converter"
-        description="Convert colors between HEX, RGB, and HSL formats. Fast, secure, and easy to use."
-        url="https://toolzilla.app/color-converter"
+        name="Text Case Converter"
+        description="Convert text to different case formats. Fast, secure, and easy to use."
+        url="https://toolzilla.app/text-case-converter"
       />
       <Container>
-        <Title>Color Converter</Title>
+        <Title>Text Case Converter</Title>
         <Description>
-          Convert colors between HEX, RGB, and HSL formats with this easy-to-use tool.
+          Convert text to different case formats with this easy-to-use tool.
         </Description>
         <TabContainer>
           <TabButtons>
@@ -238,14 +213,14 @@ const ColorConverter: React.FC = () => {
             <InputArea
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              placeholder="Enter color to convert..."
+              placeholder="Enter text to convert..."
             />
-            <Button onClick={convertColor}>Convert Color</Button>
+            <Button onClick={convertCase}>Convert Case</Button>
             {output && (
               <OutputArea
                 value={output}
                 readOnly
-                placeholder="Converted color will appear here..."
+                placeholder="Converted text will appear here..."
               />
             )}
           </TabContent>
@@ -261,4 +236,4 @@ const ColorConverter: React.FC = () => {
   );
 };
 
-export default ColorConverter; 
+export default TextCaseConverter; 
