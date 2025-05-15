@@ -1,5 +1,4 @@
-﻿
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import SEO from './SEO';
 import StructuredData from './StructuredData';
@@ -138,10 +137,10 @@ const TabContent = styled.div<{ active: boolean }>`
 
 const MarkdownContent = styled.div`
   line-height: 1.6;
-  color: #202124;
+  color: var(--text-primary);
   
   h1, h2, h3, h4, h5, h6 {
-    color: #1a73e8;
+    color: var(--primary-color);
     margin: 1.5rem 0 1rem;
   }
   
@@ -159,14 +158,14 @@ const MarkdownContent = styled.div`
   }
   
   code {
-    background: #f8f9fa;
+    background: var(--background-secondary);
     padding: 0.2rem 0.4rem;
     border-radius: 4px;
     font-family: monospace;
   }
   
   pre {
-    background: #f8f9fa;
+    background: var(--background-secondary);
     padding: 1rem;
     border-radius: 4px;
     overflow-x: auto;
@@ -184,9 +183,9 @@ const JsonFormatter: React.FC = () => {
 
   useEffect(() => {
     if (activeTab === 'guide') {
-      loadMarkdown('/docs/tools/json-formatter/guide.md').then(setGuideContent);
+      loadMarkdown('docs/tools/json-formatter/guide.md').then(setGuideContent);
     } else if (activeTab === 'faq') {
-      loadMarkdown('/docs/tools/json-formatter/faq.md').then(setFaqContent);
+      loadMarkdown('docs/tools/json-formatter/faq.md').then(setFaqContent);
     }
   }, [activeTab]);
 
