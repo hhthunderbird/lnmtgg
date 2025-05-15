@@ -22,36 +22,6 @@ const Description = styled.p`
   margin-bottom: 2rem;
 `;
 
-const InputGroup = styled.div`
-  margin-bottom: 1.5rem;
-`;
-
-const Label = styled.label`
-  display: block;
-  margin-bottom: 0.5rem;
-  color: #5f6368;
-  font-weight: 500;
-`;
-
-const Input = styled.input`
-  width: 100%;
-  padding: 0.75rem;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 1rem;
-  font-family: monospace;
-
-  &:focus {
-    outline: none;
-    border-color: #1a73e8;
-  }
-`;
-
-const InputContainer = styled.div`
-  display: flex;
-  gap: 0.5rem;
-`;
-
 const TabContainer = styled.div`
   display: flex;
   gap: 1rem;
@@ -191,8 +161,57 @@ const ColorConverter: React.FC = () => {
   }, []);
 
   const convertColor = () => {
-    // Color conversion logic here
-    setOutput('Converted color will appear here...');
+    try {
+      // Remove any whitespace and convert to lowercase
+      const cleanInput = input.trim().toLowerCase();
+      
+      // Check if input is a valid hex color
+      if (/^#?([0-9a-f]{3}|[0-9a-f]{6})$/.test(cleanInput)) {
+        const hex = cleanInput.startsWith('#') ? cleanInput : `#${cleanInput}`;
+        const r = parseInt(hex.slice(1, 3), 16);
+        const g = parseInt(hex.slice(3, 5), 16);
+        const b = parseInt(hex.slice(5, 7), 16);
+        
+        setOutput(`HEX: ${hex}\nRGB: rgb(${r}, ${g}, ${b})\nHSL: ${rgbToHsl(r, g, b)}`);
+      } else {
+        setOutput('Invalid color format. Please enter a valid hex color (e.g., #ff0000 or f00)');
+      }
+    } catch (error) {
+      setOutput('Error converting color. Please check the input format.');
+    }
+  };
+
+  const rgbToHsl = (r: number, g: number, b: number): string => {
+    r /= 255;
+    g /= 255;
+    b /= 255;
+
+    const max = Math.max(r, g, b);
+    const min = Math.min(r, g, b);
+    let h = 0;
+    let s = 0;
+    const l = (max + min) / 2;
+
+    if (max !== min) {
+      const d = max - min;
+      s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+
+      switch (max) {
+        case r:
+          h = (g - b) / d + (g < b ? 6 : 0);
+          break;
+        case g:
+          h = (b - r) / d + 2;
+          break;
+        case b:
+          h = (r - g) / d + 4;
+          break;
+      }
+
+      h /= 6;
+    }
+
+    return `hsl(${Math.round(h * 360)}, ${Math.round(s * 100)}%, ${Math.round(l * 100)}%)`;
   };
 
   return (
@@ -238,7 +257,7 @@ const ColorConverter: React.FC = () => {
             <InputArea
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              placeholder="Enter color to convert..."
+              placeholder="Enter hex color (e.g., #ff0000 or f00)..."
             />
             <Button onClick={convertColor}>Convert Color</Button>
             {output && (

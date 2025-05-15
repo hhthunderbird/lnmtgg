@@ -22,82 +22,6 @@ const Description = styled.p`
   margin-bottom: 2rem;
 `;
 
-const TextArea = styled.textarea`
-  width: 100%;
-  min-height: 150px;
-  padding: 1rem;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-family: monospace;
-  font-size: 1rem;
-  margin-bottom: 1rem;
-  resize: vertical;
-
-  &:focus {
-    outline: none;
-    border-color: #1a73e8;
-  }
-`;
-
-const Button = styled.button`
-  padding: 0.75rem 1.5rem;
-  background: #1a73e8;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background 0.3s ease;
-  font-size: 1rem;
-
-  &:hover {
-    background: #1557b0;
-  }
-
-  &:disabled {
-    background: #ccc;
-    cursor: not-allowed;
-  }
-`;
-
-const ButtonGroup = styled.div`
-  display: flex;
-  gap: 1rem;
-  margin-bottom: 2rem;
-`;
-
-const ResultContainer = styled.div`
-  margin-top: 2rem;
-`;
-
-const ResultTitle = styled.h3`
-  font-size: 1.2rem;
-  color: #5f6368;
-  margin-bottom: 1rem;
-`;
-
-const HashResult = styled.div`
-  padding: 1rem;
-  background: #f8f9fa;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-family: monospace;
-  word-break: break-all;
-`;
-
-const AlgorithmSelect = styled.select`
-  padding: 0.75rem;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 1rem;
-  margin-bottom: 1rem;
-  width: 200px;
-
-  &:focus {
-    outline: none;
-    border-color: #1a73e8;
-  }
-`;
-
 const TabContainer = styled.div`
   display: flex;
   gap: 1rem;
@@ -105,7 +29,7 @@ const TabContainer = styled.div`
 
 const TabButtons = styled.div`
   display: flex;
-  gap: 1rem;
+  gap: 0.5rem;
 `;
 
 const TabButton = styled.button<{ active: boolean }>`
@@ -209,6 +133,40 @@ const MarkdownContent = styled.div`
   }
 `;
 
+const Button = styled.button`
+  padding: 0.75rem 1.5rem;
+  background: #1a73e8;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  font-size: 1rem;
+
+  &:hover {
+    background: #1557b0;
+  }
+
+  &:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+  }
+`;
+
+const Select = styled.select`
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  width: 200px;
+
+  &:focus {
+    outline: none;
+    border-color: #1a73e8;
+  }
+`;
+
 const algorithms = [
   { id: 'SHA-256', name: 'SHA-256' },
   { id: 'SHA-384', name: 'SHA-384' },
@@ -219,7 +177,7 @@ const HashGenerator: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'tool' | 'guide' | 'faq'>('tool');
   const [input, setInput] = useState('');
   const [output, setOutput] = useState('');
-  const [algorithm, setAlgorithm] = useState('md5');
+  const [algorithm, setAlgorithm] = useState('SHA-256');
   const [guideContent, setGuideContent] = useState('');
   const [faqContent, setFaqContent] = useState('');
 
@@ -229,9 +187,17 @@ const HashGenerator: React.FC = () => {
     loadMarkdown('/docs/tools/hash-generator/faq.md').then(setFaqContent);
   }, []);
 
-  const generateHash = () => {
-    // Hash generation logic here
-    setOutput('Generated hash will appear here...');
+  const generateHash = async () => {
+    try {
+      const encoder = new TextEncoder();
+      const data = encoder.encode(input);
+      const hashBuffer = await crypto.subtle.digest(algorithm, data);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+      setOutput(hashHex);
+    } catch (error) {
+      setOutput('Error generating hash. Please try again.');
+    }
   };
 
   return (
@@ -279,6 +245,16 @@ const HashGenerator: React.FC = () => {
               onChange={(e) => setInput(e.target.value)}
               placeholder="Enter text to hash..."
             />
+            <Select
+              value={algorithm}
+              onChange={(e) => setAlgorithm(e.target.value)}
+            >
+              {algorithms.map((algo) => (
+                <option key={algo.id} value={algo.id}>
+                  {algo.name}
+                </option>
+              ))}
+            </Select>
             <Button onClick={generateHash}>Generate Hash</Button>
             {output && (
               <OutputArea
