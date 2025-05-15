@@ -2,27 +2,68 @@
 
 ## What is a number base?
 
-A number base (or radix) is:
-- The number of unique digits used in a number system
-- The position value multiplier
-- Determines how numbers are represented
-- Common bases: 2, 8, 10, 16
+A number base (or radix) is the number of unique digits used to represent numbers in a positional numeral system. For example, decimal uses base 10 (digits 0-9), while binary uses base 2 (digits 0-1).
+
+## What number bases are supported?
+
+The tool supports four common number bases:
+- Binary (Base 2)
+- Octal (Base 8)
+- Decimal (Base 10)
+- Hexadecimal (Base 16)
+
+## Why are different number bases used?
+
+Different bases are used for different purposes:
+- Binary: Fundamental to computer systems
+- Octal: Used in some programming and file permissions
+- Decimal: Standard for human use
+- Hexadecimal: Common in programming and memory addresses
+
+## What is the difference between binary and hexadecimal?
+
+- Binary uses only 0 and 1 (base 2)
+- Hexadecimal uses 0-9 and A-F (base 16)
+- One hexadecimal digit represents four binary digits
+- Hexadecimal is more compact than binary
 
 ## How do I convert between bases?
 
-The tool automatically converts between:
-- Binary ↔ Decimal
-- Octal ↔ Decimal
-- Hexadecimal ↔ Decimal
-- All bases with each other
+The tool automatically converts numbers between bases. Just enter a number, select the source and target bases, and click "Convert Number".
+
+## What is a bit?
+
+A bit (binary digit) is the smallest unit of data in computing, represented by either 0 or 1. Eight bits make up one byte.
+
+## What is a byte?
+
+A byte is a unit of digital information that consists of 8 bits. It can represent 256 different values (2^8).
+
+## Can I convert negative numbers?
+
+Yes, the tool supports negative numbers in all bases. The negative sign is preserved during conversion.
 
 ## What is two's complement?
 
-Two's complement:
-- Method for representing negative numbers in binary
-- Most significant bit indicates sign
-- Used in computer systems
-- Makes addition and subtraction simpler
+Two's complement is a method of representing negative numbers in binary. The tool handles this automatically for binary conversions.
+
+## How do I handle large numbers?
+
+The tool can handle large numbers, but very large numbers might be displayed in scientific notation in some bases.
+
+## What is the relationship between bases?
+
+- 1 hexadecimal digit = 4 binary digits
+- 1 octal digit = 3 binary digits
+- 1 decimal digit = approximately 3.32 binary digits
+
+## Why is hexadecimal used in programming?
+
+Hexadecimal is used because:
+- It's more compact than binary
+- It's easy to convert to/from binary
+- It's human-readable
+- It's commonly used for memory addresses and color codes
 
 ## What are the advantages of each base?
 
@@ -79,14 +120,6 @@ Common uses:
 - General calculations (decimal)
 - Color codes (hex)
 - Network protocols
-
-## How do I handle large numbers?
-
-For large numbers:
-- Consider using BigInt
-- Watch for precision loss
-- Use appropriate data types
-- Consider number size limitations
 
 ## What are the best practices for number conversion?
 

@@ -1,47 +1,42 @@
 # Hash Generator Guide
 
-## What is a Hash Generator?
+## What is a Hash?
 
-A hash generator is a tool that converts input data into a fixed-size string of characters using cryptographic hash functions. These functions are one-way operations that produce a unique output for each unique input.
+A hash is a fixed-size string of characters generated from input data of any size. Hash functions are one-way functions, meaning you cannot reverse the process to get the original input from the hash.
 
 ## How to Use the Hash Generator
 
 1. Enter your text in the input field
-2. Choose the desired hash algorithm:
-   - MD5: 128-bit hash (32 characters)
-   - SHA-1: 160-bit hash (40 characters)
-   - SHA-256: 256-bit hash (64 characters)
-   - SHA-512: 512-bit hash (128 characters)
-3. Click "Generate" to create the hash
-4. Use "Copy" to copy the result to your clipboard
-5. Use "Clear" to reset the input field
+2. Select the desired hash algorithm (SHA-256, SHA-384, or SHA-512)
+3. Click "Generate Hash" to create the hash
+4. Use the "Copy" button to copy the result to your clipboard
+
+## Available Hash Algorithms
+
+- **SHA-256**: Produces a 256-bit (32-byte) hash value
+- **SHA-384**: Produces a 384-bit (48-byte) hash value
+- **SHA-512**: Produces a 512-bit (64-byte) hash value
 
 ## Common Use Cases
 
 - Password hashing
 - File integrity verification
 - Digital signatures
+- Blockchain technology
 - Data deduplication
 - Checksums
-- Blockchain technology
 
 ## Examples
 
-Input | MD5 | SHA-1 | SHA-256 | SHA-512
-------|-----|-------|---------|--------
-hello | 5d41402abc4b2a76b9719d911017c592 | aaf4c61ddcc5e8a2dabede0f3b482cd9aea9434d | 2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824 | 9b71d224bd62f3785d96d46ad3ea3d73319bfbc2890caadae2dff72519673ca72323c3d99ba5c11d7c7acc6e14b8c5da0c4663475c2e5c3adef46f73bcdec043
+Input: `Hello World`
+- SHA-256: `a591a6d40bf420404a011733cfb7b190d62c65bf0bcda32b57b277d9ad9f146e`
+- SHA-384: `99514329186b2f6ae4a1329e7ee6c610a729636335174ac6b740f9028396fcc803d0e93863a7c3d90f86beee782f4f3f`
+- SHA-512: `2c74fd17edafd80e8447b0d46741ee243b7eb74dd2149a0ab1b9246fb30382f27e853d8585719e0e67cbda0daa8f51671064615d645ae27acb15bfb1447f459b`
 
-## Security Considerations
+## Best Practices
 
-- MD5 and SHA-1 are considered cryptographically broken and should not be used for security-sensitive applications
-- SHA-256 and SHA-512 are currently considered secure for most applications
-- Always use a salt when hashing passwords
-- Consider using specialized password hashing algorithms like bcrypt or Argon2 for password storage
-
-## Tips
-
-- Use SHA-256 or SHA-512 for security-sensitive applications
-- Use MD5 only for non-security purposes like file deduplication
-- Always verify hashes using the same algorithm
-- Keep your input data secure
-- Consider using a salt for additional security 
+1. Choose the appropriate hash algorithm for your use case
+2. Never store plain text passwords, always use hashed versions
+3. Use salt when hashing passwords for additional security
+4. Verify hash integrity when downloading files
+5. Keep your hash algorithms up to date 

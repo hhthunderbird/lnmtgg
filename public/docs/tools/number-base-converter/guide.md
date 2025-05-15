@@ -1,52 +1,55 @@
 # Number Base Converter Guide
 
-## What is a Number Base Converter?
+## What is Number Base Conversion?
 
-A number base converter is a tool that helps you convert numbers between different number systems (bases). It's useful for programming, computer science, and understanding how computers represent numbers.
+Number base conversion is the process of changing a number from one base (or radix) to another. Common bases include binary (base 2), octal (base 8), decimal (base 10), and hexadecimal (base 16).
 
 ## How to Use the Number Base Converter
 
-1. Enter your number in any of the supported bases:
-   - Binary (base-2): 0-1
-   - Octal (base-8): 0-7
-   - Decimal (base-10): 0-9
-   - Hexadecimal (base-16): 0-9, A-F
-2. The tool will automatically convert the number to all other bases
-3. Use "Copy" to copy any format to your clipboard
-4. Use "Clear" to reset the input field
+1. Enter your number in the input field
+2. Select the source base (the base of your input number)
+3. Select the target base (the base you want to convert to)
+4. Click "Convert Number" to transform the number
+5. Use the "Copy" button to copy the result to your clipboard
 
-## Number Base Details
+## Available Number Bases
 
-### Binary (Base-2)
-- Uses only 0 and 1
-- Example: 1010 (decimal 10)
-- Common in computer systems
-- Each digit is called a bit
+- **Binary (Base 2)**: Uses only 0 and 1
+- **Octal (Base 8)**: Uses digits 0-7
+- **Decimal (Base 10)**: Uses digits 0-9
+- **Hexadecimal (Base 16)**: Uses digits 0-9 and letters A-F
 
-### Octal (Base-8)
-- Uses digits 0-7
-- Example: 12 (decimal 10)
-- Less common in modern computing
-- Each digit represents 3 bits
+## Examples
 
-### Decimal (Base-10)
-- Uses digits 0-9
-- Example: 10
-- Standard number system
-- Most familiar to humans
+Input: `42` (Decimal)
+- Binary: `101010`
+- Octal: `52`
+- Hexadecimal: `2A`
 
-### Hexadecimal (Base-16)
-- Uses digits 0-9 and letters A-F
-- Example: A (decimal 10)
-- Common in programming
-- Each digit represents 4 bits
+Input: `101010` (Binary)
+- Decimal: `42`
+- Octal: `52`
+- Hexadecimal: `2A`
+
+Input: `2A` (Hexadecimal)
+- Binary: `101010`
+- Octal: `52`
+- Decimal: `42`
+
+## Best Practices
+
+1. Make sure your input number is valid for the selected base
+2. For binary, use only 0 and 1
+3. For octal, use only 0-7
+4. For decimal, use only 0-9
+5. For hexadecimal, use 0-9 and A-F
 
 ## Common Use Cases
 
-- Programming and debugging
-- Computer architecture
+- Computer programming
 - Digital electronics
-- Network protocols
+- Network addressing
+- Data encoding
 - Memory addressing
 - Color codes
 

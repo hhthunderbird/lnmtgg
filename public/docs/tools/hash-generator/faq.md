@@ -2,87 +2,61 @@
 
 ## What is a hash function?
 
-A hash function is a mathematical function that:
-- Takes input data of any size
-- Produces a fixed-size output (hash)
-- Is deterministic (same input always produces same output)
-- Is one-way (cannot be reversed)
-- Has a low probability of collisions
+A hash function is a mathematical function that converts input data of any size into a fixed-size string of characters. The output is called a hash value or hash code.
 
-## What are the differences between the hash algorithms?
+## What hash algorithms are available?
 
-- MD5 (128-bit):
-  - Fastest but least secure
-  - 32 characters long
-  - Not recommended for security
+The tool supports three secure hash algorithms:
+- SHA-256 (256-bit output)
+- SHA-384 (384-bit output)
+- SHA-512 (512-bit output)
 
-- SHA-1 (160-bit):
-  - Faster than SHA-256
-  - 40 characters long
-  - Not recommended for security
+## Why are there different hash algorithms?
 
-- SHA-256 (256-bit):
-  - More secure than MD5 and SHA-1
-  - 64 characters long
-  - Recommended for most uses
+Different hash algorithms offer different levels of security and output sizes. SHA-512 provides the highest security but produces longer hashes, while SHA-256 is more commonly used for general purposes.
 
-- SHA-512 (512-bit):
-  - Most secure option
-  - 128 characters long
-  - Best for high-security applications
+## Is it possible to reverse a hash?
+
+No, hash functions are one-way functions. It's computationally infeasible to reverse a hash to get the original input. This is why they're used for password storage and data integrity verification.
 
 ## What is a collision?
 
-A collision occurs when two different inputs produce the same hash output. While theoretically possible, good hash functions make collisions extremely unlikely.
+A collision occurs when two different inputs produce the same hash output. Good hash functions make collisions extremely unlikely, but they're theoretically possible due to the fixed output size.
 
-## Why are MD5 and SHA-1 considered insecure?
+## How secure are these hash algorithms?
 
-MD5 and SHA-1 are considered insecure because:
-1. Collisions have been found
-2. They are vulnerable to brute-force attacks
-3. They are too fast, making them susceptible to rainbow table attacks
-4. They don't provide sufficient security for modern applications
+- SHA-256: Considered secure for most applications
+- SHA-384: More secure than SHA-256, with a larger output size
+- SHA-512: Provides the highest security among the available options
+
+## Can I use this for password hashing?
+
+While these algorithms can be used for password hashing, it's recommended to use specialized password hashing algorithms like bcrypt or Argon2, which include built-in salt and are designed to be slow to prevent brute-force attacks.
 
 ## What is a salt?
 
-A salt is random data added to the input before hashing to:
-- Make the same input produce different hashes
-- Prevent rainbow table attacks
-- Increase security of stored passwords
+A salt is random data that is added to the input before hashing. It helps prevent rainbow table attacks and makes the same password hash to different values.
 
 ## How do I verify a hash?
 
-To verify a hash:
-1. Generate a hash of the original data
-2. Compare it with the stored hash
-3. If they match, the data is unchanged
+To verify a hash, you need to:
+1. Hash the input data using the same algorithm
+2. Compare the generated hash with the stored hash
+3. If they match, the input data is verified
 
-## What is a rainbow table?
+## Is there a limit to the input size?
 
-A rainbow table is a precomputed table of hashes for common inputs. They are used to:
-- Quickly crack hashed passwords
-- Find collisions
-- Reverse hashes
+The tool can handle large amounts of text, but very large inputs might take longer to process. The hash output size remains constant regardless of input size.
 
-## When should I use each hash algorithm?
+## Can I hash files?
 
-- MD5: Only for non-security purposes like file deduplication
-- SHA-1: Legacy systems or non-security applications
-- SHA-256: General-purpose security applications
-- SHA-512: High-security applications or when future-proofing
+This tool is designed for text input. For file hashing, you would need a different tool that can handle binary data.
 
-## How do I handle large files?
+## What are common use cases for hashing?
 
-For large files:
-1. Read the file in chunks
-2. Hash each chunk
-3. Combine the hashes
-4. Or use a streaming hash function
-
-## What are the best practices for using hashes?
-
-1. Use strong algorithms (SHA-256 or SHA-512)
-2. Always use a salt for passwords
-3. Keep the original data secure
-4. Verify hashes using the same algorithm
-5. Consider using specialized password hashing algorithms 
+- Password storage
+- File integrity verification
+- Digital signatures
+- Blockchain technology
+- Data deduplication
+- Checksums 

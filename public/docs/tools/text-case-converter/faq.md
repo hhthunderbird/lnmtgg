@@ -1,58 +1,56 @@
 # Text Case Converter FAQ
 
-## What is the difference between camelCase and PascalCase?
+## What is text case conversion?
 
-- camelCase: The first word starts with a lowercase letter, and subsequent words start with uppercase letters (e.g., `firstName`, `userProfile`)
-- PascalCase: All words start with uppercase letters (e.g., `FirstName`, `UserProfile`)
+Text case conversion is the process of changing the capitalization of text. It allows you to transform text between different formats like uppercase, lowercase, title case, and more.
 
-## When should I use snake_case?
+## What case formats are available?
 
-snake_case is commonly used in:
-- Python variable and function names
-- Database column names
-- Configuration files
-- File names in some systems
-- Ruby variable names
+The tool supports the following case formats:
+- UPPERCASE
+- lowercase
+- Title Case
+- Sentence case
+- camelCase
+- PascalCase
+- snake_case
+- kebab-case
 
-## What is the difference between kebab-case and snake_case?
+## When should I use each case format?
 
-- kebab-case uses hyphens (-) as separators (e.g., `user-profile`)
-- snake_case uses underscores (_) as separators (e.g., `user_profile`)
+- **UPPERCASE**: For emphasis, headings, or when all text needs to be capitalized
+- **lowercase**: For general text, sentences, or when all text should be in small letters
+- **Title Case**: For titles, headings, or when each word should start with a capital letter
+- **Sentence case**: For normal sentences where only the first word is capitalized
+- **camelCase**: For variable names in programming (first word lowercase, subsequent words capitalized)
+- **PascalCase**: For class names in programming (all words capitalized)
+- **snake_case**: For file names, variable names, or when using underscores as separators
+- **kebab-case**: For URLs, CSS classes, or when using hyphens as separators
 
-## How does the Title Case conversion work?
+## Does the tool preserve special characters?
 
-Title Case conversion:
-1. Capitalizes the first letter of each word
-2. Keeps articles (a, an, the) lowercase unless they're the first word
-3. Keeps prepositions lowercase unless they're the first word
-4. Keeps conjunctions lowercase unless they're the first word
+Yes, the tool preserves all special characters, numbers, and symbols. Only the letters are affected by the case conversion.
 
-## What happens to special characters during conversion?
+## Can I convert multiple lines of text?
 
-Special characters (numbers, symbols, etc.):
-- Are preserved in their original position
-- Don't affect the case conversion of surrounding letters
-- Are treated as word separators in some cases
+Yes, the tool can handle multiple lines of text. Each line will be converted according to the selected case format.
 
-## How do I handle acronyms in case conversion?
+## What happens to numbers and special characters?
 
-The tool preserves acronyms in their original form. For example:
-- "HTML" stays as "HTML" in Title Case
-- "CSS" stays as "CSS" in camelCase
-- "API" stays as "API" in PascalCase
+Numbers and special characters remain unchanged during the conversion process. Only letters are affected by the case conversion.
 
-## What are the best practices for case conversion?
+## Is there a limit to the text length?
 
-1. Be consistent within your project
-2. Follow language-specific conventions
-3. Consider readability
-4. Use appropriate case for the context
-5. Document your case conventions
+The tool can handle large amounts of text, but very long texts might take longer to process.
 
-## How do I handle multi-line text?
+## Can I use this for programming code?
 
-The tool:
-- Preserves line breaks
-- Applies case conversion to each line independently
-- Maintains the original text structure
-- Preserves indentation 
+Yes, the tool is particularly useful for converting between different programming naming conventions like camelCase, PascalCase, and snake_case.
+
+## How do I handle acronyms?
+
+The tool treats acronyms like regular words. If you need to preserve acronyms in their original case, you'll need to manually adjust the result.
+
+## Is the conversion reversible?
+
+Yes, you can convert text back and forth between different case formats. However, some information might be lost when converting to lowercase or uppercase. 

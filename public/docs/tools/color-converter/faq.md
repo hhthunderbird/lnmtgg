@@ -1,5 +1,63 @@
 # Color Converter FAQ
 
+## What is a color format?
+
+A color format is a way to represent colors using different numerical values. Common formats include HEX, RGB, and HSL, each with its own advantages and use cases.
+
+## What color formats are supported?
+
+The tool supports three main color formats:
+- HEX (Hexadecimal)
+- RGB (Red, Green, Blue)
+- HSL (Hue, Saturation, Lightness)
+
+## What is the difference between RGB and HSL?
+
+- **RGB**: Represents colors using three values for red, green, and blue (0-255 each)
+- **HSL**: Represents colors using hue (0-360°), saturation (0-100%), and lightness (0-100%)
+
+## Why use different color formats?
+
+Different formats are useful for different purposes:
+- HEX: Best for web development and CSS
+- RGB: Good for screen display and digital design
+- HSL: Useful for color adjustments and creating color schemes
+
+## What is a HEX color code?
+
+A HEX color code is a 6-digit hexadecimal number prefixed with # that represents a color. Each pair of digits represents the red, green, and blue components.
+
+## How do I convert between formats?
+
+The tool automatically converts colors between all supported formats. Just enter a color in any format, and the tool will show the equivalent values in other formats.
+
+## What is color space?
+
+Color space is a specific organization of colors that allows for reproducible representations of color. Different color spaces (like RGB and HSL) represent colors in different ways.
+
+## Can I use 3-digit HEX codes?
+
+Yes, 3-digit HEX codes (like #F00) are supported and will be automatically expanded to 6 digits (like #FF0000).
+
+## What is the alpha channel?
+
+The alpha channel represents transparency in a color. While the tool focuses on solid colors, some formats (like RGBA and HSLA) support transparency.
+
+## How accurate are the conversions?
+
+The conversions are mathematically precise, but colors might appear slightly different on different devices due to screen calibration and color profiles.
+
+## What are web-safe colors?
+
+Web-safe colors are a set of 216 colors that display consistently across different platforms and browsers. While less important now, they're still useful for legacy systems.
+
+## How do I choose the right color format?
+
+Choose based on your needs:
+- Use HEX for web development
+- Use RGB for digital design
+- Use HSL when you need to adjust colors easily
+
 ## What is the difference between RGB and CMYK?
 
 RGB (Red, Green, Blue):
@@ -22,39 +80,6 @@ HSL (Hue, Saturation, Lightness):
 - Saturation: Color intensity (0-100%)
 - Lightness: Brightness (0-100%)
 - Easier to create color variations
-
-## What is the alpha channel?
-
-The alpha channel:
-- Controls transparency
-- Range: 0 (transparent) to 1 (opaque)
-- Available in RGBA and HSLA
-- Represented as last two digits in HEX (AA)
-- Useful for overlays and blending
-
-## How do I convert between color spaces?
-
-The tool automatically converts between:
-- HEX ↔ RGB
-- RGB ↔ HSL
-- RGB ↔ CMYK
-- All formats with alpha channel
-
-## What are web-safe colors?
-
-Web-safe colors:
-- 216 colors that display consistently
-- Based on 6 levels of each RGB component
-- Less important with modern displays
-- Still useful for legacy systems
-
-## What is color gamut?
-
-Color gamut:
-- Range of colors a system can display
-- RGB has a wider gamut than CMYK
-- Some colors can't be perfectly converted
-- Important for print-to-screen conversion
 
 ## How do I handle color accessibility?
 

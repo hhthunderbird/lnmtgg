@@ -138,6 +138,10 @@ const TabContent = styled.div<{ active: boolean }>`
 const MarkdownContent = styled.div`
   line-height: 1.6;
   color: var(--text-primary);
+  background: var(--background-primary);
+  padding: 1rem;
+  border-radius: 4px;
+  border: 1px solid var(--border-color);
   
   h1, h2, h3, h4, h5, h6 {
     color: var(--primary-color);

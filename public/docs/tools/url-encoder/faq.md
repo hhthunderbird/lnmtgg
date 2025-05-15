@@ -1,51 +1,46 @@
 # URL Encoder FAQ
 
-## What characters need to be URL encoded?
+## What is URL encoding?
 
-Characters that need to be URL encoded include:
+URL encoding is a method to convert special characters and non-ASCII characters into a format that can be transmitted over the Internet. It replaces unsafe ASCII characters with a "%" followed by two hexadecimal digits.
+
+## Why do I need to encode URLs?
+
+URLs can only contain a limited set of ASCII characters. Any other characters need to be encoded to ensure proper transmission and interpretation by web servers and browsers.
+
+## What characters need to be encoded?
+
+The following characters need to be encoded:
 - Spaces (encoded as %20)
-- Special characters like !, @, #, $, %, ^, &, *, (, ), +, =, {, }, [, ], |, \, :, ;, ", ', <, >, ?, /, ~, `
+- Special characters like !, #, $, &, ', (, ), *, +, ,, /, :, ;, =, ?, @, [, ]
 - Non-ASCII characters (Unicode)
 - Control characters
 
-## Why do we need URL encoding?
+## What's the difference between encode and decode?
 
-URL encoding is necessary because:
-1. URLs can only contain a specific set of characters (ASCII)
-2. Some characters have special meanings in URLs
-3. It ensures safe transmission of data over the internet
-4. It prevents issues with different character encodings
+- Encode: Converts regular text into URL-encoded format
+- Decode: Converts URL-encoded text back to its original form
 
-## What's the difference between encodeURI and encodeURIComponent?
+## Is URL encoding secure?
 
-- `encodeURI`: Encodes a complete URL but preserves certain characters like /, ?, :, @, &, =, +, $, #, and ,
-- `encodeURIComponent`: Encodes all special characters, including those preserved by encodeURI
+URL encoding is not a security measure. It's a way to ensure proper transmission of data. For security, you should use HTTPS and proper authentication methods.
 
-## How do I handle international characters?
+## Can I encode an entire URL?
 
-International characters (non-ASCII) are automatically encoded using UTF-8 encoding. For example:
-- é becomes %C3%A9
-- 漢字 becomes %E6%BC%A2%E5%AD%97
+Yes, but it's generally better to encode only the parts that need encoding (like query parameters) rather than the entire URL.
 
 ## What happens if I encode an already encoded URL?
 
-Encoding an already encoded URL will result in double encoding, which is usually not what you want. For example:
-- Original: Hello World!
-- First encode: Hello%20World%21
-- Second encode: Hello%2520World%2521
+This is called double encoding and can cause issues. The tool will still work, but the resulting URL might not function as expected.
 
-## How do I decode a URL-encoded string?
+## How do I handle international characters?
 
-You can use the "Decode" function in the tool to convert URL-encoded text back to its original form. This is useful for:
-- Reading encoded URLs
-- Debugging URL issues
-- Converting encoded data back to human-readable format
+The tool automatically handles international characters by converting them to their UTF-8 encoded form.
 
-## Are there any security considerations?
+## Can I use this for form data?
 
-Yes, when working with URL encoding:
-1. Always validate input before encoding
-2. Be careful with user-provided URLs
-3. Consider using a whitelist of allowed characters
-4. Be aware of potential encoding/decoding attacks
-5. Use HTTPS for sensitive data transmission 
+Yes, this tool can be used to encode form data, but remember that different parts of a form might need different encoding methods.
+
+## Is there a limit to the text length?
+
+The tool can handle large amounts of text, but very long URLs might not be supported by some browsers or servers. 
