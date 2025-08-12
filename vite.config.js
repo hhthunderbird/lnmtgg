@@ -18,9 +18,8 @@ export default defineConfig({
     server: {
         port: 3000,
         open: true,
-        // ADICIONE ESTA SEÇÃO AQUI 👇
         headers: {
-            'Content-Security-Policy': "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.tiny.cloud"
+            'Content-Security-Policy': "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.googlesyndication.com https://*.google.com https://*.googleadservices.com https://cdn.tiny.cloud; style-src 'self' 'unsafe-inline';"
         }
     },
     resolve: {
