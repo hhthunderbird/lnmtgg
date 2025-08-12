@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Editor } from '@tinymce/tinymce-react';
 import { Rnd } from 'react-rnd';
 
-// --- Styled Components (Nenhuma alteração aqui) ---
+// ✅ NENHUMA ALTERAÇÃO NOS STYLED-COMPONENTS, eles permanecem os mesmos.
 const Container = styled.div`
   width: 100%;
   margin: 0;
@@ -84,7 +84,7 @@ const PreviewContainer = styled.div`
   border-radius: 12px;
   padding: 1.5rem;
   width: 100%;
-  opacity: ${props => props.$hasContent ? '1' : '0.6'};
+  opacity: ${props => props.hasContent ? '1' : '0.6'};
   transition: opacity 0.3s ease;
 `;
 const EditorTitle = styled.h2`
@@ -178,11 +178,9 @@ const RemoveButton = styled.button`
   }
 `;
 
-// ✅ NOVA FUNÇÃO: Decodifica entidades HTML como &atilde; para ã
-function decodeHtmlEntities(text) {
-  const textArea = document.createElement('textarea');
-  textArea.innerHTML = text;
-  return textArea.value;
+
+function escapeRegExp(string) {
+  return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
 const Automate = () => {
@@ -202,25 +200,27 @@ const Automate = () => {
     localStorage.setItem('textKeys', JSON.stringify(textKeys));
   }, [textKeys]);
   
-  // ✅ ALTERADO: Lógica final com DECODIFICAÇÃO + NORMALIZAÇÃO
+  // ✅ ALTERADO: Lógica de substituição com normalização
   useEffect(() => {
-    // Passo 1: Decodifica o conteúdo para transformar '&atilde;' de volta em 'ã'.
-    const decodedContent = decodeHtmlEntities(content);
-
-    // Passo 2: Normaliza o conteúdo já decodificado para um formato padrão.
-    const normalizedContent = decodedContent.normalize('NFC');
+    // Passo 1: Normaliza o conteúdo do editor uma única vez
+    const normalizedContent = content.normalize('NFC');
     let result = normalizedContent;
 
     textKeys.forEach(({ key, value }) => {
       const trimmedKey = key.trim();
       if (trimmedKey) {
-        // Passo 3: Normaliza a chave também para garantir a comparação correta.
+        // Para depuração: Veja no console se a chave é encontrada no conteúdo
+        // console.log(`Buscando por: ||${trimmedKey}||`, `Encontrado:`, normalizedContent.includes(`||${trimmedKey}||`));
+
+        // Passo 2: Normaliza e escapa a chave antes de criar a RegEx
         const normalizedKey = trimmedKey.normalize('NFC');
-        const searchString = `[[${normalizedKey}]]`;
-        result = result.split(searchString).join(value);
+        const escapedKey = escapeRegExp(normalizedKey);
+        const regex = new RegExp(`\\|\\|${escapedKey}\\|\\|`, 'g');
+        
+        // Passo 3: Substitui no conteúdo já normalizado
+        result = result.replace(regex, value);
       }
     });
-    
     setReplacedContent(result);
   }, [content, textKeys]);
 
@@ -244,7 +244,7 @@ const Automate = () => {
     <Container>
       <Title>🤖 Ferramenta de Automação de Texto</Title>
       <Description>
-        Use o painel de chaves flutuante para gerenciar suas variáveis. Depois, use `[[nome-da-chave]]` no editor.
+        Use o painel de chaves flutuante para gerenciar suas variáveis. Depois, use `||nome-da-chave||` no editor.
       </Description>
       
       <Rnd
@@ -304,7 +304,7 @@ const Automate = () => {
           <EditorTitle>📝 Editor Principal</EditorTitle>
           <Editor
             tinymceScriptSrc='/tinymce/tinymce.min.js'
-          licenseKey='gpl'
+            licenseKey='gpl'
             value={content}
             onEditorChange={handleEditorChange}
             init={{
@@ -315,11 +315,11 @@ const Automate = () => {
             }}
           />
         </EditorContainer>
-        <PreviewContainer $hasContent={!!(replacedContent || content)}>
+        <PreviewContainer hasContent={!!(replacedContent || content)}>
            <PreviewTitle>👁️ Pré-visualização em Tempo Real</PreviewTitle>
            <Editor
               tinymceScriptSrc='/tinymce/tinymce.min.js'
-          licenseKey='gpl'
+              licenseKey='gpl'
               disabled={true}
               value={replacedContent || content}
               init={{ height: 300, menubar: false, toolbar: false, statusbar: false }}

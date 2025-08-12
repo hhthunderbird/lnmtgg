@@ -178,13 +178,6 @@ const RemoveButton = styled.button`
   }
 `;
 
-// ✅ NOVA FUNÇÃO: Decodifica entidades HTML como &atilde; para ã
-function decodeHtmlEntities(text) {
-  const textArea = document.createElement('textarea');
-  textArea.innerHTML = text;
-  return textArea.value;
-}
-
 const Automate = () => {
   const [content, setContent] = useState('');
   const [textKeys, setTextKeys] = useState(() => {
@@ -199,24 +192,29 @@ const Automate = () => {
   const [lastPanelHeight, setLastPanelHeight] = useState(500);
 
   useEffect(() => {
+    console.log('Conteúdo Bruto do Editor:', content); // <--- Adicione esta linha
+
     localStorage.setItem('textKeys', JSON.stringify(textKeys));
   }, [textKeys]);
   
-  // ✅ ALTERADO: Lógica final com DECODIFICAÇÃO + NORMALIZAÇÃO
+  // ✅ ALTERADO: Lógica final com troca de delimitador e normalização de acentos
   useEffect(() => {
-    // Passo 1: Decodifica o conteúdo para transformar '&atilde;' de volta em 'ã'.
-    const decodedContent = decodeHtmlEntities(content);
-
-    // Passo 2: Normaliza o conteúdo já decodificado para um formato padrão.
-    const normalizedContent = decodedContent.normalize('NFC');
+    // Passo 1: Normaliza o conteúdo do editor para um formato padrão (NFC)
+    console.log('CONTENT:', content); 
+    const normalizedContent = content.normalize('NFC');
+    console.log('NORMALIZED CONTENT:', normalizedContent); 
     let result = normalizedContent;
 
     textKeys.forEach(({ key, value }) => {
       const trimmedKey = key.trim();
       if (trimmedKey) {
-        // Passo 3: Normaliza a chave também para garantir a comparação correta.
+        // Passo 2: Normaliza a chave também para garantir que a comparação funcione
         const normalizedKey = trimmedKey.normalize('NFC');
+
+        // Passo 3: Monta a string de busca com o NOVO delimitador [[...]]
         const searchString = `[[${normalizedKey}]]`;
+        
+        // Passo 4: Usa o método robusto split/join para substituir
         result = result.split(searchString).join(value);
       }
     });
@@ -243,6 +241,7 @@ const Automate = () => {
   return (
     <Container>
       <Title>🤖 Ferramenta de Automação de Texto</Title>
+      {/* ✅ ALTERADO: Descrição com o novo delimitador */}
       <Description>
         Use o painel de chaves flutuante para gerenciar suas variáveis. Depois, use `[[nome-da-chave]]` no editor.
       </Description>

@@ -3,7 +3,33 @@ import styled from 'styled-components';
 import { Editor } from '@tinymce/tinymce-react';
 import { Rnd } from 'react-rnd';
 
-// --- Styled Components (Nenhuma alteração aqui) ---
+// --- Styled Components (com adição do DebugPanel) ---
+
+const DebugPanel = styled.div`
+  position: fixed;
+  bottom: 10px;
+  left: 10px;
+  background-color: #fff;
+  border: 2px solid #f00;
+  padding: 15px;
+  z-index: 20000;
+  max-width: 300px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.5);
+  font-family: monospace;
+  color: #000;
+
+  h4 {
+    margin: 0 0 10px 0;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 5px;
+  }
+
+  p {
+    margin: 5px 0;
+  }
+`;
+
+// O resto dos seus styled-components permanecem os mesmos...
 const Container = styled.div`
   width: 100%;
   margin: 0;
@@ -178,12 +204,6 @@ const RemoveButton = styled.button`
   }
 `;
 
-// ✅ NOVA FUNÇÃO: Decodifica entidades HTML como &atilde; para ã
-function decodeHtmlEntities(text) {
-  const textArea = document.createElement('textarea');
-  textArea.innerHTML = text;
-  return textArea.value;
-}
 
 const Automate = () => {
   const [content, setContent] = useState('');
@@ -194,6 +214,10 @@ const Automate = () => {
     } catch (error) { return [{ id: 1, key: 'saudação', value: 'Olá Mundo' }]; }
   });
   const [replacedContent, setReplacedContent] = useState('');
+  
+  // ✅ NOVO ESTADO: Apenas para a depuração
+  const [debugInfo, setDebugInfo] = useState([]);
+
   const [isPanelCollapsed, setIsPanelCollapsed] = useState(false);
   const [panelSize, setPanelSize] = useState({ width: 450, height: 500 });
   const [lastPanelHeight, setLastPanelHeight] = useState(500);
@@ -202,26 +226,29 @@ const Automate = () => {
     localStorage.setItem('textKeys', JSON.stringify(textKeys));
   }, [textKeys]);
   
-  // ✅ ALTERADO: Lógica final com DECODIFICAÇÃO + NORMALIZAÇÃO
+  // ✅ ALTERADO: Lógica de substituição e depuração
   useEffect(() => {
-    // Passo 1: Decodifica o conteúdo para transformar '&atilde;' de volta em 'ã'.
-    const decodedContent = decodeHtmlEntities(content);
-
-    // Passo 2: Normaliza o conteúdo já decodificado para um formato padrão.
-    const normalizedContent = decodedContent.normalize('NFC');
-    let result = normalizedContent;
+    let result = content;
+    const currentDebugInfo = []; // Array temporário para a depuração
 
     textKeys.forEach(({ key, value }) => {
       const trimmedKey = key.trim();
       if (trimmedKey) {
-        // Passo 3: Normaliza a chave também para garantir a comparação correta.
-        const normalizedKey = trimmedKey.normalize('NFC');
-        const searchString = `[[${normalizedKey}]]`;
+        const searchString = `||${trimmedKey}||`;
+        
+        // Lógica de depuração
+        const found = content.includes(searchString);
+        currentDebugInfo.push({ key: trimmedKey, found });
+
+        // ✅ LÓGICA SIMPLIFICADA: Usando split/join em vez de RegEx
+        // Este método é mais robusto para strings literais.
         result = result.split(searchString).join(value);
       }
     });
     
     setReplacedContent(result);
+    setDebugInfo(currentDebugInfo); // Atualiza o estado de depuração
+
   }, [content, textKeys]);
 
   const handleEditorChange = (newContent) => setContent(newContent);
@@ -242,9 +269,23 @@ const Automate = () => {
 
   return (
     <Container>
+      {/* ✅ NOVO: O painel de depuração será exibido no canto inferior esquerdo */}
+      <DebugPanel>
+        <h4>Painel de Depuração</h4>
+        {debugInfo.length > 0 ? (
+          debugInfo.map(info => (
+            <p key={info.key}>
+              Chave: "{info.key}" - Encontrada: <strong>{info.found ? 'Sim' : 'Não'}</strong>
+            </p>
+          ))
+        ) : (
+          <p>Digite no editor para ver o status.</p>
+        )}
+      </DebugPanel>
+
       <Title>🤖 Ferramenta de Automação de Texto</Title>
       <Description>
-        Use o painel de chaves flutuante para gerenciar suas variáveis. Depois, use `[[nome-da-chave]]` no editor.
+        Use o painel de chaves flutuante para gerenciar suas variáveis. Depois, use `||nome-da-chave||` no editor.
       </Description>
       
       <Rnd
@@ -303,8 +344,7 @@ const Automate = () => {
         <EditorContainer>
           <EditorTitle>📝 Editor Principal</EditorTitle>
           <Editor
-            tinymceScriptSrc='/tinymce/tinymce.min.js'
-          licenseKey='gpl'
+            apiKey="SUA_CHAVE_API_AQUI"
             value={content}
             onEditorChange={handleEditorChange}
             init={{
@@ -318,8 +358,7 @@ const Automate = () => {
         <PreviewContainer $hasContent={!!(replacedContent || content)}>
            <PreviewTitle>👁️ Pré-visualização em Tempo Real</PreviewTitle>
            <Editor
-              tinymceScriptSrc='/tinymce/tinymce.min.js'
-          licenseKey='gpl'
+              apiKey="SUA_CHAVE_API_AQUI"
               disabled={true}
               value={replacedContent || content}
               init={{ height: 300, menubar: false, toolbar: false, statusbar: false }}

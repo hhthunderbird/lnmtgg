@@ -3,18 +3,20 @@ import styled from 'styled-components';
 import { Editor } from '@tinymce/tinymce-react';
 import { Rnd } from 'react-rnd';
 
-// --- Styled Components (Nenhuma alteração aqui) ---
+// --- Componentes de estilo ---
 const Container = styled.div`
   width: 100%;
   margin: 0;
   padding: 1rem;
 `;
+
 const Title = styled.h1`
   font-size: 2.5rem;
   color: var(--primary-color, #1a73e8);
   margin-bottom: 1rem;
   text-align: center;
 `;
+
 const Description = styled.p`
   font-size: 1.2rem;
   color: var(--text-secondary, #5f6368);
@@ -24,25 +26,31 @@ const Description = styled.p`
   margin-left: auto;
   margin-right: auto;
 `;
+
 const MainContent = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  
   width: 80%;
-  max-width: 1400px;
+  max-width: 1400px; /* Boa prática para evitar que fique largo demais em telas gigantes */
   margin-left: auto;
   margin-right: auto;
-`;
-const DraggablePanel = styled.div`
-  background: var(--card-bg, #f8f9fa);
-  border: 1px solid var(--border-color, #e8eaed);
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  `;
+  
+  const DraggablePanel = styled.div`
+  // ... outros estilos
   display: flex;
-  flex-direction: column;
-  height: 100%;
-  overflow: hidden;
+  flex-direction: column; /* Organiza os filhos em coluna */
+  height: 100%;           /* Ocupa 100% da altura do container <Rnd> */
 `;
+
+const PanelContent = styled.div`
+  // ... outros estilos
+  flex-grow: 1;         /* Permite que esta área cresça e ocupe o espaço disponível */
+  overflow-y: auto;     /* Adiciona barra de rolagem se o conteúdo transbordar */
+`;
+
 const PanelHeader = styled.div`
   padding: 0.75rem 1rem;
   background-color: var(--primary-color, #1a73e8);
@@ -57,6 +65,7 @@ const PanelHeader = styled.div`
     cursor: grabbing;
   }
 `;
+
 const PanelToggleButton = styled.button`
   background: none;
   border: none;
@@ -66,11 +75,8 @@ const PanelToggleButton = styled.button`
   padding: 0;
   line-height: 1;
 `;
-const PanelContent = styled.div`
-  padding: 1.5rem;
-  overflow-y: auto;
-  flex-grow: 1; 
-`;
+
+
 const EditorContainer = styled.div`
   background: var(--card-bg, #f8f9fa);
   border: 1px solid var(--border-color, #e8eaed);
@@ -78,20 +84,23 @@ const EditorContainer = styled.div`
   padding: 1.5rem;
   width: 100%;
 `;
+
 const PreviewContainer = styled.div`
   background: var(--card-bg, #f8f9fa);
   border: 1px solid var(--border-color, #e8eaed);
   border-radius: 12px;
   padding: 1.5rem;
   width: 100%;
-  opacity: ${props => props.$hasContent ? '1' : '0.6'};
+  opacity: ${props => props.hasContent ? '1' : '0.6'};
   transition: opacity 0.3s ease;
 `;
+
 const EditorTitle = styled.h2`
   font-size: 1.5rem;
   color: var(--text-primary, #202124);
   margin-bottom: 1rem;
 `;
+
 const PreviewTitle = styled.h2`
   font-size: 1.5rem;
   color: var(--text-primary, #202124);
@@ -100,17 +109,34 @@ const PreviewTitle = styled.h2`
   align-items: center;
   gap: 0.5rem;
 `;
+
+const TextKeysSection = styled.div`
+  background: var(--card-bg, #f8f9fa);
+  border: 1px solid var(--border-color, #e8eaed);
+  border-radius: 12px;
+  padding: 1.5rem;
+  width: 100%;
+`;
+
+const TextKeysTitle = styled.h3`
+  font-size: 1.3rem;
+  color: var(--text-primary, #202124);
+  margin-bottom: 1rem;
+`;
+
 const TextKeysList = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1rem;
   margin-top: 1.5rem;
 `;
+
 const TextKeyItem = styled.div`
   display: flex;
   align-items: center;
   gap: 0.5rem;
 `;
+
 const TextKeyInput = styled.input`
   flex: 1;
   padding: 0.5rem;
@@ -126,6 +152,7 @@ const TextKeyInput = styled.input`
     border-color: var(--primary-color, #1a73e8);
   }
 `;
+
 const ButtonGroup = styled.div`
   display: flex;
   gap: 1rem;
@@ -133,6 +160,7 @@ const ButtonGroup = styled.div`
   flex-wrap: wrap;
   justify-content: center;
 `;
+
 const Button = styled.button`
   padding: 0.75rem 1.5rem;
   background: var(--primary-color, #1a73e8);
@@ -153,6 +181,7 @@ const Button = styled.button`
     cursor: not-allowed;
   }
 `;
+
 const SecondaryButton = styled(Button)`
   background: var(--secondary-color, #5f6368);
 
@@ -160,6 +189,7 @@ const SecondaryButton = styled(Button)`
     background: var(--secondary-hover, #4a4d51);
   }
 `;
+
 const RemoveButton = styled.button`
   padding: 0.5rem;
   background-color: #fce8e6;
@@ -178,49 +208,33 @@ const RemoveButton = styled.button`
   }
 `;
 
-// ✅ NOVA FUNÇÃO: Decodifica entidades HTML como &atilde; para ã
-function decodeHtmlEntities(text) {
-  const textArea = document.createElement('textarea');
-  textArea.innerHTML = text;
-  return textArea.value;
-}
 
 const Automate = () => {
   const [content, setContent] = useState('');
   const [textKeys, setTextKeys] = useState(() => {
     try {
       const savedKeys = localStorage.getItem('textKeys');
-      return savedKeys ? JSON.parse(savedKeys) : [{ id: 1, key: 'saudação', value: 'Olá Mundo' }];
-    } catch (error) { return [{ id: 1, key: 'saudação', value: 'Olá Mundo' }]; }
+      if (savedKeys && JSON.parse(savedKeys).length > 0) {
+        return JSON.parse(savedKeys);
+      }
+    } catch (error) { console.error(error); }
+    return [{ id: 1, key: 'exemplo', value: 'mundo' }];
   });
   const [replacedContent, setReplacedContent] = useState('');
   const [isPanelCollapsed, setIsPanelCollapsed] = useState(false);
-  const [panelSize, setPanelSize] = useState({ width: 450, height: 500 });
-  const [lastPanelHeight, setLastPanelHeight] = useState(500);
 
   useEffect(() => {
     localStorage.setItem('textKeys', JSON.stringify(textKeys));
   }, [textKeys]);
   
-  // ✅ ALTERADO: Lógica final com DECODIFICAÇÃO + NORMALIZAÇÃO
   useEffect(() => {
-    // Passo 1: Decodifica o conteúdo para transformar '&atilde;' de volta em 'ã'.
-    const decodedContent = decodeHtmlEntities(content);
-
-    // Passo 2: Normaliza o conteúdo já decodificado para um formato padrão.
-    const normalizedContent = decodedContent.normalize('NFC');
-    let result = normalizedContent;
-
+    let result = content;
     textKeys.forEach(({ key, value }) => {
-      const trimmedKey = key.trim();
-      if (trimmedKey) {
-        // Passo 3: Normaliza a chave também para garantir a comparação correta.
-        const normalizedKey = trimmedKey.normalize('NFC');
-        const searchString = `[[${normalizedKey}]]`;
-        result = result.split(searchString).join(value);
+      if (key.trim()) {
+        const regex = new RegExp(`\\|\\|${key.trim()}\\|\\|`, 'g');
+        result = result.replace(regex, value);
       }
     });
-    
     setReplacedContent(result);
   }, [content, textKeys]);
 
@@ -230,50 +244,38 @@ const Automate = () => {
   const handleTextKeyChange = (id, field, value) => setTextKeys(prev => prev.map(k => k.id === id ? { ...k, [field]: value } : k));
   const clearAll = () => { setContent(''); setTextKeys([]); };
 
-  const togglePanelCollapse = () => {
-    if (isPanelCollapsed) {
-      setPanelSize(prevSize => ({ ...prevSize, height: lastPanelHeight }));
-    } else {
-      setLastPanelHeight(panelSize.height);
-      setPanelSize(prevSize => ({ ...prevSize, height: 55 }));
-    }
-    setIsPanelCollapsed(!isPanelCollapsed);
-  };
-
   return (
     <Container>
       <Title>🤖 Ferramenta de Automação de Texto</Title>
       <Description>
-        Use o painel de chaves flutuante para gerenciar suas variáveis. Depois, use `[[nome-da-chave]]` no editor.
+        Use o painel de chaves flutuante para gerenciar suas variáveis. Depois, use `||nome-da-chave||` no editor.
       </Description>
       
       <Rnd
         style={{ zIndex: 10000 }}
-        size={panelSize}
-        onResizeStop={(e, direction, ref, delta, position) => {
-          setPanelSize({
-            width: parseInt(ref.style.width, 10),
-            height: parseInt(ref.style.height, 10),
-          });
+        default={{
+          x: window.innerWidth - 470,
+          y: 150,
+          width: 450,
+          height: 500,
         }}
-        position={{ x: window.innerWidth - (panelSize.width || 450) - 20, y: 150 }}
         minWidth={300}
-        minHeight={55}
+        minHeight={isPanelCollapsed ? 55 : 300}
         maxHeight={"80vh"}
         bounds="window"
         dragHandleClassName="panel-header"
-        cancel=".panel-content-area"
+        className="rnd-container"
       >
         <DraggablePanel>
           <PanelHeader className="panel-header">
             <span>🔑 Gerenciador de Chaves</span>
-            <PanelToggleButton onClick={togglePanelCollapse}>
+            <PanelToggleButton onClick={() => setIsPanelCollapsed(!isPanelCollapsed)}>
               {isPanelCollapsed ? '⊕' : '−'}
             </PanelToggleButton>
           </PanelHeader>
 
           {!isPanelCollapsed && (
-            <PanelContent className="panel-content-area">
+            <PanelContent>
               <Button onClick={handleAddNewKey} style={{width: '100%'}}>+ Adicionar Nova Chave</Button>
               <TextKeysList>
                 {textKeys.map(({ id, key, value }) => (
@@ -315,7 +317,7 @@ const Automate = () => {
             }}
           />
         </EditorContainer>
-        <PreviewContainer $hasContent={!!(replacedContent || content)}>
+        <PreviewContainer hasContent={!!(replacedContent || content)}>
            <PreviewTitle>👁️ Pré-visualização em Tempo Real</PreviewTitle>
            <Editor
               tinymceScriptSrc='/tinymce/tinymce.min.js'
@@ -326,11 +328,12 @@ const Automate = () => {
            />
         </PreviewContainer>
         <ButtonGroup>
-            <Button disabled={!content.trim()}>📄 Obter HTML</Button>
-            <Button disabled={!content.trim()}>📝 Obter Texto Puro</Button>
+            <Button onClick={() => { /* lógica getHtmlContent */ }} disabled={!content.trim()}>📄 Obter HTML</Button>
+            <Button onClick={() => { /* lógica getTextContent */ }} disabled={!content.trim()}>📝 Obter Texto Puro</Button>
             <SecondaryButton onClick={clearAll}>🗑️ Limpar Tudo</SecondaryButton>
         </ButtonGroup>
       </MainContent>
+
     </Container>
   );
 };
