@@ -1,6 +1,6 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
-// https://vite.dev/config/
+// https://vitejs.dev/config/
 export default defineConfig({
     plugins: [react()],
     base: '/',
@@ -18,6 +18,10 @@ export default defineConfig({
     server: {
         port: 3000,
         open: true,
+        // ADICIONE ESTA SEÇÃO AQUI 👇
+        headers: {
+            'Content-Security-Policy': "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.googlesyndication.com https://*.google.com https://*.googleadservices.com https://cdn.tiny.cloud"
+        }
     },
     resolve: {
         alias: {
