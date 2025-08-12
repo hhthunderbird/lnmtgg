@@ -391,7 +391,7 @@ const Automate: React.FC = () => {
           init={{
             height: 300,
             menubar: false,
-            readonly: true,
+            //readonly: true,
             plugins: [
               'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
               'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',

@@ -1,7 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import styled from 'styled-components';
-import HomePage from './components/HomePage';
 import Automate from './pages/Automate';
 import SEO from './components/SEO';
 import StructuredData from './components/StructuredData';
@@ -97,8 +96,7 @@ const App: React.FC = () => {
             <MainContent>
               <ContentWrapper>
                 <Routes>
-                  <Route path="/" element={<HomePage />} />
-                  <Route path="/automate" element={<Automate />} />
+                  <Route path="/" element={<Automate />} />
                 </Routes>
               </ContentWrapper>
             </MainContent>
