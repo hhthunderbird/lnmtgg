@@ -241,23 +241,6 @@ const Automate = () => {
     setIsPanelCollapsed(!isPanelCollapsed);
   };
 
-  const copyToClipboard = (text) => {
-    navigator.clipboard.writeText(text).then(() => {
-      alert('Conteúdo copiado para a área de transferência!');
-    }).catch(err => {
-      console.error('Falha ao copiar texto: ', err);
-    });
-  };
-
-  // ✅ ALTERADO: Função que extrai e copia o texto puro
-  const handleGetPlainText = () => {
-    const textToProcess = replacedContent || content;
-    const tempDiv = document.createElement('div');
-    tempDiv.innerHTML = textToProcess;
-    const plainText = tempDiv.textContent || tempDiv.innerText || '';
-    copyToClipboard(plainText);
-  };
-
   return (
     <Container>
       <Title>🤖 Ferramenta de Automação de Texto</Title>
@@ -344,7 +327,7 @@ const Automate = () => {
            />
         </PreviewContainer>
         <ButtonGroup>
-            <Button onClick={handleGetPlainText} disabled={!content.trim()}>📝 Copiar Texto</Button>
+            <Button disabled={!content.trim()}>📝 Obter Texto Puro</Button>
             <SecondaryButton onClick={clearText}>🗑️ Limpar Tudo</SecondaryButton>
         </ButtonGroup>
       </MainContent>
