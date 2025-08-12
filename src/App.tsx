@@ -3,12 +3,9 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import styled from 'styled-components';
 import HomePage from './components/HomePage';
 import Automate from './pages/Automate';
-import AdSenseAd from './components/AdSenseAd';
-import LateralAdSpace from './components/LateralAdSpace';
 import SEO from './components/SEO';
 import StructuredData from './components/StructuredData';
 import Header from './components/Header';
-import config from './config';
 import { ThemeProvider } from './context/ThemeContext';
 import { GlobalStyles } from './styles/GlobalStyles';
 import ThemeToggle from './components/ThemeToggle';
@@ -78,17 +75,6 @@ const ContentWrapper = styled.div`
   }
 `;
 
-const BottomAdContainer = styled.div`
-  width: 100%;
-  margin-top: 3rem;
-  padding: 2rem 0;
-  border-top: 1px solid var(--border-color);
-  min-height: 100px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
 const App: React.FC = () => {
   return (
     <ThemeProvider>
@@ -109,23 +95,12 @@ const App: React.FC = () => {
             />
             <Header />
             <MainContent>
-              <LateralAdSpace position="left" />
               <ContentWrapper>
                 <Routes>
                   <Route path="/" element={<HomePage />} />
                   <Route path="/automate" element={<Automate />} />
                 </Routes>
-                <BottomAdContainer>
-                  <AdSenseAd
-                    client={config.adsense.client}
-                    slot={config.adsense.slot}
-                    format="auto"
-                    responsive={true}
-                    position="bottom"
-                  />
-                </BottomAdContainer>
               </ContentWrapper>
-              <LateralAdSpace position="right" />
             </MainContent>
             <ThemeToggle />
           </AppContainer>

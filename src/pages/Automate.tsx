@@ -119,8 +119,6 @@ const TextKeyInput = styled.input`
   }
 `;
 
-
-
 const ButtonGroup = styled.div`
   display: flex;
   gap: 1rem;
@@ -152,7 +150,7 @@ const Button = styled.button`
 
 const SecondaryButton = styled(Button)`
   background: var(--secondary-color, #5f6368);
-  
+
   &:hover {
     background: var(--secondary-hover, #4a4d51);
   }
@@ -160,17 +158,9 @@ const SecondaryButton = styled(Button)`
 
 const SuccessButton = styled(Button)`
   background: var(--success-color, #34a853);
-  
+
   &:hover {
     background: var(--success-hover, #2d8e47);
-  }
-`;
-
-const WarningButton = styled(Button)`
-  background: var(--warning-color, #fbbc04);
-  
-  &:hover {
-    background: var(--warning-hover, #f9ab00);
   }
 `;
 
@@ -242,20 +232,19 @@ const Automate: React.FC = () => {
   const [textOutput, setTextOutput] = useState('');
   const [textKeys, setTextKeys] = useState<TextKey[]>([]);
   const [replacedContent, setReplacedContent] = useState('');
-  const [originalContent, setOriginalContent] = useState('');
 
   // Extract text keys from content (pattern: {{key}})
   const extractTextKeys = (text: string): string[] => {
     const regex = /\{\{([^}]+)\}\}/g;
     const keys: string[] = [];
     let match;
-    
+
     while ((match = regex.exec(text)) !== null) {
       if (!keys.includes(match[1])) {
         keys.push(match[1]);
       }
     }
-    
+
     return keys;
   };
 
@@ -263,22 +252,23 @@ const Automate: React.FC = () => {
   useEffect(() => {
     const keys = extractTextKeys(content);
     const currentKeys = textKeys.map(tk => tk.key);
-    
+
     // Add new keys
     keys.forEach(key => {
       if (!currentKeys.includes(key)) {
         setTextKeys(prev => [...prev, { key, value: '' }]);
       }
     });
-    
-    // Remove keys that no longer exist
+
+    // Remove keys that no longer exist and clear outputs
     const removedKeys = currentKeys.filter(key => !keys.includes(key));
     if (removedKeys.length > 0) {
       setTextKeys(prev => prev.filter(tk => keys.includes(tk.key)));
-      // Restore original content when keys are removed
-      restoreOriginalContent(removedKeys);
+      setReplacedContent('');
+      setHtmlOutput('');
+      setTextOutput('');
     }
-    
+
     // Update replaced content when textKeys change
     if (textKeys.length > 0) {
       let result = content;
@@ -294,17 +284,13 @@ const Automate: React.FC = () => {
 
   const handleEditorChange = (content: string) => {
     setContent(content);
-    // Store original content on first load
-    if (!originalContent) {
-      setOriginalContent(content);
-    }
   };
 
   const handleTextKeyChange = (key: string, value: string) => {
-    setTextKeys(prev => 
+    setTextKeys(prev =>
       prev.map(tk => tk.key === key ? { ...tk, value } : tk)
     );
-    
+
     // Automatically update the replaced content in real-time
     let result = content;
     const updatedKeys = textKeys.map(tk => tk.key === key ? { ...tk, value } : tk);
@@ -313,25 +299,6 @@ const Automate: React.FC = () => {
         const regex = new RegExp(`\\{\\{${k}\\}\\}`, 'g');
         result = result.replace(regex, v);
       }
-    });
-    setReplacedContent(result);
-  };
-
-
-
-  const restoreOriginalContent = (removedKeys: string[]) => {
-    // This function restores content when keys are removed through text editing
-    // It's called automatically when the useEffect detects removed keys
-    setReplacedContent('');
-    setHtmlOutput('');
-    setTextOutput('');
-  };
-
-  const replaceTextKeys = () => {
-    let result = content;
-    textKeys.forEach(({ key, value }) => {
-      const regex = new RegExp(`\\{\\{${key}\\}\\}`, 'g');
-      result = result.replace(regex, value);
     });
     setReplacedContent(result);
   };
@@ -353,7 +320,6 @@ const Automate: React.FC = () => {
     setTextOutput('');
     setTextKeys([]);
     setReplacedContent('');
-    setOriginalContent('');
   };
 
   const copyToClipboard = (text: string) => {
@@ -369,7 +335,7 @@ const Automate: React.FC = () => {
         description="Powerful rich text editor with text key replacement functionality. Create templates and replace placeholders with custom content."
         keywords="rich text editor, text editor, content editor, TinyMCE, text key replacement, template editor"
       />
-      
+
       <Title>🤖 Automation Tools</Title>
       <Description>
         Powerful automation tools to streamline your workflow. Create templates with text keys
@@ -397,46 +363,46 @@ const Automate: React.FC = () => {
             content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
           }}
         />
-        
-                 <ButtonGroup>
-           <Button onClick={getHtmlContent} disabled={!content.trim()}>
-             📄 Get HTML
-           </Button>
-           <Button onClick={getTextContent} disabled={!content.trim()}>
-             📝 Get Plain Text
-           </Button>
-           <SecondaryButton onClick={clearContent}>
-             🗑️ Clear All
-           </SecondaryButton>
-         </ButtonGroup>
-       </EditorContainer>
 
-       <PreviewContainer hasContent={!!replacedContent}>
-         <PreviewTitle>
-           👁️ Live Preview Editor
-           {replacedContent && <span style={{ fontSize: '0.9rem', color: 'var(--text-secondary, #5f6368)', fontWeight: 'normal' }}>
-             (Real-time updates as you type)
-           </span>}
-         </PreviewTitle>
-         <Editor
-           apiKey="mnjhi36ekztuuutcu6xr1eqhgmsb7pbc4ifzzm4mrb781i46"
-           value={replacedContent || content}
-           onEditorChange={() => {}} // Read-only, no changes allowed
-           init={{
-             height: 300,
-             menubar: false,
-             readonly: true,
-             plugins: [
-               'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
-               'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
-               'insertdatetime', 'media', 'table', 'code', 'help', 'wordcount'
-             ],
-             toolbar: false, // No toolbar for read-only editor
-             content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px; background-color: #f8f9fa; }',
-             statusbar: false
-           }}
-         />
-       </PreviewContainer>
+        <ButtonGroup>
+          <Button onClick={getHtmlContent} disabled={!content.trim()}>
+            📄 Get HTML
+          </Button>
+          <Button onClick={getTextContent} disabled={!content.trim()}>
+            📝 Get Plain Text
+          </Button>
+          <SecondaryButton onClick={clearContent}>
+            🗑️ Clear All
+          </SecondaryButton>
+        </ButtonGroup>
+      </EditorContainer>
+
+      <PreviewContainer hasContent={!!replacedContent}>
+        <PreviewTitle>
+          👁️ Live Preview Editor
+          {replacedContent && <span style={{ fontSize: '0.9rem', color: 'var(--text-secondary, #5f6368)', fontWeight: 'normal' }}>
+            (Real-time updates as you type)
+          </span>}
+        </PreviewTitle>
+        <Editor
+          apiKey="mnjhi36ekztuuutcu6xr1eqhgmsb7pbc4ifzzm4mrb781i46"
+          value={replacedContent || content}
+          onEditorChange={() => {}} // Read-only, no changes allowed
+          init={{
+            height: 300,
+            menubar: false,
+            readonly: true,
+            plugins: [
+              'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
+              'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
+              'insertdatetime', 'media', 'table', 'code', 'help', 'wordcount'
+            ],
+            toolbar: false, // No toolbar for read-only editor
+            content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px; background-color: #f8f9fa; }',
+            statusbar: false
+          }}
+        />
+      </PreviewContainer>
 
       {textKeys.length > 0 && (
         <TextKeysSection>
@@ -451,11 +417,9 @@ const Automate: React.FC = () => {
                   onChange={(e) => handleTextKeyChange(key, e.target.value)}
                   placeholder={`Enter value for ${key}`}
                 />
-                
               </TextKeyItem>
             ))}
           </TextKeysList>
-          
         </TextKeysSection>
       )}
 
@@ -467,8 +431,6 @@ const Automate: React.FC = () => {
           </NoKeysMessage>
         </TextKeysSection>
       )}
-
-             
 
       {htmlOutput && (
         <OutputSection>
@@ -500,20 +462,20 @@ const Automate: React.FC = () => {
           <strong>Text Keys:</strong> Use the pattern {'{{key}}'} in your text to create replaceable placeholders.
           For example: "Hello {'{{name}}'}, welcome to {'{{company}}'}!"
         </InfoText>
-                 <InfoText>
-           <strong>Workflow:</strong> Type your template with text keys → Fill in the values → 
-           See live preview in real-time → Get your final content automatically.
-         </InfoText>
-         <InfoText>
-           <strong>Live Preview:</strong> The preview editor shows your content with all text keys replaced in real-time.
-           It's read-only and updates automatically as you type in the input fields above.
-         </InfoText>
-                 <InfoText>
-           <strong>Key Management:</strong> Remove text keys by deleting them directly from the editor.
-           The interface automatically detects changes and updates the key list.
-         </InfoText>
         <InfoText>
-          <strong>Use cases:</strong> Email templates, document generation, personalized content, 
+          <strong>Workflow:</strong> Type your template with text keys → Fill in the values →
+          See live preview in real-time → Get your final content automatically.
+        </InfoText>
+        <InfoText>
+          <strong>Live Preview:</strong> The preview editor shows your content with all text keys replaced in real-time.
+          It's read-only and updates automatically as you type in the input fields above.
+        </InfoText>
+        <InfoText>
+          <strong>Key Management:</strong> Remove text keys by deleting them directly from the editor.
+          The interface automatically detects changes and updates the key list.
+        </InfoText>
+        <InfoText>
+          <strong>Use cases:</strong> Email templates, document generation, personalized content,
           automated messaging, and any repetitive text that needs customization.
         </InfoText>
       </InfoSection>
