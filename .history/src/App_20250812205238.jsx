@@ -394,7 +394,7 @@ const Automate = () => {
         </PreviewContainer>
 
         <ButtonGroup>
-            <Button onClick={handleGetPlainText} disabled={!content.trim()}>📝 Copiar Texto</Button>
+            <Button onClick={handleGetPlainText} disabled={!content.trim()}>📝 Obter Texto Puro</Button>
             <SecondaryButton onClick={clearAll}>🗑️ Limpar Texto</SecondaryButton>
         </ButtonGroup>
       </MainContent>
