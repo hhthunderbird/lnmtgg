@@ -255,7 +255,7 @@ const Automate = () => {
       </Description>
       
       <Rnd
-        style={{ zIndex: 10000 }}
+      style={{ zIndex: 10000 }}
         default={{
           x: window.innerWidth - 470,
           y: 150,

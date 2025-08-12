@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Editor } from '@tinymce/tinymce-react';
+// ✅ ALTERADO: Importando o componente da nova biblioteca
 import { Rnd } from 'react-rnd';
 
-// --- Componentes de estilo ---
+// --- Componentes de estilo (com adição de novos estilos para o painel) ---
 const Container = styled.div`
   width: 100%;
   margin: 0;
@@ -27,17 +28,14 @@ const Description = styled.p`
   margin-right: auto;
 `;
 
+// ✅ ALTERADO: O layout de colunas foi removido. Este container agora agrupa o conteúdo principal.
 const MainContent = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
-
-  width: 80%;
-  max-width: 1400px; /* Boa prática para evitar que fique largo demais em telas gigantes */
-  margin-left: auto;
-  margin-right: auto;
 `;
 
+// ✅ NOVO: Estilos para o painel flutuante
 const DraggablePanel = styled.div`
   background: var(--card-bg, #f8f9fa);
   border: 1px solid var(--border-color, #e8eaed);
@@ -46,7 +44,7 @@ const DraggablePanel = styled.div`
   display: flex;
   flex-direction: column;
   height: 100%;
-  overflow: hidden;
+  overflow: hidden; // Importante para o conteúdo não vazar
 `;
 
 const PanelHeader = styled.div`
@@ -54,7 +52,7 @@ const PanelHeader = styled.div`
   background-color: var(--primary-color, #1a73e8);
   color: white;
   font-weight: 500;
-  cursor: grab;
+  cursor: grab; // Indica que pode ser arrastado
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -76,10 +74,12 @@ const PanelToggleButton = styled.button`
 
 const PanelContent = styled.div`
   padding: 1.5rem;
-  overflow-y: auto;
+  overflow-y: auto; // Adiciona rolagem se o conteúdo for maior que o painel
   flex-grow: 1;
 `;
 
+
+// O restante dos seus componentes (EditorContainer, Button, etc.) permanece o mesmo...
 const EditorContainer = styled.div`
   background: var(--card-bg, #f8f9fa);
   border: 1px solid var(--border-color, #e8eaed);
@@ -87,7 +87,6 @@ const EditorContainer = styled.div`
   padding: 1.5rem;
   width: 100%;
 `;
-
 const PreviewContainer = styled.div`
   background: var(--card-bg, #f8f9fa);
   border: 1px solid var(--border-color, #e8eaed);
@@ -97,13 +96,11 @@ const PreviewContainer = styled.div`
   opacity: ${props => props.hasContent ? '1' : '0.6'};
   transition: opacity 0.3s ease;
 `;
-
 const EditorTitle = styled.h2`
   font-size: 1.5rem;
   color: var(--text-primary, #202124);
   margin-bottom: 1rem;
 `;
-
 const PreviewTitle = styled.h2`
   font-size: 1.5rem;
   color: var(--text-primary, #202124);
@@ -112,34 +109,22 @@ const PreviewTitle = styled.h2`
   align-items: center;
   gap: 0.5rem;
 `;
-
-const TextKeysSection = styled.div`
-  background: var(--card-bg, #f8f9fa);
-  border: 1px solid var(--border-color, #e8eaed);
-  border-radius: 12px;
-  padding: 1.5rem;
-  width: 100%;
-`;
-
 const TextKeysTitle = styled.h3`
   font-size: 1.3rem;
   color: var(--text-primary, #202124);
   margin-bottom: 1rem;
 `;
-
 const TextKeysList = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1rem;
   margin-top: 1.5rem;
 `;
-
 const TextKeyItem = styled.div`
   display: flex;
   align-items: center;
   gap: 0.5rem;
 `;
-
 const TextKeyInput = styled.input`
   flex: 1;
   padding: 0.5rem;
@@ -155,7 +140,6 @@ const TextKeyInput = styled.input`
     border-color: var(--primary-color, #1a73e8);
   }
 `;
-
 const ButtonGroup = styled.div`
   display: flex;
   gap: 1rem;
@@ -163,7 +147,6 @@ const ButtonGroup = styled.div`
   flex-wrap: wrap;
   justify-content: center;
 `;
-
 const Button = styled.button`
   padding: 0.75rem 1.5rem;
   background: var(--primary-color, #1a73e8);
@@ -184,7 +167,6 @@ const Button = styled.button`
     cursor: not-allowed;
   }
 `;
-
 const SecondaryButton = styled(Button)`
   background: var(--secondary-color, #5f6368);
 
@@ -192,7 +174,6 @@ const SecondaryButton = styled(Button)`
     background: var(--secondary-hover, #4a4d51);
   }
 `;
-
 const RemoveButton = styled.button`
   padding: 0.5rem;
   background-color: #fce8e6;
@@ -211,8 +192,8 @@ const RemoveButton = styled.button`
   }
 `;
 
-
 const Automate = () => {
+  // --- A lógica de estado e funções permanece a mesma ---
   const [content, setContent] = useState('');
   const [textKeys, setTextKeys] = useState(() => {
     try {
@@ -224,6 +205,8 @@ const Automate = () => {
     return [{ id: 1, key: 'exemplo', value: 'mundo' }];
   });
   const [replacedContent, setReplacedContent] = useState('');
+
+  // ✅ NOVO: Estado para controlar se o painel está recolhido
   const [isPanelCollapsed, setIsPanelCollapsed] = useState(false);
 
   useEffect(() => {
@@ -253,20 +236,20 @@ const Automate = () => {
       <Description>
         Use o painel de chaves flutuante para gerenciar suas variáveis. Depois, use `||nome-da-chave||` no editor.
       </Description>
-      
+
+      {/* ✅ ALTERADO: Componente Rnd envolve todo o painel da direita */}
       <Rnd
-        style={{ zIndex: 10000 }}
         default={{
-          x: window.innerWidth - 470,
-          y: 150,
+          x: window.innerWidth - 470, // Posição inicial x (canto direito)
+          y: 150,                     // Posição inicial y
           width: 450,
           height: 500,
         }}
         minWidth={300}
-        minHeight={isPanelCollapsed ? 55 : 300}
+        minHeight={isPanelCollapsed ? 55 : 300} // Altura mínima quando recolhido vs. expandido
         maxHeight={"80vh"}
-        bounds="window"
-        dragHandleClassName="panel-header"
+        bounds="window" // Não permite arrastar para fora da janela
+        dragHandleClassName="panel-header" // Define que apenas o cabeçalho pode ser usado para arrastar
         className="rnd-container"
       >
         <DraggablePanel>
@@ -277,9 +260,11 @@ const Automate = () => {
             </PanelToggleButton>
           </PanelHeader>
 
+          {/* O conteúdo do painel só é renderizado se não estiver recolhido */}
           {!isPanelCollapsed && (
             <PanelContent>
               <Button onClick={handleAddNewKey} style={{width: '100%'}}>+ Adicionar Nova Chave</Button>
+
               <TextKeysList>
                 {textKeys.map(({ id, key, value }) => (
                   <TextKeyItem key={id}>

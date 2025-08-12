@@ -27,15 +27,11 @@ const Description = styled.p`
   margin-right: auto;
 `;
 
+// Depois (versão com 100% da largura)
 const MainContent = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
-
-  width: 80%;
-  max-width: 1400px; /* Boa prática para evitar que fique largo demais em telas gigantes */
-  margin-left: auto;
-  margin-right: auto;
 `;
 
 const DraggablePanel = styled.div`
@@ -255,7 +251,6 @@ const Automate = () => {
       </Description>
       
       <Rnd
-        style={{ zIndex: 10000 }}
         default={{
           x: window.innerWidth - 470,
           y: 150,

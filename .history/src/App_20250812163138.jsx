@@ -27,13 +27,15 @@ const Description = styled.p`
   margin-right: auto;
 `;
 
+// ✅ ALTERADO: Estilos para largura e centralização adicionados aqui
 const MainContent = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
 
-  width: 80%;
-  max-width: 1400px; /* Boa prática para evitar que fique largo demais em telas gigantes */
+  /* Centralizando e definindo a largura */
+  width: 100%;
+  max-width: 1200px;
   margin-left: auto;
   margin-right: auto;
 `;
@@ -255,7 +257,6 @@ const Automate = () => {
       </Description>
       
       <Rnd
-        style={{ zIndex: 10000 }}
         default={{
           x: window.innerWidth - 470,
           y: 150,
