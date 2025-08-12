@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Editor } from '@tinymce/tinymce-react';
+import SEO from '../components/SEO';
 
 const Container = styled.div`
   width: 100%;
@@ -34,8 +35,7 @@ const EditorContainer = styled.div`
   width: 100%;
 `;
 
-// The generic type `<{ hasContent: boolean }>` is removed for JS
-const PreviewContainer = styled.div`
+const PreviewContainer = styled.div<{ hasContent: boolean }>`
   background: var(--card-bg, #f8f9fa);
   border: 1px solid var(--border-color, #e8eaed);
   border-radius: 12px;
@@ -221,19 +221,22 @@ const NoKeysMessage = styled.p`
   padding: 2rem;
 `;
 
-// The `: React.FC` type annotation is removed
-const Automate = () => {
+interface TextKey {
+  key: string;
+  value: string;
+}
+
+const Automate: React.FC = () => {
   const [content, setContent] = useState('');
   const [htmlOutput, setHtmlOutput] = useState('');
   const [textOutput, setTextOutput] = useState('');
-  // The `<TextKey[]>` generic is removed
-  const [textKeys, setTextKeys] = useState([]);
+  const [textKeys, setTextKeys] = useState<TextKey[]>([]);
   const [replacedContent, setReplacedContent] = useState('');
 
-  // Type annotations for parameters and return values are removed
-  const extractTextKeys = (text) => {
+  // Extract text keys from content (pattern: {{key}})
+  const extractTextKeys = (text: string): string[] => {
     const regex = /\{\{([^}]+)\}\}/g;
-    const keys = [];
+    const keys: string[] = [];
     let match;
 
     while ((match = regex.exec(text)) !== null) {
@@ -245,16 +248,19 @@ const Automate = () => {
     return keys;
   };
 
+  // Update text keys when content changes
   useEffect(() => {
     const keys = extractTextKeys(content);
     const currentKeys = textKeys.map(tk => tk.key);
 
+    // Add new keys
     keys.forEach(key => {
       if (!currentKeys.includes(key)) {
         setTextKeys(prev => [...prev, { key, value: '' }]);
       }
     });
 
+    // Remove keys that no longer exist and clear outputs
     const removedKeys = currentKeys.filter(key => !keys.includes(key));
     if (removedKeys.length > 0) {
       setTextKeys(prev => prev.filter(tk => keys.includes(tk.key)));
@@ -263,6 +269,7 @@ const Automate = () => {
       setTextOutput('');
     }
 
+    // Update replaced content when textKeys change
     if (textKeys.length > 0) {
       let result = content;
       textKeys.forEach(({ key, value }) => {
@@ -275,15 +282,16 @@ const Automate = () => {
     }
   }, [content, textKeys]);
 
-  const handleEditorChange = (content) => {
+  const handleEditorChange = (content: string) => {
     setContent(content);
   };
 
-  const handleTextKeyChange = (key, value) => {
+  const handleTextKeyChange = (key: string, value: string) => {
     setTextKeys(prev =>
       prev.map(tk => tk.key === key ? { ...tk, value } : tk)
     );
 
+    // Automatically update the replaced content in real-time
     let result = content;
     const updatedKeys = textKeys.map(tk => tk.key === key ? { ...tk, value } : tk);
     updatedKeys.forEach(({ key: k, value: v }) => {
@@ -314,7 +322,7 @@ const Automate = () => {
     setReplacedContent('');
   };
 
-  const copyToClipboard = (text) => {
+  const copyToClipboard = (text: String) => {
     navigator.clipboard.writeText(text).then(() => {
       console.log('Content copied to clipboard');
     });
@@ -322,6 +330,12 @@ const Automate = () => {
 
   return (
     <Container>
+      <SEO
+        title="Rich Text Editor with Text Key Replacement - Toolzilla"
+        description="Powerful rich text editor with text key replacement functionality. Create templates and replace placeholders with custom content."
+        keywords="rich text editor, text editor, content editor, TinyMCE, text key replacement, template editor"
+      />
+
       <Title>🤖 Automation Tools</Title>
       <Description>
         Powerful automation tools to streamline your workflow. Create templates with text keys
@@ -374,19 +388,20 @@ const Automate = () => {
           tinymceScriptSrc='/tinymce/tinymce.min.js'
           licenseKey='gpl'
           value={replacedContent || content}
-          onEditorChange={() => {}}
+          onEditorChange={() => {}} // Read-only, no changes allowed
           readonly={true}
           init={{
             height: 300,
             menubar: false,
+            //readonly: true,
             plugins: [
               'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
               'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
               'insertdatetime', 'media', 'table', 'code', 'help', 'wordcount'
             ],
-            toolbar: false,
+            toolbar: false, // No toolbar for read-only editor
             content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px; background-color: #f8f9fa; }',
-            status: false
+            statusbar: false
           }}
         />
       </PreviewContainer>

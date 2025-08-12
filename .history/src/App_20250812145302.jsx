@@ -322,6 +322,12 @@ const Automate = () => {
 
   return (
     <Container>
+      <SEO
+        title="Rich Text Editor with Text Key Replacement - Toolzilla"
+        description="Powerful rich text editor with text key replacement functionality. Create templates and replace placeholders with custom content."
+        keywords="rich text editor, text editor, content editor, TinyMCE, text key replacement, template editor"
+      />
+
       <Title>🤖 Automation Tools</Title>
       <Description>
         Powerful automation tools to streamline your workflow. Create templates with text keys
