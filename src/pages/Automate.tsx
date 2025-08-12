@@ -388,6 +388,7 @@ const Automate: React.FC = () => {
           apiKey="mnjhi36ekztuuutcu6xr1eqhgmsb7pbc4ifzzm4mrb781i46"
           value={replacedContent || content}
           onEditorChange={() => {}} // Read-only, no changes allowed
+          readonly={true}
           init={{
             height: 300,
             menubar: false,
