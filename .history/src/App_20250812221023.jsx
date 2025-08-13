@@ -417,7 +417,6 @@ const Automate = () => {
             <PreviewContainer $hasContent={!!(replacedContent || content)}>
            <PreviewTitle>👁️ Pré-visualização em Tempo Real (Sem Custo)</PreviewTitle>
            <PreviewContentArea 
-              onCopy={handleCopyFromPreview}
              dangerouslySetInnerHTML={{ __html: replacedContent || content }} 
            />
             </PreviewContainer>
