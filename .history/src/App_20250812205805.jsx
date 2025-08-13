@@ -2,28 +2,10 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Editor } from '@tinymce/tinymce-react';
 import { Rnd } from 'react-rnd';
-import { useUsageTracker } from './useUsageTracker'; // ✅ Importando o hook
 
-// --- Styled Components (sem alterações) ---
-const LimitMessageContainer = styled.div`
-  background-color: #fffbe6; /* Amarelo claro */
-  border: 1px solid #ffe58f; /* Borda amarela */
-  border-radius: 12px;
-  padding: 2rem;
-  text-align: center;
-  margin-top: 1.5rem;
+// --- Styled Components ---
 
-  h3 {
-    margin-top: 0;
-    color: #d46b08; /* Laranja escuro */
-  }
-
-  p {
-    font-size: 1.1rem;
-    color: #595959;
-  }
-`;
-
+// ✅ NOVO: Este componente irá estilizar o HTML renderizado para parecer com o editor.
 const PreviewContentArea = styled.div`
   background-color: #f8f9fa;
   padding: 1rem 1.5rem;
@@ -34,15 +16,48 @@ const PreviewContentArea = styled.div`
   font-size: 14px;
   line-height: 1.6;
   color: #202124;
-  h1, h2, h3, h4, h5, h6 { margin-top: 1.5em; margin-bottom: 0.5em; }
-  p { margin: 0 0 1em 0; }
-  ul, ol { padding-left: 30px; margin-bottom: 1em; }
-  li { margin-bottom: 0.5em; }
-  a { color: #1a73e8; text-decoration: underline; }
-  strong { font-weight: bold; }
-  em { font-style: italic; }
-  blockquote { border-left: 3px solid #ccc; padding-left: 1rem; margin-left: 0; font-style: italic; }
+
+  /* Estilos para os elementos HTML que o TinyMCE gera */
+  h1, h2, h3, h4, h5, h6 {
+    margin-top: 1.5em;
+    margin-bottom: 0.5em;
+  }
+
+  p {
+    margin: 0 0 1em 0;
+  }
+
+  ul, ol {
+    padding-left: 30px;
+    margin-bottom: 1em;
+  }
+
+  li {
+    margin-bottom: 0.5em;
+  }
+
+  a {
+    color: #1a73e8;
+    text-decoration: underline;
+  }
+
+  strong {
+    font-weight: bold;
+  }
+
+  em {
+    font-style: italic;
+  }
+
+  blockquote {
+    border-left: 3px solid #ccc;
+    padding-left: 1rem;
+    margin-left: 0;
+    font-style: italic;
+  }
 `;
+
+// O resto dos seus styled-components permanecem os mesmos...
 const Container = styled.div`
   width: 100%;
   margin: 0;
@@ -228,16 +243,13 @@ const Automate = () => {
   const [textKeys, setTextKeys] = useState(() => {
     try {
       const savedKeys = localStorage.getItem('textKeys');
-      return savedKeys ? JSON.parse(savedKeys) : [{ id: 1, key: 'exemplo', value: 'mundo' }];
-    } catch (error) { return [{ id: 1, key: 'exemplo', value: 'mundo' }]; }
+      return savedKeys ? JSON.parse(savedKeys) : [{ id: 1, key: 'saudação', value: 'Olá Mundo' }];
+    } catch (error) { return [{ id: 1, key: 'saudação', value: 'Olá Mundo' }]; }
   });
   const [replacedContent, setReplacedContent] = useState('');
   const [isPanelCollapsed, setIsPanelCollapsed] = useState(false);
   const [panelSize, setPanelSize] = useState({ width: 450, height: 500 });
   const [lastPanelHeight, setLastPanelHeight] = useState(500);
-
-  // ✅ Utilizando o hook de rastreamento de uso
-  const { remainingUses, isLimitReached, trackUsage } = useUsageTracker();
 
   useEffect(() => {
     localStorage.setItem('textKeys', JSON.stringify(textKeys));
@@ -285,11 +297,6 @@ const Automate = () => {
   };
 
   const handleGetPlainText = () => {
-    // ✅ Verificação de limite de uso
-    if (!trackUsage()) {
-        alert(`Você atingiu seu limite de 5 usos gratuitos por hora. Tente novamente mais tarde!`);
-        return;
-    }
     const textToProcess = replacedContent || content;
     const tempDiv = document.createElement('div');
     tempDiv.innerHTML = textToProcess;
@@ -298,11 +305,6 @@ const Automate = () => {
   };
 
   const handleGetHtml = () => {
-    // ✅ Verificação de limite de uso
-    if (!trackUsage()) {
-        alert(`Você atingiu seu limite de 5 usos gratuitos por hora. Tente novamente mais tarde!`);
-        return;
-    }
     const htmlToCopy = replacedContent || content;
     copyToClipboard(htmlToCopy);
   }
@@ -314,11 +316,6 @@ const Automate = () => {
         Use o painel de chaves flutuante para gerenciar suas variáveis. Depois, use `[[nome-da-chave]]` no editor.
       </Description>
       
-      {/* ✅ Exibindo os usos restantes para o usuário */}
-      <div style={{ textAlign: 'center', marginBottom: '2rem', fontSize: '1.1rem', color: isLimitReached ? 'red' : 'inherit' }}>
-        <p>Usos gratuitos restantes nesta hora: <strong>{remainingUses}</strong></p>
-      </div>
-
       <Rnd
         style={{ zIndex: 10000 }}
         size={panelSize}
@@ -375,7 +372,6 @@ const Automate = () => {
         <EditorContainer>
           <EditorTitle>📝 Editor Principal</EditorTitle>
           <Editor
-            // ✅ CORRIGIDO: Usando apiKey para estabilidade
             tinymceScriptSrc='/tinymce/tinymce.min.js'
             licenseKey='gpl'
             value={content}
@@ -389,30 +385,18 @@ const Automate = () => {
           />
         </EditorContainer>
         
-        {/* ✅ ALTERADO: Lógica de Renderização Condicional */}
-        {isLimitReached ? (
-          <LimitMessageContainer>
-            <h3>Limite de Uso Atingido</h3>
-            <p>Você usou seus 5 acessos gratuitos para esta hora.</p>
-            <p>Para continuar usando, por favor, aguarde a próxima hora ou considere assinar um plano Pro (em breve!).</p>
-          </LimitMessageContainer>
-        ) : (
-          // Usamos um React Fragment <> para agrupar os componentes sem adicionar um div extra
-          <>
-            <PreviewContainer $hasContent={!!(replacedContent || content)}>
+        {/* ✅ ALTERADO: O segundo Editor foi substituído pela div de preview, sem custo. */}
+        <PreviewContainer $hasContent={!!(replacedContent || content)}>
            <PreviewTitle>👁️ Pré-visualização em Tempo Real (Sem Custo)</PreviewTitle>
            <PreviewContentArea 
              dangerouslySetInnerHTML={{ __html: replacedContent || content }} 
            />
-            </PreviewContainer>
+        </PreviewContainer>
 
-            <ButtonGroup>
-                {/* Adicionado botão para copiar HTML e desabilitado quando o limite é atingido */}
-                <Button onClick={handleGetPlainText} disabled={!content.trim() || isLimitReached}>📝 Copiar Texto</Button>
-                <SecondaryButton onClick={clearAll}>🗑️ Limpar Tudo</SecondaryButton>
-            </ButtonGroup>
-          </>
-        )}        
+        <ButtonGroup>
+            <Button onClick={handleGetPlainText} disabled={!content.trim()}>📝 Copiar Texto</Button>
+            <SecondaryButton onClick={clearAll}>🗑️ Limpar Texto</SecondaryButton>
+        </ButtonGroup>
       </MainContent>
     </Container>
   );

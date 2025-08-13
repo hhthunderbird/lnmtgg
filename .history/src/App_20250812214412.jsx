@@ -5,25 +5,6 @@ import { Rnd } from 'react-rnd';
 import { useUsageTracker } from './useUsageTracker'; // ✅ Importando o hook
 
 // --- Styled Components (sem alterações) ---
-const LimitMessageContainer = styled.div`
-  background-color: #fffbe6; /* Amarelo claro */
-  border: 1px solid #ffe58f; /* Borda amarela */
-  border-radius: 12px;
-  padding: 2rem;
-  text-align: center;
-  margin-top: 1.5rem;
-
-  h3 {
-    margin-top: 0;
-    color: #d46b08; /* Laranja escuro */
-  }
-
-  p {
-    font-size: 1.1rem;
-    color: #595959;
-  }
-`;
-
 const PreviewContentArea = styled.div`
   background-color: #f8f9fa;
   padding: 1rem 1.5rem;
@@ -400,19 +381,34 @@ const Automate = () => {
           // Usamos um React Fragment <> para agrupar os componentes sem adicionar um div extra
           <>
             <PreviewContainer $hasContent={!!(replacedContent || content)}>
+              <PreviewTitle>👁️ Pré-visualização em Tempo Real</PreviewTitle>
+              <PreviewContentArea 
+                dangerouslySetInnerHTML={{ __html: replacedContent || content }} 
+              />
+            </PreviewContainer>
+
+            <ButtonGroup>
+                {/* A prop 'disabled' não é mais necessária aqui para o limite */}
+                <Button onClick={handleGetHtml} disabled={!content.trim()}>📄 Copiar HTML</Button>
+                <Button onClick={handleGetPlainText} disabled={!content.trim()}>📝 Copiar Texto</Button>
+                <SecondaryButton onClick={clearAll}>🗑️ Limpar Tudo</SecondaryButton>
+            </ButtonGroup>
+          </>
+        )}
+
+
+        <PreviewContainer $hasContent={!!(replacedContent || content)}>
            <PreviewTitle>👁️ Pré-visualização em Tempo Real (Sem Custo)</PreviewTitle>
            <PreviewContentArea 
              dangerouslySetInnerHTML={{ __html: replacedContent || content }} 
            />
-            </PreviewContainer>
+        </PreviewContainer>
 
-            <ButtonGroup>
-                {/* Adicionado botão para copiar HTML e desabilitado quando o limite é atingido */}
-                <Button onClick={handleGetPlainText} disabled={!content.trim() || isLimitReached}>📝 Copiar Texto</Button>
-                <SecondaryButton onClick={clearAll}>🗑️ Limpar Tudo</SecondaryButton>
-            </ButtonGroup>
-          </>
-        )}        
+        <ButtonGroup>
+            {/* Adicionado botão para copiar HTML e desabilitado quando o limite é atingido */}
+            <Button onClick={handleGetPlainText} disabled={!content.trim() || isLimitReached}>📝 Copiar Texto</Button>
+            <SecondaryButton onClick={clearAll}>🗑️ Limpar Tudo</SecondaryButton>
+        </ButtonGroup>
       </MainContent>
     </Container>
   );

@@ -404,15 +404,18 @@ const Automate = () => {
            <PreviewContentArea 
              dangerouslySetInnerHTML={{ __html: replacedContent || content }} 
            />
-            </PreviewContainer>
+        </PreviewContainer>
 
-            <ButtonGroup>
-                {/* Adicionado botão para copiar HTML e desabilitado quando o limite é atingido */}
-                <Button onClick={handleGetPlainText} disabled={!content.trim() || isLimitReached}>📝 Copiar Texto</Button>
-                <SecondaryButton onClick={clearAll}>🗑️ Limpar Tudo</SecondaryButton>
-            </ButtonGroup>
+        <ButtonGroup>
+            {/* Adicionado botão para copiar HTML e desabilitado quando o limite é atingido */}
+            <Button onClick={handleGetPlainText} disabled={!content.trim() || isLimitReached}>📝 Copiar Texto</Button>
+            <SecondaryButton onClick={clearAll}>🗑️ Limpar Tudo</SecondaryButton>
+        </ButtonGroup>
           </>
-        )}        
+        )}
+
+
+        
       </MainContent>
     </Container>
   );

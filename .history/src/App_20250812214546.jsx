@@ -400,19 +400,34 @@ const Automate = () => {
           // Usamos um React Fragment <> para agrupar os componentes sem adicionar um div extra
           <>
             <PreviewContainer $hasContent={!!(replacedContent || content)}>
+              <PreviewTitle>👁️ Pré-visualização em Tempo Real</PreviewTitle>
+              <PreviewContentArea 
+                dangerouslySetInnerHTML={{ __html: replacedContent || content }} 
+              />
+            </PreviewContainer>
+
+            <ButtonGroup>
+                {/* A prop 'disabled' não é mais necessária aqui para o limite */}
+                <Button onClick={handleGetHtml} disabled={!content.trim()}>📄 Copiar HTML</Button>
+                <Button onClick={handleGetPlainText} disabled={!content.trim()}>📝 Copiar Texto</Button>
+                <SecondaryButton onClick={clearAll}>🗑️ Limpar Tudo</SecondaryButton>
+            </ButtonGroup>
+          </>
+        )}
+
+
+        <PreviewContainer $hasContent={!!(replacedContent || content)}>
            <PreviewTitle>👁️ Pré-visualização em Tempo Real (Sem Custo)</PreviewTitle>
            <PreviewContentArea 
              dangerouslySetInnerHTML={{ __html: replacedContent || content }} 
            />
-            </PreviewContainer>
+        </PreviewContainer>
 
-            <ButtonGroup>
-                {/* Adicionado botão para copiar HTML e desabilitado quando o limite é atingido */}
-                <Button onClick={handleGetPlainText} disabled={!content.trim() || isLimitReached}>📝 Copiar Texto</Button>
-                <SecondaryButton onClick={clearAll}>🗑️ Limpar Tudo</SecondaryButton>
-            </ButtonGroup>
-          </>
-        )}        
+        <ButtonGroup>
+            {/* Adicionado botão para copiar HTML e desabilitado quando o limite é atingido */}
+            <Button onClick={handleGetPlainText} disabled={!content.trim() || isLimitReached}>📝 Copiar Texto</Button>
+            <SecondaryButton onClick={clearAll}>🗑️ Limpar Tudo</SecondaryButton>
+        </ButtonGroup>
       </MainContent>
     </Container>
   );
